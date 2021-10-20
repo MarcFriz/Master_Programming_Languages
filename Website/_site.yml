@@ -1,0 +1,10 @@
+name: "my-studium"
+navbar:
+  title: "Master Studium Projekt"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Plan"
+      href: plan.html
+    - text: "Datenanalyse"
+      href: datenanalyse.html

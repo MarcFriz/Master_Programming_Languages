@@ -1,0 +1,30 @@
+---
+title: "Projektplan"
+---
+
+<img src="files/plan_solo.png" style="width:50%">
+
+soon...
+
+## Use Case
+<img src="files/plan_use_case.png" style="width:50%">
+
+soon...
+
+
+## Problemdefinition
+<img src="files/plan_frame.png" style="width:50%">
+
+soon...
+
+
+## Wichtige Variabeln
+<img src="files/plan_kpis.png" style="width:50%">
+
+soon...
+
+
+## Metriken
+<img src="files/plan_metriken.png" style="width:50%">
+
+soon...
