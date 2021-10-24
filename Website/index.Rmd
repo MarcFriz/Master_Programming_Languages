@@ -2,7 +2,6 @@
 title: "Projekt zur Verbesserung der Imfquote"
 ---
 
-Hier kommt die allgemeine beschreibung des Projektes hin, sowie eine allgemeine beschreibung des Vorgehens.
+Hier kommt die allgemeine beschreibung des Projektes/Unternehmens hin, sowie eine allgemeine beschreibung des Vorgehens.
 
-<img src="files/plan_complete.png" style="width:50%">
 
