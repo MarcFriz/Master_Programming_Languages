@@ -38,5 +38,15 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# Daten
-.Website/Daten_Input
+# Daten raw
+Website/Daten_Input/*.csv
+Website/Daten_Input/*.tsv
+
+Website/Daten_Output/*.csv
+
+# Daten site
+Website/_site/Daten_Input/*.csv
+Website/_site/Daten_Input/*.tsv
+
+Website/_site/Daten_Output/*.csv
+
