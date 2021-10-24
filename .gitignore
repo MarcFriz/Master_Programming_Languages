@@ -39,4 +39,4 @@ vignettes/*.pdf
 .Renviron
 
 # Daten
-.Daten_Input
+.Website/Daten_Input
