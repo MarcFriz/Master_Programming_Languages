@@ -1,5 +1,6 @@
 ---
 title: "Projekt zur Verbesserung der Impfquote"
+author: "Marc Friz & Nadja Herrmann"
 ---
 
 
@@ -28,6 +29,7 @@ Minimum reduziert. Diese Maßnahmen zeigten auch Wirkung. Während die Infektion
 Sommermonate zurückgingen, stiegen die Zahlen im Herbst/Winter 2020 wieder rasant an (Statistisches 
 Bundesamt, 2021). Weitere bundesweite Beschränkungen wie der „Light-Lockdown“ ab dem 
 2.November und der „Harte-Lockdown“ ab dem 16. Dezember folgten. 
+
 
 Die Beschränkungen zur Eindämmung der Pandemie wirken sich auf das Mobilitätsverhalten der Bevölkerung aus. Schnell wurde an möglichen Lösungen zur Eindämmung des Covid Virus gearbeitet. Viele Impfunternehmen fingen an Impfstoffe zur Eindämmung der Pandemie zu entwickeln. Endlich, Anfang 2021, wurden diese Impfstoffe freigegeben. Die kurze Zeit der Entwicklung des Impfstoffes machen auch vielen Menschen Angst. Deshalb hat sich der Verlauf der Anzahl an verabreichten Impfungen langsamer entwickelt als ursprünglich erwartet.
 

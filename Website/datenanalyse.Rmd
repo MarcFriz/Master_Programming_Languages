@@ -23,6 +23,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben, für die weitere Verarbeitung vorbereitet sowie bereinigt. Im zweiten Teil werden die Daten analysiert.
 
 # Notwendige Pakete laden
+
 ```{r import packages}
 library(tidyverse)
 library(ggplot2)
@@ -54,11 +55,23 @@ unter dem folgenden [Link](https://www.google.com/covid19/mobility/?hl=de) zur V
 ### Beschreibung der Variablen
 
 
-| Variable      | Beschreibung  |  
-| ------------- |:-------------:|
-| Test          | Test          |
-| col 2 is      | centered      |
-| zebra stripes | are neat      |
+| Variable            | Beschreibung    |  
+| ------------------- |:---------------:|
+|Country region code  |ISO Code         |
+|Country region        |Land             |
+|sub_region_1         |Bundesland       |
+|sub_region_2         |Bundesland Zusatz|
+|metro_area           |Keine Einträge|
+|iso_3166_2_code      |Keine Einträge|
+|census_fips_code     |Keine Einträge|
+|place_id             |tbd|
+|date                 |Datum|
+|retail_and_recreation|Einzelhandel und Erholung|
+|grocery_and_pharmacy|Lebensmittel und Apotheken|
+|parks | Park (z.B.: Öffentlicher Park, Schloss, Waldgebiete|
+|transit_stations |Transitstationen|
+|workplaces |Arbeitsstätten|
+|residential |Haus und Wohnungen|
 
 ## Impfdaten (Datensatz 2)
 
