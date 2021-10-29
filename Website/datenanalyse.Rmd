@@ -20,9 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Einleitung {.sidebar}
 
-## Projektziele
-## Projektaufbau
-
+Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben, für die weitere Verarbeitung vorbereitet sowie bereinigt. Im zweiten Teil werden die Daten analysiert.
 
 # Notwendige Pakete laden
 ```{r import packages}
@@ -53,15 +51,39 @@ Alle Mobilitätsberichte sind nach Orten aufgeschlüsselt und zeigen, wie sich d
 Orten wie zum Beispiel Lebensmittelgeschäften und Parks verändert hat. Die Daten von Google stehen 
 unter dem folgenden [Link](https://www.google.com/covid19/mobility/?hl=de) zur Verfügung.
 
+### Beschreibung der Variablen
+
+
+| Variable      | Beschreibung  |  
+| ------------- |:-------------:|
+| Test          | Test          |
+| col 2 is      | centered      |
+| zebra stripes | are neat      |
 
 ## Impfdaten (Datensatz 2)
 
 Die COVID-19-Impfung kann einen Wendepunkt in der Kontrolle der COVID-19-Pandemie darstellen und erfährt daher hohes Maß an öffentlicher Aufmerksamkeit. Einführung und Umsetzung der COVID-19-Impfung gehen mit besonderen Herausforderungen einher, die bei der Impfdatenerfassung zu berücksichtigen sind.
 
 In diesem Kontext ist es Ziel des Projekts "Digitales Impfquoten-Monitoring" (DIM), tagesaktuell und bundesweit die Impfquote zu erfassen und folgend aufbereitet darzustellen. Die Daten stehen 
-unter dem folgenden [Link](https://github.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland) zur Verfügung. 
+unter dem folgenden [Link](https://github.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland) zur Verfügung.
+
+### Beschreibung der Variablen
+
+| Variable      | Beschreibung  |  
+| ------------- |:-------------:|
+| Test          | Test          |
+| col 2 is      | centered      |
+| zebra stripes | are neat      |
 
 ## Bundesland_ID (Anreicherung der Daten)
+
+### Beschreibung der Variablen
+
+| Variable      | Beschreibung  |  
+| ------------- |:-------------:|
+| Test          | Test          |
+| col 2 is      | centered      |
+| zebra stripes | are neat      |
 
 
 # Daten importieren
@@ -115,18 +137,6 @@ no_rows<-nrow(Mobility_report)
 
 Die Mobilitätsdaten bestehen aus `r no_cols` Spalten und `r no_rows` Zeilen.
 
-```{r}
-mobility_names <- names(Mobility_report)
-#mobility_names
-```
-
-Die Spaltennamen sind `r mobility_names`.
-
-| Variable      | Beschreibung  |  
-| ------------- |:-------------:|
-| Test          | Test          |
-| col 2 is      | centered      |
-| zebra stripes | are neat      |
 
 ```{r}
 #is.na(Mobility_report)
@@ -269,7 +279,6 @@ Vaccine_report %>%
   slice(1:10)
 ```
 
-
 # Datenbereinigung und Vorbereitung
 
 Die Datenqualität ist der wichtigste Aspekt zur optimalen und fehlerfreien Auswertung der Daten. 
@@ -367,7 +376,7 @@ glimpse(Vaccine_report)
 ```
 
 
-## Combine the two data frames
+## Zusammenführung der Datensätze
 
 ```{r}
 Mobility_vaccine <- merge(Vaccine_report, mobility_germany, by.x=c("date", "Bundesland"), by.y=c("date", "sub_region"))
@@ -377,4 +386,4 @@ write.csv(Mobility_vaccine, "../Website/Daten_Output/Mobility_vaccine.csv")
 ```
 
 
-
+# Analyse der Daten

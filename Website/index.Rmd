@@ -1,7 +1,43 @@
 ---
-title: "Projekt zur Verbesserung der Imfquote"
+title: "Projekt zur Verbesserung der Impfquote"
 ---
 
-Hier kommt die allgemeine beschreibung des Projektes/Unternehmens hin, sowie eine allgemeine beschreibung des Vorgehens.
 
+<img src="files/Impfbild.jpeg" style="width:85%">
+
+
+***
+
+> "Am 28. Oktober 2021 wurden in Deutschland 232 Tsd. Impfpfdosen verabreicht. Damit sind nun mindestens 55,4 Mio. Personen (66,6% der Gesamtbevölkerung) vollständig geimpft. Insgesamt haben mindestens 57,7 Mio. Personen (69,3%) eine oder mehrere Impfdosen erhalten."
+Impfdashboard.de
+
+
+
+***
+
+
+
+
+Die ersten Anzeichen einer neuartigen Krankheit traten Ende 2019 in China auf. Diese unbekannte 
+Lungenkrankheit breitete sich in wenigen Monaten zu einer weltweiten Pandemie aus. Am 7. Januar 
+2020 meldeten die chinesischen Behörden, den Erreger als das neuartige Coronavirus (SARS-CoV-2) 
+identifiziert zu haben. Das öffentliche Leben kam durch die Maßnahmen zur Eindämmung der Pandemie
+ab Mitte März weitgehend zum Erliegen. Es wurden zeitweise Geschäfte, Schulen und Universitäten 
+sowie Arbeitsstätten und Kultureinrichtungen geschlossen. Kontakte wurden im privaten Raum auf ein 
+Minimum reduziert. Diese Maßnahmen zeigten auch Wirkung. Während die Infektionszahlen über die 
+Sommermonate zurückgingen, stiegen die Zahlen im Herbst/Winter 2020 wieder rasant an (Statistisches 
+Bundesamt, 2021). Weitere bundesweite Beschränkungen wie der „Light-Lockdown“ ab dem 
+2.November und der „Harte-Lockdown“ ab dem 16. Dezember folgten. 
+
+Die Beschränkungen zur Eindämmung der Pandemie wirken sich auf das Mobilitätsverhalten der Bevölkerung aus. Schnell wurde an möglichen Lösungen zur Eindämmung des Covid Virus gearbeitet. Viele Impfunternehmen fingen an Impfstoffe zur Eindämmung der Pandemie zu entwickeln. Endlich, Anfang 2021, wurden diese Impfstoffe freigegeben. Die kurze Zeit der Entwicklung des Impfstoffes machen auch vielen Menschen Angst. Deshalb hat sich der Verlauf der Anzahl an verabreichten Impfungen langsamer entwickelt als ursprünglich erwartet.
+
+Um die Regierung bei dieser Mammutsaufgabe zu unterstützen haben wir an einer Lösung für mehr Transparenz gearbeitet.
+
+***
+
+Das folgende Projekt besteht aus drei Themenblöcken:
+
+* __Datenintegration__
+* __Datenanalyse__
+* __Datenvisualisierung__
 
