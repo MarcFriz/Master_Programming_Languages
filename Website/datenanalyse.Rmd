@@ -27,6 +27,7 @@ Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben
 ```{r import packages}
 library(tidyverse)
 library(ggplot2)
+library(rvest)
 ```
 
 # Konzept
@@ -36,8 +37,7 @@ library(ggplot2)
 
 # Datenbeschaffung und Beschreibung
 
-Für das Projekt werden zwei Datensätze aus unterschiedlichen Datenquellen herangezogen. Im 
-folgenden Abschnitt werden diese Datensätze und ihre Eigenschaften genauer beschrieben.
+Für das Projekt werden zwei Datensätze aus unterschiedlichen Datenquellen herangezogen. Im folgenden Abschnitt werden diese Datensätze und ihre Eigenschaften genauer beschrieben.
 
 ## Mobilitätsdaten (Datensatz 1) 
 
@@ -58,7 +58,7 @@ unter dem folgenden [Link](https://www.google.com/covid19/mobility/?hl=de) zur V
 | Variable            | Beschreibung    |  
 | ------------------- |:---------------:|
 |Country region code  |ISO Code         |
-|Country region        |Land             |
+|Country region       |Land             |
 |sub_region_1         |Bundesland       |
 |sub_region_2         |Bundesland Zusatz|
 |metro_area           |Keine Einträge|
@@ -84,50 +84,157 @@ unter dem folgenden [Link](https://github.com/robert-koch-institut/COVID-19-Impf
 
 | Variable      | Beschreibung  |  
 | ------------- |:-------------:|
-| Test          | Test          |
-| col 2 is      | centered      |
-| zebra stripes | are neat      |
+| Impfdatum     | Impfdatum|
+| BundeslandID_Impfort| ID 1-16|
+| Impfstoff| Name Impfstoff|
+| Impfserie|Serie der Impfung|
+| Anzahl|Anzahl Geimpfte Personen|
 
 ## Bundesland_ID (Anreicherung der Daten)
+
+Da in dem Datensatz der Mobilitätsdaten das Bundesland gegeben ist und in dem Datensatz der Impfdaten lediglich die Bundesland ID gegeben ist, wird zur Zusammenführung dieser beider Datensätze eine Anreicherung der Daten benötigt. Diese Anreicherung ist die Zuordnung der ID zum Bundesland. Die Daten stehen unter dem folgenden Link zur Verfügung: [Link]().
+
+
+### Datenbeschaffung / Webscraping
+
+```{r}
+url = "https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel"
+```
+
+```{r}
+#scraping <- url %>%
+#  read_html() %>%
+#  html_node(xpath = '//*[@id="mw-content-text"]/div[1]/table/tbody/tr/td[1]/table') %>%
+#  html_table(fill = TRUE)
+```
+
+
+```{r}
+#scraping <- scraping %>%
+#    as_tibble()
+```
+
+```{r}
+#scraping <- 
+#    scraping %>%
+#    rename(
+#      ID = "#",
+#      Bundesland = "Land"
+#    )
+```
+
+
+```{r}
+#write_csv(scraping,"../Website/Daten_Input/Mapping.csv")
+```
+
 
 ### Beschreibung der Variablen
 
 | Variable      | Beschreibung  |  
 | ------------- |:-------------:|
-| Test          | Test          |
-| col 2 is      | centered      |
-| zebra stripes | are neat      |
+| ID            |ID 1-16        |
+| Bundesland    |Name Bundesland|
 
+
+## Bevölkerung
+
+### Beschreibung der Variablen
+
+| Variable      | Beschreibung  |  
+| ------------- |:-------------:|
+| ID            |ID 1-16        |
+| Bundesland    |Name Bundesland|
+
+### Datenbeschaffung / Webscraping
+
+```{r}
+url_second = "https://de.wikipedia.org/wiki/Liste_der_deutschen_Bundesl%C3%A4nder_nach_Bev%C3%B6lkerung"
+```
+
+```{r include=FALSE}
+#scraping_second <- url_second %>%
+#  read_html() %>%
+#  html_node(xpath = '//*[@id="mw-content-text"]/div[1]/table/thead') %>%
+#  html_table(fill = TRUE)
+```
+
+
+```{r include=FALSE}
+#scraping_second <- scraping_second %>%
+#      as_tibble()
+```
+
+```{r include=FALSE}
+#scraping_second <- 
+#   scraping_second %>%
+#   rename(
+#      ID = "#",
+#      Bundesland = "Land"
+#     )
+```
+
+
+```{r}
+#write_csv(scraping_second,"../Website/Daten_Input/Bundesland_Einwohner.csv")
+```
+
+```{r}
+anzahl <- read.csv("../Website/Daten_Input/Bundesland_Einwohner.csv", sep = ",")
+```
+
+```{r}
+anzahl <- anzahl %>% 
+          rename(Einwohner_2020 = "Einwohner",
+                 Bundesland = "Bundesland...Jahr") %>%
+          select(Einwohner_2020, Bundesland)
+```
+
+```{r}
+anzahl <- anzahl[-1,]
+```
+
+```{r}
+anzahl$Bundesland <- gsub('Ã¼', 'ü', anzahl$Bundesland)
+anzahl$Bundesland <- gsub('Â', '/', anzahl$Bundesland)
+```
+
+```{r}
+anzahl <- anzahl %>% 
+          separate(Bundesland, into=c('Bundesland', 'Bundesland2'), sep = '/', extra = "merge") %>% 
+          select(Einwohner_2020, Bundesland) %>% 
+          mutate_all(funs(gsub("\\.","",.)))
+```
 
 # Daten importieren
 
 ## Mobilitätsdaten
 ```{r import data}
 
-Mobility_report <- read.csv("../Website/Daten_Input/Global_Mobility_Report.csv")
+mobility_report <- read.csv("../Website/Daten_Input/Global_Mobility_Report.csv")
 ```
 
 ## Impfdaten
 ```{r}
-Vaccine_report <-  read.csv("../Website/Daten_Input/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv")
-#Vaccine_report
+vaccine_report <-  read.csv("../Website/Daten_Input/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv")
 ```
 
 ## Bundesland_ID
 
 ```{r}
-ID <- read.csv("../Website/Daten_Input/Bundesland.csv", sep = ";")
-```
+id <- read.csv("../Website/Daten_Input/Mapping.csv", sep = ",")
+ ```
 
 ```{r}
-Vaccine <- read.csv("../Website/Daten_Input/germany_vaccinations_by_state.tsv", sep = '\t', header = TRUE)
+vaccine <- read.csv("../Website/Daten_Input/germany_vaccinations_by_state.tsv", sep = '\t', header = TRUE)
 #Vaccine
 ```
 
 ```{r}
-Vaccine_Zeitreihe <- read.csv("../Website/Daten_Input/germany_vaccinations_timeseries_v2.tsv", sep = '\t', header = TRUE)
+vaccine_Zeitreihe <- read.csv("../Website/Daten_Input/germany_vaccinations_timeseries_v2.tsv", sep = '\t', header = TRUE)
 #Vaccine_Zeitreihe
 ```
+
 
 
 # Datenexploration
@@ -234,59 +341,59 @@ ggplot(Mobility_report %>% filter(country_region == "Yemen" | country_region == 
 
 
 ```{r}
-glimpse(Vaccine_report)
+glimpse(vaccine_report)
 ```
 
 ```{r}
-names(Vaccine_report)
+names(vaccine_report)
 ```
 
 
 ```{r}
-no_rows_vaccine<-nrow(Vaccine_report)
+no_rows_vaccine<-nrow(vaccine_report)
 #no_rows
 ```
 
 ```{r}
-no_cols_vaccine<- ncol(Vaccine_report)
+no_cols_vaccine<- ncol(vaccine_report)
 #no_cols
 ```
 
 Die Impfdaten bestehen aus `r no_cols_vaccine` Spalten und `r no_rows_vaccine` Zeilen. Der Datensatz enthält Informationen über das Impfdatum, das Bundesland in welchem die Impfung verabreicht wurde, den geimpften Impfstoff und die Serie aus welcher der Impfstoff vorliegt und die Anzahl der verabreichten Impfdosen.
 
 ```{r}
-Vaccine_report %>% 
+vaccine_report %>% 
   select(Impfdatum) %>% 
   summarise(max = max(Impfdatum, na.rm = TRUE), min = min(Impfdatum, na.rm = TRUE)) 
 ```
 
 
 ```{r}
-Vaccine_report %>% 
+vaccine_report %>% 
   count(BundeslandId_Impfort) 
 ```
 
 ```{r}
-Vaccine_report %>% 
+vaccine_report %>% 
   count(Impfstoff)
 ```
 
 ```{r}
-Vaccine_report %>% 
+vaccine_report %>% 
   select(Impfdatum, Anzahl) %>% 
   arrange((Anzahl)) %>% 
     top_n(5)
 ```
 
 ```{r}
-Vaccine_report %>% 
+vaccine_report %>% 
   select(Anzahl, Impfdatum, BundeslandId_Impfort) %>% 
   arrange(desc(Anzahl)) %>% 
   slice(1:10)
 ```
 
 ```{r}
-Vaccine_report %>% 
+vaccine_report %>% 
   select(Anzahl, Impfdatum, BundeslandId_Impfort) %>%
   arrange((Anzahl)) %>% 
   slice(1:10)
@@ -351,52 +458,49 @@ mobility_germany <- mobility_germany %>%
 ## Vaccine_report
 
 ```{r}
-Vaccine_report <- Vaccine_report %>% 
+vaccine_report <- vaccine_report %>% 
               rename(date = "Impfdatum")
 ```
 
 ```{r}
-names(Vaccine_report)
+names(vaccine_report)
 ```
 
 
 ```{r}
-Vaccine_report <- Vaccine_report %>% 
+vaccine_report <- vaccine_report %>% 
                   rename(ID = "BundeslandId_Impfort")
 ```
 
 ```{r}
-ID$Bundesland <- gsub('Ã¼', 'ü', ID$Bundesland)
+id$Bundesland <- gsub('Ã¼', 'ü', id$Bundesland)
 ```
 
 ```{r}
-names(ID)
-```
-
-
-```{r Prepare for left_join to identify link between subregion and ID}
-ID <- ID %>% 
-        rename(ID = "ï..ID")
+names(id)
 ```
 
 
 ```{r}
-Vaccine_report <- left_join(Vaccine_report, ID, by = c("ID"))
+vaccine_report <- left_join(vaccine_report, id, by = c("ID"))
 ```
+
+
+
 
 ```{r überprüfung}
-glimpse(Vaccine_report)
+glimpse(vaccine_report)
 ```
 
 
 ## Zusammenführung der Datensätze
 
 ```{r}
-Mobility_vaccine <- merge(Vaccine_report, mobility_germany, by.x=c("date", "Bundesland"), by.y=c("date", "sub_region"))
-
-write.csv(Mobility_vaccine, "../Website/Daten_Output/Mobility_vaccine.csv")
-
+mobility_vaccine <- merge(vaccine_report, mobility_germany, by.x=c("date", "Bundesland"), by.y=c("date", "sub_region"))
 ```
 
+```{r}
+write.csv(mobility_vaccine, "../Website/Daten_Output/Mobility_vaccine.csv")
+```
 
 # Analyse der Daten
