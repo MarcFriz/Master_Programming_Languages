@@ -1,10 +1,18 @@
 ---
 title: "Projekt zur Verbesserung der Impfquote"
 author: "Marc Friz & Nadja Herrmann"
+date: "16 10 2021"
+output:
+ html_document:
+  fig_height: 8
+  fig_width: 12
+  highlight: pygments
+  number_sections: no
+  theme: paper
 ---
 
 
-<img src="files/Impfbild.jpeg" style="width:85%">
+<img src="files/Impfbild.jpeg" style="width:100%">
 
 
 ***
