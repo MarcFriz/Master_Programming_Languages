@@ -1,12 +1,11 @@
 ---
-title: "R-Project Test"
+title: "Datenintegration & Datenanalyse"
 author: "Nadja Herrmann"
-date: "16 10 2021"
 output:
  html_document:
   fig_height: 8
   fig_width: 12
-  highlight: pygments
+  highlight: tango
   number_sections: yes
   theme: paper
   toc: yes
@@ -20,24 +19,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Einleitung {.sidebar}
 
-Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben, für die weitere Verarbeitung vorbereitet sowie bereinigt. Im zweiten Teil werden die Daten analysiert.
+Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben und für die weitere Verarbeitung vorbereitet sowie bereinigt. Im zweiten Teil werden die Daten analysiert. Für das Projekt werden zwei Hauptdatensätze aus unterschiedlichen Datenquellen herangezogen. Der eine Datensatz spiegelt das Mobilitätsaufkommen der Bevölkerung während Covid wider und der zweite Datensatz zeigt das Impfverhalten der Deutschen.
 
-# Notwendige Pakete laden
+# Konzeptionelles Vorgehen
 
-```{r import packages}
-library(tidyverse)
-library(ggplot2)
-library(rvest)
-```
+Das Ziel dieses Projekts ist es die Daten zu analysieren sowie ein Dashboard zum Monitoring für das Impfen zu erstellen. Das Vorgehen ist wie in der Abbildung 1 beschrieben. Die Daten liegen in unterschiedlichen Quellen zur Verfügung. Google stellt die Mobilitätsdaten als .csv bereit. Die Impfdaten werden von dem Projekt "Digitales Impfquoten-Monitoring" (DIM) in GitHub zur Verfügung gestellt und stehen somit auch als .csv zur Verfügung.
 
-# Konzept
+Um mit den Daten arbeiten zu können, müssen diese im weiteren Vorgehen zusammengeführt werden. Hierzu benötigt es weitere Daten. Diese Daten werden von unterschiedlichen Wikipedia Seiten gescraped. Sobald alle Daten vorliegen werden diese in das Notebook geladen, überprüft und zur weiteren Verarbeitung bereinigt und vorbereitet.
 
 <img src="files/Input_R.png" style="width:85%">
 
+# Notwendige Pakete laden
+
+Die folgenden Pakete werden für dieses Notebook benötigt:
+
+```{r import packages, message=FALSE}
+library(tidyverse)
+library(ggplot2) #Visualisierung
+library(rvest) #Web scraping
+library(robotstxt)
+```
 
 # Datenbeschaffung und Beschreibung
-
-Für das Projekt werden zwei Datensätze aus unterschiedlichen Datenquellen herangezogen. Im folgenden Abschnitt werden diese Datensätze und ihre Eigenschaften genauer beschrieben.
 
 ## Mobilitätsdaten (Datensatz 1) 
 
@@ -77,7 +80,7 @@ unter dem folgenden [Link](https://www.google.com/covid19/mobility/?hl=de) zur V
 
 Die COVID-19-Impfung kann einen Wendepunkt in der Kontrolle der COVID-19-Pandemie darstellen und erfährt daher hohes Maß an öffentlicher Aufmerksamkeit. Einführung und Umsetzung der COVID-19-Impfung gehen mit besonderen Herausforderungen einher, die bei der Impfdatenerfassung zu berücksichtigen sind.
 
-In diesem Kontext ist es Ziel des Projekts "Digitales Impfquoten-Monitoring" (DIM), tagesaktuell und bundesweit die Impfquote zu erfassen und folgend aufbereitet darzustellen. Die Daten stehen 
+In diesem Kontext ist es Ziel des Projekts "Digitales Impfquoten-Monitoring" (DIM), tagesaktuell und bundesweit die Impfquote zu erfassen und aufbereitet darzustellen. Die Daten stehen 
 unter dem folgenden [Link](https://github.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland) zur Verfügung.
 
 ### Beschreibung der Variablen
@@ -92,42 +95,65 @@ unter dem folgenden [Link](https://github.com/robert-koch-institut/COVID-19-Impf
 
 ## Bundesland_ID (Anreicherung der Daten)
 
-Da in dem Datensatz der Mobilitätsdaten das Bundesland gegeben ist und in dem Datensatz der Impfdaten lediglich die Bundesland ID gegeben ist, wird zur Zusammenführung dieser beider Datensätze eine Anreicherung der Daten benötigt. Diese Anreicherung ist die Zuordnung der ID zum Bundesland. Die Daten stehen unter dem folgenden Link zur Verfügung: [Link]().
+Da in dem Datensatz der Mobilitätsdaten das Bundesland gegeben ist und in dem Datensatz der Impfdaten lediglich die Bundesland ID gegeben ist, wird zur Zusammenführung dieser beider Datensätze eine Anreicherung der Daten benötigt. Diese Anreicherung ist die Zuordnung der ID zum Bundesland. Die Daten stehen unter dem folgenden Link zur Verfügung: [Link](https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel).
+
+### Beschreibung der Variablen
+
+| Variable      | Beschreibung  |  
+| ------------- |:-------------:|
+| ID            |ID 1-16        |
+| Bundesland    |Name Bundesland|
 
 
-### Datenbeschaffung / Webscraping
+### Webscraping Länderschlüssel
 
-```{r}
+In diesem Abschnitt wird die **Bundesland ID** mit Hilfe von Webscraping aus **Wikipedia** extrahiert. Es gibt eine eigene Wikipediaseite für amtliche Gemeindeschlüssel. Hier befindet sich in der ersten Tabelle die aktuellen Länderschlüssel mit den jeweiligen Bundesländern (Abbildung 2).
+
+<img src="files/Wikipedia_1.png" style="width:100%">
+Abbildung 2: Amtliche Länderschlüssel, Wikipedia 2021
+
+Zuerst wird mit der Funktion paths_allowed überprüft ob Informationen der Seite gescraped werden dürfen.
+
+```{r, message=FALSE}
+paths_allowed("de.wikipedia.org")
+```
+
+Der nächste Schritt ist die Zuweisung der URL.
+
+```{r , message=FALSE}
 url = "https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel"
 ```
 
-```{r}
-#scraping <- url %>%
-#  read_html() %>%
-#  html_node(xpath = '//*[@id="mw-content-text"]/div[1]/table/tbody/tr/td[1]/table') %>%
-#  html_table(fill = TRUE)
+Im weiteren Vorgehen wird die Extraktionsfunktion definiert, der gescrapte Inhalt als tibble abgelegt und entsprechend der Variablennamen vorbereitet.
+```{r , message=FALSE}
+scraping <- url %>%
+  read_html() %>%
+  html_node(xpath = '//*[@id="mw-content-text"]/div[1]/table/tbody/tr/td[1]/table') %>%
+  html_table(fill = TRUE)
+```
+
+```{r , message=FALSE}
+scraping <- scraping %>%
+    as_tibble()
+```
+
+```{r, message=FALSE}
+scraping <- 
+    scraping %>%
+    rename(
+    ID = "#",
+    Bundesland = "Land"
+    )
+```
+
+Die Tabelle wird als .csv für die weitere Verarbeitung abgelegt.
+
+```{r , message=FALSE}
+write_csv(scraping,"../Website/Daten_Input/Mapping.csv")
 ```
 
 
-```{r}
-#scraping <- scraping %>%
-#    as_tibble()
-```
-
-```{r}
-#scraping <- 
-#    scraping %>%
-#    rename(
-#      ID = "#",
-#      Bundesland = "Land"
-#    )
-```
-
-
-```{r}
-#write_csv(scraping,"../Website/Daten_Input/Mapping.csv")
-```
-
+## Anzahl Einwohner pro Bundesland (Anreicherung der Daten)
 
 ### Beschreibung der Variablen
 
@@ -136,23 +162,19 @@ url = "https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel"
 | ID            |ID 1-16        |
 | Bundesland    |Name Bundesland|
 
+### Webscraping
 
-## Bevölkerung
+In diesem Abschnitt wird die **Anzahl der Einwohner pro Bundesland** mit Hilfe von Webscraping aus **Wikipedia** extrahiert. Es gibt eine eigene Wikipediaseite für die Bevölkerungszahlen. Hier befindet sich eine Tabelle welche die Einwohnerzahlen pro Bundesland abbildet (Abbildung 3). Die für uns interessanten Daten sind lediglich die aktuellsten Bevölerungszahlen sowie die Zuordnung zu den Bundesländern. Deshalb wird im weiteren Verlauf das Crawling sowie die entsprechende Datenbereinigung beschrieben.
 
-### Beschreibung der Variablen
+<img src="files/Wikipedia_2.png" style="width:100%">
+Abbildung 3: Bevölerungszahlen, Wikipedia 2021
 
-| Variable      | Beschreibung  |  
-| ------------- |:-------------:|
-| ID            |ID 1-16        |
-| Bundesland    |Name Bundesland|
 
-### Datenbeschaffung / Webscraping
-
-```{r}
+```{r , message=FALSE}
 url_second = "https://de.wikipedia.org/wiki/Liste_der_deutschen_Bundesl%C3%A4nder_nach_Bev%C3%B6lkerung"
 ```
 
-```{r include=FALSE}
+```{r , message=FALSE}
 #scraping_second <- url_second %>%
 #  read_html() %>%
 #  html_node(xpath = '//*[@id="mw-content-text"]/div[1]/table/thead') %>%
@@ -160,12 +182,12 @@ url_second = "https://de.wikipedia.org/wiki/Liste_der_deutschen_Bundesl%C3%A4nde
 ```
 
 
-```{r include=FALSE}
+```{r, message=FALSE}
 #scraping_second <- scraping_second %>%
 #      as_tibble()
 ```
 
-```{r include=FALSE}
+```{r, message=FALSE}
 #scraping_second <- 
 #   scraping_second %>%
 #   rename(
@@ -174,8 +196,7 @@ url_second = "https://de.wikipedia.org/wiki/Liste_der_deutschen_Bundesl%C3%A4nde
 #     )
 ```
 
-
-```{r}
+```{r, message=FALSE}
 #write_csv(scraping_second,"../Website/Daten_Input/Bundesland_Einwohner.csv")
 ```
 
@@ -223,7 +244,8 @@ vaccine_report <-  read.csv("../Website/Daten_Input/Aktuell_Deutschland_Bundesla
 
 ```{r}
 id <- read.csv("../Website/Daten_Input/Mapping.csv", sep = ",")
- ```
+```
+
 
 ```{r}
 vaccine <- read.csv("../Website/Daten_Input/germany_vaccinations_by_state.tsv", sep = '\t', header = TRUE)

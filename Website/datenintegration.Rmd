@@ -1,0 +1,503 @@
+---
+title: "R-Project Test"
+author: "Nadja Herrmann"
+date: "16 10 2021"
+output:
+ html_document:
+  fig_height: 8
+  fig_width: 12
+  highlight: tango
+  number_sections: yes
+  theme: paper
+  toc: yes
+  toc_float: true
+  toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Einleitung {.sidebar}
+
+Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben, für die weitere Verarbeitung vorbereitet sowie bereinigt. Im zweiten Teil werden die Daten analysiert.
+
+# Notwendige Pakete laden
+
+```{r import packages}
+library(tidyverse)
+library(ggplot2)
+library(rvest)
+```
+
+# Konzept
+
+<img src="files/Input_R.png" style="width:85%">
+
+
+# Datenbeschaffung und Beschreibung
+
+Für das Projekt werden zwei Datensätze aus unterschiedlichen Datenquellen herangezogen. Im folgenden Abschnitt werden diese Datensätze und ihre Eigenschaften genauer beschrieben.
+
+## Mobilitätsdaten (Datensatz 1) 
+
+Google liefert mit dem Datensatz „Mobilitätsbericht“ Informationen dazu, was sich durch die Regelungen 
+zur Bekämpfung der Coronakrise hinsichtlich dem Mobilitätsaufkommen geändert hat. In den 
+Mobilitätsberichten werden Bewegungstrends nach Region (Bundesland) für verschiedene Kategorien 
+dargestellt. Sie zeigen Änderungen für jede Kategorie in einer Region auf. Es wird die Mobilität am Tag 
+des Berichts mit der des Referenztags verglichen und die Veränderung wird in Prozent aufgezeigt. Ein 
+Referenztag repräsentiert einen normalen Wert für den entsprechenden Wochentag. Der Referenztag 
+ist der Medianwert der fünf Wochen vom 3. Januar bis 6. Februar 2020.
+Alle Mobilitätsberichte sind nach Orten aufgeschlüsselt und zeigen, wie sich die Zahl der Besuche an 
+Orten wie zum Beispiel Lebensmittelgeschäften und Parks verändert hat. Die Daten von Google stehen 
+unter dem folgenden [Link](https://www.google.com/covid19/mobility/?hl=de) zur Verfügung.
+
+### Beschreibung der Variablen
+
+
+| Variable            | Beschreibung    |  
+| ------------------- |:---------------:|
+|Country region code  |ISO Code         |
+|Country region       |Land             |
+|sub_region_1         |Bundesland       |
+|sub_region_2         |Bundesland Zusatz|
+|metro_area           |Keine Einträge|
+|iso_3166_2_code      |Keine Einträge|
+|census_fips_code     |Keine Einträge|
+|place_id             |tbd|
+|date                 |Datum|
+|retail_and_recreation|Einzelhandel und Erholung|
+|grocery_and_pharmacy|Lebensmittel und Apotheken|
+|parks | Park (z.B.: Öffentlicher Park, Schloss, Waldgebiete|
+|transit_stations |Transitstationen|
+|workplaces |Arbeitsstätten|
+|residential |Haus und Wohnungen|
+
+## Impfdaten (Datensatz 2)
+
+Die COVID-19-Impfung kann einen Wendepunkt in der Kontrolle der COVID-19-Pandemie darstellen und erfährt daher hohes Maß an öffentlicher Aufmerksamkeit. Einführung und Umsetzung der COVID-19-Impfung gehen mit besonderen Herausforderungen einher, die bei der Impfdatenerfassung zu berücksichtigen sind.
+
+In diesem Kontext ist es Ziel des Projekts "Digitales Impfquoten-Monitoring" (DIM), tagesaktuell und bundesweit die Impfquote zu erfassen und folgend aufbereitet darzustellen. Die Daten stehen 
+unter dem folgenden [Link](https://github.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland) zur Verfügung.
+
+### Beschreibung der Variablen
+
+| Variable      | Beschreibung  |  
+| ------------- |:-------------:|
+| Impfdatum     | Impfdatum|
+| BundeslandID_Impfort| ID 1-16|
+| Impfstoff| Name Impfstoff|
+| Impfserie|Serie der Impfung|
+| Anzahl|Anzahl Geimpfte Personen|
+
+## Bundesland_ID (Anreicherung der Daten)
+
+Da in dem Datensatz der Mobilitätsdaten das Bundesland gegeben ist und in dem Datensatz der Impfdaten lediglich die Bundesland ID gegeben ist, wird zur Zusammenführung dieser beider Datensätze eine Anreicherung der Daten benötigt. Diese Anreicherung ist die Zuordnung der ID zum Bundesland. Die Daten stehen unter dem folgenden Link zur Verfügung: [Link]().
+
+
+### Datenbeschaffung / Webscraping
+
+```{r}
+url = "https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel"
+```
+
+```{r}
+#scraping <- url %>%
+#  read_html() %>%
+#  html_node(xpath = '//*[@id="mw-content-text"]/div[1]/table/tbody/tr/td[1]/table') %>%
+#  html_table(fill = TRUE)
+```
+
+
+```{r}
+#scraping <- scraping %>%
+#    as_tibble()
+```
+
+```{r}
+#scraping <- 
+#    scraping %>%
+#    rename(
+#      ID = "#",
+#      Bundesland = "Land"
+#    )
+```
+
+
+```{r}
+#write_csv(scraping,"../Website/Daten_Input/Mapping.csv")
+```
+
+
+### Beschreibung der Variablen
+
+| Variable      | Beschreibung  |  
+| ------------- |:-------------:|
+| ID            |ID 1-16        |
+| Bundesland    |Name Bundesland|
+
+
+## Bevölkerung
+
+### Beschreibung der Variablen
+
+| Variable      | Beschreibung  |  
+| ------------- |:-------------:|
+| ID            |ID 1-16        |
+| Bundesland    |Name Bundesland|
+
+### Datenbeschaffung / Webscraping
+
+```{r}
+url_second = "https://de.wikipedia.org/wiki/Liste_der_deutschen_Bundesl%C3%A4nder_nach_Bev%C3%B6lkerung"
+```
+
+```{r include=FALSE}
+#scraping_second <- url_second %>%
+#  read_html() %>%
+#  html_node(xpath = '//*[@id="mw-content-text"]/div[1]/table/thead') %>%
+#  html_table(fill = TRUE)
+```
+
+
+```{r include=FALSE}
+#scraping_second <- scraping_second %>%
+#      as_tibble()
+```
+
+```{r include=FALSE}
+#scraping_second <- 
+#   scraping_second %>%
+#   rename(
+#      ID = "#",
+#      Bundesland = "Land"
+#     )
+```
+
+
+```{r}
+#write_csv(scraping_second,"../Website/Daten_Input/Bundesland_Einwohner.csv")
+```
+
+```{r}
+anzahl <- read.csv("../Website/Daten_Input/Bundesland_Einwohner.csv", sep = ",")
+```
+
+```{r}
+anzahl <- anzahl %>% 
+          rename(Einwohner_2020 = "Einwohner",
+                 Bundesland = "Bundesland...Jahr") %>%
+          select(Einwohner_2020, Bundesland)
+```
+
+```{r}
+anzahl <- anzahl[-1,]
+```
+
+```{r}
+anzahl$Bundesland <- gsub('Ã¼', 'ü', anzahl$Bundesland)
+anzahl$Bundesland <- gsub('Â', '/', anzahl$Bundesland)
+```
+
+```{r}
+anzahl <- anzahl %>% 
+          separate(Bundesland, into=c('Bundesland', 'Bundesland2'), sep = '/', extra = "merge") %>% 
+          select(Einwohner_2020, Bundesland) %>% 
+          mutate_all(funs(gsub("\\.","",.)))
+```
+
+# Daten importieren
+
+## Mobilitätsdaten
+```{r import data}
+
+mobility_report <- read.csv("../Website/Daten_Input/Global_Mobility_Report.csv")
+```
+
+## Impfdaten
+```{r}
+vaccine_report <-  read.csv("../Website/Daten_Input/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv")
+```
+
+## Bundesland_ID
+
+```{r}
+id <- read.csv("../Website/Daten_Input/Mapping.csv", sep = ",")
+ ```
+
+```{r}
+vaccine <- read.csv("../Website/Daten_Input/germany_vaccinations_by_state.tsv", sep = '\t', header = TRUE)
+#Vaccine
+```
+
+```{r}
+vaccine_Zeitreihe <- read.csv("../Website/Daten_Input/germany_vaccinations_timeseries_v2.tsv", sep = '\t', header = TRUE)
+#Vaccine_Zeitreihe
+```
+
+
+
+# Datenexploration
+
+## Mobility_report
+
+```{r}
+glimpse(mobility_report)
+```
+
+```{r}
+no_cols<- ncol(mobility_report)
+#no_cols
+```
+
+```{r}
+no_rows<-nrow(mobility_report)
+#no_rows
+```
+
+Die Mobilitätsdaten bestehen aus `r no_cols` Spalten und `r no_rows` Zeilen.
+
+
+```{r}
+#is.na(mobility_report)
+```
+
+```{r}
+mobility_report %>% 
+  select(date) %>% 
+  summarise(max = max(date, na.rm = TRUE), min = min(date, na.rm = TRUE)) 
+```
+
+
+```{r}
+no_country <- mobility_report %>% 
+              count(country_region_code, sort = TRUE)
+##no_country
+```
+
+Es werden die Mobilitätsdaten von 135 Ländern in dem Datensatz betrachtet.
+
+```{r}
+top_country <- mobility_report %>% 
+              count(country_region, sort = TRUE) %>% 
+              slice(1:5)
+
+#top_country
+```
+
+Die Länder für die es am meisten Mobilitätsdaten gibt, also die meisten Tage aufgenommen wurden, sind USA, Brasilien, Indien, Türkei und Argentinien.
+
+```{r}
+mobility_report %>% 
+  group_by(country_region) %>% 
+  summarise(med=mean(retail_and_recreation_percent_change_from_baseline, na.rm = TRUE),
+            min=min(retail_and_recreation_percent_change_from_baseline, na.rm = TRUE),
+            max=max(retail_and_recreation_percent_change_from_baseline, na.rm = TRUE)) %>%
+  arrange(desc(med)) %>% 
+  slice(1:5)
+```
+
+Wird das Attribut "retail_and_recreation_percent_change_from_baseline" genauer betrachtet fällt auf, dass die Abweichung entgegen des Referenzwertes in den positiven Bereich sowie in den negativen Bereich in den Ländern Yemen, Libya, Niger, Afghanistan und Papua New Guinea sehr hoch ist. Das bedeutet, dass an bestimmten Tagen im Bereich Einzelhandel das Mobilitätsaufkommen sehr hoch entgegen des Referenzwertes oder sehr niedrig war.
+
+```{r}
+mobility_report %>% 
+  group_by(country_region) %>% 
+  summarise(med=mean(grocery_and_pharmacy_percent_change_from_baseline, na.rm = TRUE),
+            min=min(grocery_and_pharmacy_percent_change_from_baseline, na.rm = TRUE),
+            max=max(grocery_and_pharmacy_percent_change_from_baseline, na.rm = TRUE)) %>%
+  arrange(desc(med)) %>% 
+  slice(1:5)
+```
+
+Im Vergleich zu der Kategorie Einzelhandel und Freizeit ist in der Kategorie Lebensmittel und Apotheke die Verteilung für die Länder Libya, Mongolia, Ägypten, Burkina Faso und Yemen in den positiven Bereich höher. Bedeutet, dass das Mobilitätsaufkommen im Vergleich zum Referenzwert in den positiven Bereich stark abweicht und die Bewohner in dieser Kategorie trotz Corona vermehrt unterwegs waren.
+
+
+```{r}
+mobility_report %>% 
+  group_by(country_region) %>% 
+  summarise(med=mean(workplaces_percent_change_from_baseline, na.rm = TRUE),
+            min=min(workplaces_percent_change_from_baseline, na.rm = TRUE),
+            max=max(workplaces_percent_change_from_baseline, na.rm = TRUE)) %>%
+  arrange(desc(med)) %>% 
+  slice(1:5)
+```
+
+Ein anderes extrem ist bei der Kategorie Arbeitsstätte zu beobachten. Über den gesamten Betrachtungszeitraum scheint im Mittel die Anzahl der Besuche am Arbeitsplatz relativ gering bzw im negativen Bereich zu sein. Insbesondere in Burkina Faso scheint die Anzahl der Besuche zu Arbeitsstätten über den Betrachtungszeitraum hinweg einen negativen Trend zu haben.
++
+```{r}
+mobility_report %>%
+    select(date, workplaces_percent_change_from_baseline, country_region) %>%
+    arrange((workplaces_percent_change_from_baseline)) %>% 
+    top_n(5)
+```
+
+```{r}
+ggplot(mobility_report %>% filter(country_region == "Yemen" | country_region == "Libya"| country_region == "Niger"), 
+       aes(x = retail_and_recreation_percent_change_from_baseline)) + geom_histogram(binwidth = 25) + facet_wrap(~ country_region)
+```
+
+
+## Impfdaten
+
+
+```{r}
+glimpse(vaccine_report)
+```
+
+```{r}
+names(vaccine_report)
+```
+
+
+```{r}
+no_rows_vaccine<-nrow(vaccine_report)
+#no_rows
+```
+
+```{r}
+no_cols_vaccine<- ncol(vaccine_report)
+#no_cols
+```
+
+Die Impfdaten bestehen aus `r no_cols_vaccine` Spalten und `r no_rows_vaccine` Zeilen. Der Datensatz enthält Informationen über das Impfdatum, das Bundesland in welchem die Impfung verabreicht wurde, den geimpften Impfstoff und die Serie aus welcher der Impfstoff vorliegt und die Anzahl der verabreichten Impfdosen.
+
+```{r}
+vaccine_report %>% 
+  select(Impfdatum) %>% 
+  summarise(max = max(Impfdatum, na.rm = TRUE), min = min(Impfdatum, na.rm = TRUE)) 
+```
+
+
+```{r}
+vaccine_report %>% 
+  count(BundeslandId_Impfort) 
+```
+
+```{r}
+vaccine_report %>% 
+  count(Impfstoff)
+```
+
+```{r}
+vaccine_report %>% 
+  select(Impfdatum, Anzahl) %>% 
+  arrange((Anzahl)) %>% 
+    top_n(5)
+```
+
+```{r}
+vaccine_report %>% 
+  select(Anzahl, Impfdatum, BundeslandId_Impfort) %>% 
+  arrange(desc(Anzahl)) %>% 
+  slice(1:10)
+```
+
+```{r}
+vaccine_report %>% 
+  select(Anzahl, Impfdatum, BundeslandId_Impfort) %>%
+  arrange((Anzahl)) %>% 
+  slice(1:10)
+```
+
+# Datenbereinigung und Vorbereitung
+
+Die Datenqualität ist der wichtigste Aspekt zur optimalen und fehlerfreien Auswertung der Daten. 
+Aufgrund dessen wird eine Datenvorverarbeitung in Form einer Reduzierung der Datenmenge durch 
+das Eliminieren irrelevanter, fehlerhafter, doppelter, inkonsistenter, ungenauer als auch falsch 
+formatierter Daten durchgeführt. In den folgenden Kapiteln wird sowohl die Bereinigung der beiden 
+Datensätze als auch die Erstellung neuer, für die 
+Datenauswertung relevanter Tabellen, schrittweise erläutert.
+
+## Mobility_report
+
+
+```{r}
+mobility_germany <- mobility_report %>% 
+          filter(country_region_code %in% c("DE"))
+```
+
+
+```{r}
+excluded_vars <- c("sub_region_2", "metro_area", "census_fips_code", "place_id")
+
+mobility_germany <- select(mobility_germany, -excluded_vars)
+```
+
+```{r}
+is.na(mobility_germany)
+```
+
+```{r}
+mobility_germany %>% 
+  group_by(sub_region_1) %>%
+  count(sub_region_1)
+```
+
+```{r}
+mobility_germany$sub_region_1 <- gsub('Ã¼', 'ü', mobility_germany$sub_region_1)
+#mobility_germany
+```
+
+```{r}
+mobility_germany <- mobility_germany %>% 
+      filter(sub_region_1 != "")
+```
+
+```{r}
+mobility_germany <- mobility_germany %>% 
+      rename(sub_region = "sub_region_1",
+             iso_code = "iso_3166_2_code",
+             retail_and_recreation = "retail_and_recreation_percent_change_from_baseline",
+             grocery_and_pharmacy = "grocery_and_pharmacy_percent_change_from_baseline",
+             parks = "parks_percent_change_from_baseline",
+             transit_stations = "transit_stations_percent_change_from_baseline",
+             workplaces = "workplaces_percent_change_from_baseline",
+             residential = "residential_percent_change_from_baseline")
+```
+
+## Vaccine_report
+
+```{r}
+vaccine_report <- vaccine_report %>% 
+              rename(date = "Impfdatum")
+```
+
+```{r}
+names(vaccine_report)
+```
+
+
+```{r}
+vaccine_report <- vaccine_report %>% 
+                  rename(ID = "BundeslandId_Impfort")
+```
+
+```{r}
+id$Bundesland <- gsub('Ã¼', 'ü', id$Bundesland)
+```
+
+```{r}
+names(id)
+```
+
+
+```{r}
+vaccine_report <- left_join(vaccine_report, id, by = c("ID"))
+```
+
+```{r überprüfung}
+glimpse(vaccine_report)
+```
+
+
+## Zusammenführung der Datensätze
+
+```{r}
+mobility_vaccine <- merge(vaccine_report, mobility_germany, by.x=c("date", "Bundesland"), by.y=c("date", "sub_region"))
+```
+
+```{r}
+write.csv(mobility_vaccine, "../Website/Daten_Output/Mobility_vaccine.csv")
+```
+
+# Analyse der Daten
