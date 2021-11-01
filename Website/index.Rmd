@@ -47,6 +47,7 @@ Um die Regierung bei dieser Mammutsaufgabe zu unterstützen haben wir an einer L
 
 Das folgende Projekt besteht aus drei Themenblöcken:
 
+* __Planung__
 * __Datenintegration__
 * __Datenanalyse__
 * __Datenvisualisierung__
