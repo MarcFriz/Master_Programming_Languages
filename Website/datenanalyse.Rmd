@@ -39,7 +39,3 @@ library(ggplot2) #Visualisierung
 
 mobility_vaccine <- read.csv("../Website/Daten_Output/Mobility_vaccine.csv")
 ```
-
-
-
-

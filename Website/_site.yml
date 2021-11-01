@@ -1,6 +1,6 @@
 name: "my-studium"
 navbar:
-  title: "Impf Projekt"
+  title: "Programming Languages for DS (WS21/22)"
   left:
     - text: "Home"
       href: index.html
