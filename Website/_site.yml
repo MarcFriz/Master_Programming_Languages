@@ -1,10 +1,12 @@
 name: "my-studium"
 navbar:
-  title: "Master Studium Projekt"
+  title: "Impf Projekt"
   left:
     - text: "Home"
       href: index.html
     - text: "Plan"
       href: plan.html
+    - text: "Datenintegration"
+      href: datenintegration.html
     - text: "Datenanalyse"
       href: datenanalyse.html
