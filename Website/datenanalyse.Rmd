@@ -1,6 +1,7 @@
 ---
 title: "Datenanalyse"
 author: "Nadja Herrmann"
+runtime: shiny
 output:
  html_document:
   fig_height: 8
@@ -31,6 +32,8 @@ Die folgenden Pakete werden für dieses Notebook benötigt:
 ```{r import packages, message=FALSE}
 library(tidyverse)
 library(ggplot2) #Visualisierung
+library(plotly)
+library(shiny)
 ```
 
 # Daten importieren
@@ -39,3 +42,139 @@ library(ggplot2) #Visualisierung
 
 mobility_vaccine <- read.csv("../Website/Daten_Output/Mobility_vaccine.csv")
 ```
+
+```{r}
+glimpse(mobility_vaccine)
+```
+
+```{r}
+mobility_vaccine <- mobility_vaccine[,-1]
+```
+
+
+```{r}
+no_cols<- ncol(mobility_vaccine)
+```
+
+```{r}
+no_rows<- nrow(mobility_vaccine)
+```
+
+```{r, results=FALSE}
+is.na(mobility_vaccine)
+```
+
+Der finale Datensatz __mobility_vaccine__ besteht aus `r no_cols` Spalten und `r no_rows` Zeilen.
+
+```{r}
+mobility_vaccine %>% 
+    select(date) %>% 
+    summarise(max = max(date, na.rm = TRUE), min = min(date, na.rm = TRUE))
+```
+
+Der Zeitraum der Betrachtung der Daten ist ab dem 27.12.2020 bis zum 15.10.2021. Da in diesem Projekt das Mobilitätsaufkommen in Verbindung mit den Impffortschritten gebracht wird ist der Entfall der Mobilitätsdaten für den früheren Zeitraum in Ordnung.
+
+```{r}
+mobility_vaccine %>%
+  group_by(Impfstoff) %>%
+  summarise(
+    sum_anzahl = sum(Anzahl), 
+    min_anzahl = min(Anzahl),
+    mean_anzahl = mean(Anzahl)
+  )
+```
+
+```{r}
+ggplot(mobility_vaccine, aes(x = Anzahl)) + 
+  geom_histogram(binwith = 100000) +
+  labs(
+    x = "Anzahl Impfungen",
+    y = "Häufigkeit",
+    title = "Anzahl der Impfungen pro Impfstoff")+
+    facet_grid( ~ Impfstoff)
+```
+
+```{r}
+mobility_vaccine %>%
+    group_by(Bundesland) %>%
+    summarise(
+    sum_einwohner = mean(Einwohner_2020),
+    sum_impfungen = sum(Anzahl)) %>% 
+    summarise(gesamt_einwohner = sum(sum_einwohner),
+              gesamt_impfungen = sum(sum_impfungen))
+```
+
+
+```{r}
+mobility_vaccine %>%
+  distinct(Bundesland, Einwohner_2020)
+```
+
+
+```{r}
+mobility_vaccine %>%
+  distinct(Bundesland, Einwohner_2020) %>% 
+  summarise(
+    sum_einwohner = sum(Einwohner_2020))
+```
+
+```{r}
+mobility_vaccine %>%
+    select(date, Anzahl, Impfstoff) %>% 
+    group_by(Impfstoff)
+```
+
+```{r impfung_zeitlicher_verlauf}
+p<-mobility_vaccine %>% 
+  filter(date >= "2021-08-15" & date <="2021-10-15") %>%
+  group_by(Impfstoff) %>% 
+  ggplot(aes(date, Anzahl, colour = Impfstoff)) +
+            geom_line()+
+            theme(axis.text.x = element_text(angle = -90, vjust = 0.5, hjust=1))+
+            labs(color= "Impfstoff", title= "Anzahl Impfungen", subtitle = "Pro Impfstoff über den zeitlichen Verlauf",
+       x = "Datum", y = "Anzahl")
+
+ggplotly(p)
+```
+
+```{r}
+mobility_vaccine %>%
+    group_by(Bundesland) %>%
+    summarise(
+    sum_einwohner = mean(Einwohner_2020),
+    sum_impfungen = sum(Anzahl), 
+    min_anzahl = min(Anzahl),
+    mean_anzahl = mean(Anzahl)
+  )
+```
+
+```{r}
+mobility_vaccine %>%
+  summarise(
+    sum_impfungen = sum(Anzahl),
+    sum_einwohner = mean(Einwohner_2020),
+    min_anzahl = min(Anzahl),
+    mean_anzahl = mean(Anzahl)
+  )
+```
+
+```{r}
+mobility_vaccine %>%
+  group_by(Bundesland) %>%
+  summarise(
+    sum_impfungen = sum(Anzahl), 
+    min_anzahl = min(Anzahl),
+    mean_anzahl = mean(Anzahl)
+  )
+```
+
+
+
+x achse date
+y achse mobilitätsaufkommen
+verschiedene linien kategorie
+
+x achse date
+y achse impfungen
+
+anzahl impfung gesamt gegenüber einwohner pro bundesland
