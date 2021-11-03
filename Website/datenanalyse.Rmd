@@ -1,7 +1,7 @@
 ---
 title: "Datenanalyse"
 author: "Nadja Herrmann"
-runtime: shiny
+runtime: 
 output:
  html_document:
   fig_height: 8
@@ -33,7 +33,7 @@ Die folgenden Pakete werden für dieses Notebook benötigt:
 library(tidyverse)
 library(ggplot2) #Visualisierung
 library(plotly)
-library(shiny)
+library(scales)
 ```
 
 # Daten importieren
@@ -45,42 +45,50 @@ mobility_vaccine <- read.csv("../Website/Daten_Output/Mobility_vaccine.csv")
 
 # Daten beschreiben
 
-```{r}
+```{r describe_data}
 glimpse(mobility_vaccine)
 ```
 
-```{r}
+```{r delete_column_1}
 mobility_vaccine <- mobility_vaccine[,-1]
 ```
 
-```{r}
+```{r describe_column_number}
 no_cols<- ncol(mobility_vaccine)
 ```
 
-```{r}
+```{r describe_row_number}
 no_rows<- nrow(mobility_vaccine)
 ```
+
+Der finale Datensatz __mobility_vaccine__ besteht aus `r no_cols` Spalten und `r no_rows` Zeilen. Im nächsten Schritt wird geprüft ob der Datensatz fehlende Elemente besitzt.
 
 ```{r, results=FALSE}
 is.na(mobility_vaccine)
 ```
 
-Der finale Datensatz __mobility_vaccine__ besteht aus `r no_cols` Spalten und `r no_rows` Zeilen.
+Die Spalte ___date__ wird dupliziert, dass im weiteren Vorgehen drei neue Spalten __Year__, __Month__ und __Date__ erstellt werden können.
 
 ```{r}
 mobility_vaccine <- mobility_vaccine %>% 
                 mutate(date_2 = date)
 ```
 
+An der Stelle __-__ wird die Spalte __date_2__ gesplittet.
+
 ```{r}
 mobility_vaccine <- mobility_vaccine %>% 
    separate(date_2, c("Year", "Month", "Day"), sep="-")
 ```
 
+Zur weiteren Analyse wird im nächsten Schritt eine zusätzliche Spalte mit der Bezeichnung __year_month__ erstellt. Somit können Visualisierungen für den gesamten Zeitraum auf monatsebene erstellt werden.
+
 ```{r}
 mobility_vaccine <- mobility_vaccine %>% 
             unite(year_month, c(Year, Month), sep = "/", remove = FALSE)
 ```
+
+Da der Impfstoff __Janssen__ nach einer einmaligen Impfung den vollen Impfstoff bietet, werden die weiteren Impfstoffe (mind. 2 Impfungen Stand heute) durch 2 geteilt. Somit kann der Impffortschritt besser beschrieben werden.
 
 ```{r}
 mobility_vaccine <-mobility_vaccine  %>%
@@ -93,13 +101,13 @@ mobility_vaccine <-mobility_vaccine  %>%
 
 ## Betrachtungszeitraum
 
+Der Zeitraum der Betrachtung der Daten ist ab dem 27.12.2020 bis zum 15.10.2021. Da in diesem Projekt das Mobilitätsaufkommen in Verbindung mit den Impffortschritten gebracht wird ist der Entfall der Mobilitätsdaten für den früheren Zeitraum in Ordnung.
+
 ```{r}
 mobility_vaccine %>% 
     select(date) %>% 
     summarise(max = max(date, na.rm = TRUE), min = min(date, na.rm = TRUE))
 ```
-
-Der Zeitraum der Betrachtung der Daten ist ab dem 27.12.2020 bis zum 15.10.2021. Da in diesem Projekt das Mobilitätsaufkommen in Verbindung mit den Impffortschritten gebracht wird ist der Entfall der Mobilitätsdaten für den früheren Zeitraum in Ordnung.
 
 
 ## Deutschland Impfung gesamt
@@ -117,28 +125,58 @@ In Summe wurden in Deutschland in dem Zeitraum vom 27.12.2020 bis 15.10.2021 `r 
 
 ## Deutschland Impfung pro Jahr
 
+In 2020 wurden in Summe 207060 Impfungen verabreicht während in 2021 bis zum 15.10.2021 in Summe 109.314.592 Impfungen verabreicht wurden (inkl. Zweitimpfung).
+
 ```{r}
 mobility_vaccine %>%
   group_by(Year) %>% 
-  summarise(summe_pro_jahr = sum(Anzahl))
+  summarise(summe_pro_jahr = sum(Anzahl))%>% 
+  ggplot(aes(x = Year, y = summe_pro_jahr))+
+  geom_col()
 ```
 
 ## Welcher Impfstoff wurde am häufigsten verabreicht?
 
+Der Impfstoff __Biontech/Comirnaty__ wurde in Summe am häufigsten verabreicht (84.047.591). Von dem Impfstoff __AstraZeneca__ wurden 12.670.077 Dosen geimpft, __Moderna__ folgt mit 9.553.672 Impfungen und __Janssen__ mit 3.250.312 Dosen.
+
 ```{r}
 mobility_vaccine %>%
   group_by(Impfstoff) %>% 
-  summarise(summe = sum(Anzahl)) %>% 
-  arrange(desc(summe))
+  summarise(summe_impfungen = sum(Anzahl)) %>% 
+  arrange(desc(summe_impfungen))
+```
+
+
+```{r}
+k <-mobility_vaccine %>%
+  group_by(Year, Impfstoff) %>%
+  summarise(Impfungen = sum(Anzahl)) %>% 
+  ggplot(aes(x = Year, y = Impfungen, group = Impfstoff, colour = Impfstoff))+
+  geom_col()+ 
+  scale_y_continuous(labels = comma_format(big.mark = ".",
+                                          decimal.mark = ","))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggplotly(k)
 ```
 
 ## Impfungen zeitlicher Verlauf (pro Monat & Jahr)
 
+Mit Hilfe der folgenden Funktion wird die Anzahl der Impfungen pro Monat aufgezeigt. 
+
+
 ```{r}
-mobility_vaccine %>%
-  group_by(Month, Year) %>%
+g <-mobility_vaccine %>%
+  group_by(year_month) %>%
   summarise(Impfungen = sum(Anzahl)) %>% 
-  arrange(desc(Month))
+  ggplot(aes(x = year_month, y = Impfungen))+
+  geom_col()+
+  scale_y_continuous(labels = comma_format(big.mark = ".",
+                                          decimal.mark = ","))+
+  theme_minimal()
+
+ggplotly(g)
 ```
 
 ## Deutschland Impfung pro Bundesland
@@ -154,6 +192,23 @@ mobility_vaccine %>%
   arrange(desc(sum_impfungen))
 ```
 
+
+```{r}
+h <-mobility_vaccine %>%
+  group_by(Bundesland) %>%
+  summarise(sum_impfungen = sum(Anzahl), 
+    min_anzahl = min(Anzahl),
+    mean_anzahl = mean(Anzahl)) %>% 
+  ggplot(aes(x = reorder(Bundesland, -sum_impfungen), y = sum_impfungen))+
+  geom_col()+
+  scale_y_continuous(labels = comma_format(big.mark = ".",
+                                          decimal.mark = ","))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggplotly(h)
+```
+
 Das Bundesland mit den am meisten verabreichten Impfungen ist __Nordrhein-Westfalen__, auf dem zweiten Platz __Bayern__ und im Anschluss darauf Baden-Württemberg.
 
 ## Einwohner pro Bundesland
@@ -164,57 +219,61 @@ mobility_vaccine %>%
   arrange(desc(Einwohner_2020))
 ```
 
+```{r}
+ i<-mobility_vaccine %>%
+  group_by(Bundesland) %>%
+  summarise(Einwohner = min(Einwohner_2020)) %>% 
+  ggplot(aes(x = reorder(Bundesland, -Einwohner), y = Einwohner))+
+  geom_col()+
+  scale_y_continuous(labels = comma_format(big.mark = ".",
+                                          decimal.mark = ","))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggplotly(i)
+```
+
 
 ## Impfquote
 
 ```{r}
 mobility_vaccine <-mobility_vaccine  %>%
-  mutate(impf_quote = (impf_fortschritt/Einwohner_2020))
+  mutate(impf_quote = (impf_fortschritt/Einwohner_2020)*100)
+mobility_vaccine
 ```
 
 
 ```{r}
-mobility_vaccine %>%
+j <- mobility_vaccine %>%
   group_by(Bundesland) %>% 
-  summarise(quote = sum(impf_quote)*100) %>% 
-  arrange(desc(quote))
+  summarise(quote = sum(impf_quote)) %>%  
+  ggplot(aes(x = reorder(Bundesland, -quote), y = quote))+
+  geom_col()+
+  scale_y_continuous(labels = comma_format(big.mark = ".",
+                                          decimal.mark = ","))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ylim(0,100)
+
+ggplotly(j)
 ```
 
 
-```{r Verteilung_impfstoffe_2021}
-ggplot(mobility_vaccine, aes(x = Year, y = Anzahl)) + 
-  geom_col() +
-  labs(
-    x = "- -",
-    y = "-",
-    title = "-")+
-    facet_wrap(Impfstoff ~.)
-```
 
-```{r impfung_pro_jahr}
-a<-mobility_vaccine %>% 
-  group_by(Impfstoff) %>% 
-  ggplot(aes(Year, Anzahl, colour = Impfstoff)) +
-            geom_line()+
-            theme(axis.text.x = element_text(angle = -90, vjust = 0.5, hjust=1))+
-            labs(color= "Impfstoff", title= "Anzahl Impfungen", subtitle = "Pro Impfstoff über den zeitlichen Verlauf",
-       x = "Datum", y = "Anzahl")
-
-ggplotly(a)
-```
-
-
-```{r impfung_pro_monat}
-p<-mobility_vaccine %>% 
-  group_by(Impfstoff) %>% 
-  ggplot(aes(year_month, Anzahl, colour = Impfstoff)) +
-            geom_line()+
-            theme(axis.text.x = element_text(angle = -90, vjust = 0.5, hjust=1))+
-            labs(color= "Impfstoff", title= "Anzahl Impfungen", subtitle = "Pro Impfstoff über den zeitlichen Verlauf",
-       x = "Datum", y = "Anzahl")
+```{r}
+p <-mobility_vaccine %>%
+  group_by(year_month, Impfstoff) %>%
+  summarise(Impfungen = sum(Anzahl)) %>% 
+  ggplot(aes(x = year_month, y = Impfungen, group = Impfstoff, colour = Impfstoff))+
+  geom_col()+ 
+  scale_y_continuous(labels = comma_format(big.mark = ".",
+                                          decimal.mark = ","))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 ggplotly(p)
 ```
+
 
 ## Mobilitätsaufkommen
 
@@ -303,10 +362,17 @@ ggplot(mobility_vaccine, aes(x = year_month, y = residential, fill = Bundesland,
 ## Kombination
 
 
+
 ```{r}
-#c <- ggplot()+
- # geom_point(data = mobility_vaccine, mapping = aes(x=year_month, y=impf_fortschritt), color = "blue")+
- # geom_point(data = mobility_vaccine, mapping = aes(x=year_month, y=impf_fortschritt), color = "blue")+
+c <- ggplot()+
+  geom_col(data = data_1, mapping = aes(x=year_month, y=Impfungen), color = "blue")+
+  geom_col(data = data_1, mapping = aes(x=year_month, y=Impfungen), color = "blue")+
+ scale_y_continuous(labels = comma_format(big.mark = ".",
+                                      decimal.mark = ","),
+                                limits = c(-60, 14000))
+
+
++
   #geom_point(data = mobility_vaccine, mapping = aes(x=year_month, y=mean_ret), color = "red")+
  #geom_point(data = mobility_vaccine, mapping = aes(x=year_month, y=mean_ret), color = "red") +
  # scale_y_continuous(labels = comma_format(big.mark = ".",
@@ -315,5 +381,10 @@ ggplot(mobility_vaccine, aes(x = year_month, y = residential, fill = Bundesland,
 
 
 
-#ggplotly(c)
+ggplotly(c)
 ```
+
+```{r}
+ggplotly(c)
+```
+
