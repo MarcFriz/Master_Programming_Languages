@@ -27,11 +27,11 @@ Bei dem Slider handelt es sich um eine Einstellmöglichkeit welcher Monat betrac
 
 <img src="files/slider.png" style="width:10%">
 
-Die Karte zeigt die `Anzahl` an geimpfter Personen. Ebenfall lassen sich am linken Rand der Karte die verschiedenen Moblilitätswerte einblenden. Diese geben dann auf der Karte zusätzlich an wie sich die Mobilität verändert hat.
+Die Karte zeigt die `Anzahl` an geimpfter Personen. Ebenfall lassen sich am linken Rand der Karte die verschiedenen Moblilitätswerte einblenden. Diese geben dann auf der Karte zusätzlich an, wie sich die Mobilität verändert hat.
 
 <img src="files/mobilitaetswerte.png" style="width:10%">
 
-Die Datentabelle beinhaltet alle Relevanten Daten welche auf der Karte zu sehen sind. Das soll ermöglichen sich die einzelnen Werte im Detail anzusehen.
+Die Datentabelle beinhaltet alle relevanten Daten welche auf der Karte zu sehen sind. Das soll ermöglichen sich die einzelnen Werte im Detail anzusehen.
 
 <img src="files/table.png" style="width:100%">
 
@@ -59,7 +59,7 @@ data <- read.csv('../Website/Daten_Output/Mobility_vaccine.csv')
 data$month <- month(as.POSIXct(data$date,format="%Y-%m-%d"))
 ```
 
-Im zweiten Schritt werden die GPS koordinaten ergänzt. Hierfür wirde der `iso_code` der Bundesländer verwendet um deren Hauptstädte als referenzpunkte zu verwenden.
+Im zweiten Schritt werden die GPS koordinaten ergänzt. Hierfür wurde der `iso_code` der Bundesländer verwendet um deren Hauptstädte als Referenzpunkte zu verwenden.
 
 ```{r data_prep_shiny_2, eval=FALSE}
 data$longitude <- ifelse(data$iso_code == 'DE-BW', 9.183333, 
@@ -99,12 +99,12 @@ data$latitude <- ifelse(data$iso_code == 'DE-BW', 48.783333,
 
 
 # Shiny-App
-Wenn die Daten vorbereitet sind, kommt der eigentliche Hauptteil der Shiny-App. Diese besteht aus zwei unterschiedlichen Komponenten. Zum einen das `UI` und zum anderen der `Server`. Im `UI` wird alles definiert was der User als Interface zu sehen bekommt. Das bedeutet, hier wird das Layout festgelegt und welcher Inhalt an welchen stellen angezeigt wird. Der `Server` wird später definiert und hat nur die Aufgabe die einzelnen Teile, welche im `UI` definiert wurden mit Inhalt zu füllen. Diese Trennung ermöglicht es in einer Web-Applikation die Daten von dem Frontend zu trennen und beide Teile seperat zu betreiben. Bei unserem Usecase ist die jedoch nicht relevant. Deshalb befinden sich beide Teile an der gelichen Stelle. 
+Wenn die Daten vorbereitet sind, kommt der eigentliche Hauptteil der Shiny-App. Diese besteht aus zwei unterschiedlichen Komponenten. Zum einen das `UI` und zum anderen der `Server`. Im `UI` wird alles definiert was der User als Interface zu sehen bekommt. Das bedeutet, hier wird das Layout festgelegt und welcher Inhalt an welchen Stellen angezeigt wird. Der `Server` wird später definiert und hat nur die Aufgabe die einzelnen Teile, welche im `UI` definiert wurden mit Inhalt zu füllen. Diese Trennung ermöglicht es in einer Web-Applikation die Daten von dem Frontend zu trennen und beide Teile seperat zu betreiben. Bei unserem Usecase ist dies jedoch nicht relevant. Deshalb befinden sich beide Teile an der gleichen Stelle. 
 
 ## UI
-Das `UI` unterteilt sich, wie in der Beschreibung angegeben, in drei Teile. Diese Unterteilung spiegelt sich auch im Code wieder. Am anfang wird der `dashboardheader` definiert. Dieser beginnt links oben und definiert den startpunkt. Er umfasst die gesammte Seite. In seinem inneren wird dann zum einen die `dashboardSidebar` sowie der `dashboardBody` ingebettet. 
-Die Siedbar wiederum enthält nun den Slider welcher sich über eine Strecke von `1 - 12` verschieben lässt.
-Der Body beinhaltet die Karte als Zentrales Objekt gefolgt von der Tabelle. Hierfür werden die größe sowie ein Name für die Karte vbergeben damit der `Server` später weiß über welchen Namen der die Karte findet. Ebenfalls werden die `checkboxen` hier vordefiniert. Die Tabelle bekommt ebenso einen Namen damit auf sie zugegriffen werden kann.
+Das `UI` unterteilt sich, wie in der Beschreibung angegeben, in drei Teile. Diese Unterteilung spiegelt sich auch im Code wieder. Am Anfang wird der `dashboardheader` definiert. Dieser beginnt links oben und definiert den Startpunkt. Er umfasst die gesamte Seite. In seinem Inneren wird dann zum einen die `dashboardSidebar` sowie der `dashboardBody` eingebettet. 
+Die Slidebar wiederum enthält den Slider welcher sich über eine Strecke von `1 - 12` verschieben lässt.
+Der Body beinhaltet die Karte als zentrales Objekt gefolgt von der Tabelle. Hierfür werden die Größe sowie ein Name für die Karte vergeben damit der `Server` später weiß über welchen Namen dieser die Karte findet. Ebenfalls werden die `checkboxen` hier vordefiniert. Die Tabelle bekommt ebenso einen Namen damit auf sie zugegriffen werden kann.
 
 ```{r shiny_ui, eval=FALSE}
 ui <- dashboardPage(dashboardHeader(title='Impfauswertung'),
@@ -147,7 +147,7 @@ ui <- dashboardPage(dashboardHeader(title='Impfauswertung'),
 
 
 ## Server
-Im `Server` wirde der Code definiert welcher alle Komponenten im `UI` mit Leben befüllt. Dies gilt für Daten sowie für Funktionen gleichermaßen. Die Reihenfolge spielt dabei keine Rolle da die jeweilighen Codeteile seperat angefragt werden sollten sie im `UI` benötigt werden. Das bedeutet zum Beispiel, dass die Karte immer befüllt wird aber die `checkboxen` nur anwendung finden wenn der Nutzer sie anklickt.
+Im `Server` wurde der Code definiert welcher alle Komponenten im `UI` mit Leben befüllt. Dies gilt für Daten sowie für Funktionen gleichermaßen. Die Reihenfolge spielt dabei keine Rolle da die jeweiligen Codeteile separat angefragt werden sollten sie im `UI` benötigt werden. Das bedeutet zum Beispiel, dass die Karte immer befüllt wird aber die `checkboxen` nur Anwendung finden wenn der Nutzer diese anklickt.
 
 Im ersten Teil wird eine Farbpalette angelegt. Diese dient später als Farbinput für die `checkboxen`.
 ```{r shiny_server_color, eval=FALSE}
@@ -158,7 +158,7 @@ pal2 <- colorFactor(
 )
 ```
 
-Im zweitet Teil wirde der Inhalt der Tabelle definiert. Sie richtet sich ebenfalls nach den Eingaben des Nutzers anhand des Sliders. Aus diesem Grund werden die Daten nach Monat gefiltert und nur die Relevanten Spalten angezeigt. Id-Spalten oder filter-Spalten führen keine für den Nutzer wertvolle Daten und schaden der Übersicht.
+Im zweitet Teil wird der Inhalt der Tabelle definiert. Sie richtet sich ebenfalls nach den Eingaben des Nutzers anhand des Sliders. Aus diesem Grund werden die Daten nach Monat gefiltert und nur die relevanten Spalten angezeigt. Id-Spalten oder Filter-Spalten führen keine für den Nutzer wertvolle Daten und schaden der Übersicht.
 ```{r shiny_server_table, eval=FALSE}
 # create the table
 output$table <- renderDataTable({data %>% 
@@ -180,7 +180,7 @@ output$table <- renderDataTable({data %>%
     )})
 ```
 
-Im dritten Teil wird die Karte erstellt. Hierbeio handelt es sich um eine Karte aus der Bibliothek `Leaflet`. Nachdem ihr die Daten übergeben wurden befinden sich noch drei weitere Einstellungen auf der Karte. Die erste Einstellung setzt die Ansicht auf Deutschland. Dies wird über Längen- und Breitengrad, sowie über den Zoom gemacht. Die zweite Einstellung legt Tiles auf die Karte und die dritte Einstellung füg der karte Kreise hinzu anhand der Daten. Hierbei dient der Längen- und Breitengrad als Position und die Anzahl als Radius der Kreise. Das Bedeutet, je größer der Kreis, desto größer die Anzahl.
+Im dritten Teil wird die Karte erstellt. Hierbei handelt es sich um eine Karte aus der Bibliothek `Leaflet`. Nachdem dieser die Daten übergeben wurde befinden sich noch drei weitere Einstellungen auf der Karte. Die erste Einstellung setzt die Ansicht auf Deutschland. Dies wird über Längen- und Breitengrad, sowie über den Zoom gemacht. Die zweite Einstellung legt Tiles auf die Karte und die dritte Einstellung fütg der Karte Kreise hinzu anhand der Daten. Hierbei dient der Längen- und Breitengrad als Position und die Anzahl als Radius der Kreise. Das bedeutet, je größer der Kreis, desto größer die Anzahl.
 ```{r shiny_server_map, eval=FALSE}
 # create the map
 output$map <- renderLeaflet({
@@ -199,7 +199,7 @@ output$map <- renderLeaflet({
 })
 ```
 
-Im letzten Schritt wird noch die Funktion der `checkboxen` auf der Map hinterlegt. Hierbei dient das Objekt `observe` zur überwachtung ob der Nutzer auf die Checkbox geklickt hat. Ist dies der Fall, wird der Map ein extra Kreis hinzugefügt welcher die Mobilität beinhalten welche der Nutzer ausgewählt hat. Da es mehrere Mobilitätswerte gibt, wird der folgende Codeausschnitt mehrfach verwendet. Er unterscheidet sich dann nur darin, welche werte der Kreis anzeigt.
+Im letzten Schritt wird noch die Funktion der `checkboxen` auf der Map hinterlegt. Hierbei dient das Objekt `observe` zur Überwachtung ob der Nutzer auf die Checkbox geklickt hat. Ist dies der Fall, wird der Map ein extra Kreis hinzugefügt welcher die Mobilität beinhalten welche der Nutzer ausgewählt hat. Da es mehrere Mobilitätswerte gibt, wird der folgende Codeausschnitt mehrfach verwendet. Er unterscheidet sich dann nur darin, welche Werte der Kreis anzeigt.
 ```{r shiny_server_checkbox, eval=FALSE}
 # define the checkboxes for the Mobility on the map
 observe({

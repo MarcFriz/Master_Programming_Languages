@@ -25,7 +25,7 @@ Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben
 
 Das Ziel dieses Projekts ist es die Daten zu analysieren sowie ein Dashboard zum Monitoring für das Impfen zu erstellen. Das Vorgehen ist wie in der Abbildung 1 beschrieben. Die Daten liegen in unterschiedlichen Quellen zur Verfügung. Google stellt die Mobilitätsdaten als .csv bereit. Die Impfdaten werden von dem Projekt "Digitales Impfquoten-Monitoring" (DIM) in GitHub zur Verfügung gestellt und stehen somit auch als .csv zur Verfügung.
 
-Um mit den Daten arbeiten zu können, müssen diese im weiteren Vorgehen zusammengeführt werden. Hierzu benötigt es weitere Daten. Diese Daten werden von unterschiedlichen Wikipedia Seiten gescraped. Sobald alle Daten vorliegen werden diese in das Notebook geladen, überprüft und zur weiteren Verarbeitung bereinigt und vorbereitet.
+Um mit den Daten arbeiten zu können, müssen diese im weiteren Vorgehen zusammengeführt werden. Hierzu benötigt es weitere Daten. Diese Daten werden von unterschiedlichen Wikipedia Seiten gescraped. Sobald alle Daten vorliegen werden diese in das Notebook geladen und zur weiteren Verarbeitung bereinigt und vorbereitet.
 
 <img src="files/Input_R.png" style="width:85%">
 
@@ -80,9 +80,7 @@ unter dem folgenden [Link](https://www.google.com/covid19/mobility/?hl=de) zur V
 
 ## Impfdaten (Datensatz 2)
 
-Die COVID-19-Impfung kann einen Wendepunkt in der Kontrolle der COVID-19-Pandemie darstellen und erfährt daher hohes Maß an öffentlicher Aufmerksamkeit. Einführung und Umsetzung der COVID-19-Impfung gehen mit besonderen Herausforderungen einher, die bei der Impfdatenerfassung zu berücksichtigen sind.
-
-In diesem Kontext ist es Ziel des Projekts "Digitales Impfquoten-Monitoring" (DIM), tagesaktuell und bundesweit die Impfquote zu erfassen und aufbereitet darzustellen. Die Daten stehen 
+Die COVID-19-Impfung kann einen Wendepunkt in der Kontrolle der COVID-19-Pandemie darstellen und erfährt daher hohes Maß an öffentlicher Aufmerksamkeit. Einführung und Umsetzung der COVID-19-Impfung gehen mit besonderen Herausforderungen einher, die bei der Impfdatenerfassung zu berücksichtigen sind. In diesem Kontext ist es Ziel des Projekts "Digitales Impfquoten-Monitoring" (DIM), tagesaktuell und bundesweit die Impfquote zu erfassen und aufbereitet darzustellen. Die Daten stehen 
 unter dem folgenden [Link](https://github.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland) zur Verfügung.
 
 ### Beschreibung der Variablen
@@ -167,7 +165,7 @@ write_csv(scraping,"../Website/Daten_Input/Mapping.csv")
 
 ### Webscraping
 
-In diesem Abschnitt wird die **Anzahl der Einwohner pro Bundesland** mit Hilfe von Webscraping aus **Wikipedia** extrahiert. Es gibt eine eigene Wikipediaseite für die Bevölkerungszahlen. Hier befindet sich eine Tabelle welche die Einwohnerzahlen pro Bundesland abbildet (Abbildung 3). Die für uns interessanten Daten sind lediglich die aktuellsten Bevölerungszahlen sowie die Zuordnung zu den Bundesländern. Deshalb wird im weiteren Verlauf das Crawling sowie die entsprechende Datenbereinigung durchgeführt. Weil sich das Scraping vom vorherigen Vorgehen nicht unterscheidet wird es im weiteren Verlauf nicht genauer beschrieben.
+In diesem Abschnitt wird die **Anzahl der Einwohner pro Bundesland** mit Hilfe von Webscraping aus **Wikipedia** extrahiert. Es gibt eine eigene Wikipediaseite für die Bevölkerungszahlen. Hier befindet sich eine Tabelle welche die Einwohnerzahlen pro Bundesland abbildet (Abbildung 3). Die für uns interessanten Daten sind lediglich die aktuellsten Bevölerungszahlen sowie die Zuordnung zu den Bundesländern. Deshalb wird im weiteren Verlauf das Crawling sowie die entsprechende Datenbereinigung durchgeführt. Weil sich das Scraping vom vorherigen Vorgehen nicht unterscheidet wird es im weiteren Verlauf nicht weiter beschrieben.
 
 <img src="files/Wikipedia_2.png" style="width:100%">
 
@@ -204,9 +202,9 @@ anzahl <- read.csv("../Website/Daten_Input/Bundesland_Einwohner.csv", sep = ",")
 glimpse(anzahl)
 ```
 
-So wie die Daten nach dem Scraping vorliegen, kann damit noch nicht gearbeitet werden. Im folgenden Abschnitt wird die Bereinigung der Daten beschrieben. 
+In den nächsten Schritten wird die Bereinigung der Daten beschrieben. 
 
-Als ersten Schritt werden die gewünschten Spalten in __Einwohner_2020__ und __Bundesland__ umbenannt und zur weiteren Bearbeitung ausgewählt.
+Zu Beginn werden die gewünschten Spalten in __Einwohner_2020__ und __Bundesland__ umbenannt und zur weiteren Bearbeitung ausgewählt.
 
 ```{r}
 anzahl <- anzahl %>% 
@@ -240,7 +238,7 @@ anzahl <- anzahl %>%
 anzahl
 ```
 
-Als letzten Schritt wird der Typ der Spalte __Einwohner_2020__ in __integer__ geändert.
+Zum Schluss wird der Typ der Spalte __Einwohner_2020__ in __integer__ geändert.
 
 ```{r}
 anzahl <- transform(anzahl, Einwohner_2020 = as.integer(Einwohner_2020))
@@ -367,15 +365,6 @@ mobility_report %>%
 
 Ein anderes extrem ist bei der Kategorie Arbeitsstätte zu beobachten. Über den gesamten Betrachtungszeitraum scheint im Mittel die Anzahl der Besuche am Arbeitsplatz relativ gering bzw im negativen Bereich zu sein. Insbesondere in Burkina Faso scheint die Anzahl der Besuche zu Arbeitsstätten über den Betrachtungszeitraum hinweg einen negativen Trend zu haben.
 
-```{r}
-ggplot(mobility_report %>% 
-         filter(country_region == "Yemen" | country_region == "Libya"| country_region == "Niger"| country_region == "Germany"), 
-       aes(x = retail_and_recreation_percent_change_from_baseline)) + 
-       geom_histogram(binwidth = 25) + 
-        facet_wrap(~ country_region)
-
-
-```
 
 ## Impfdaten
 

@@ -1,7 +1,7 @@
 ---
 title: "Projekt zur Verbesserung der Impfquote"
-author: "Marc Friz & Nadja Herrmann"
-date: "16 10 2021"
+author: "Marc Friz (40654) & Nadja Herrmann (40523)"
+date: "09 11 2021"
 output:
  html_document:
   fig_height: 8
@@ -34,21 +34,21 @@ identifiziert zu haben. Das öffentliche Leben kam durch die Maßnahmen zur Eind
 ab Mitte März weitgehend zum Erliegen. Es wurden zeitweise Geschäfte, Schulen und Universitäten 
 sowie Arbeitsstätten und Kultureinrichtungen geschlossen. Kontakte wurden im privaten Raum auf ein 
 Minimum reduziert. Diese Maßnahmen zeigten auch Wirkung. Während die Infektionszahlen über die 
-Sommermonate zurückgingen, stiegen die Zahlen im Herbst/Winter 2020 wieder rasant an (Statistisches 
+Sommermonate zurückgingen, stiegen die Zahlen im Herbst/Winter wieder rasant an (Statistisches 
 Bundesamt, 2021). Weitere bundesweite Beschränkungen wie der „Light-Lockdown“ ab dem 
 2.November und der „Harte-Lockdown“ ab dem 16. Dezember folgten. 
 
 
-Die Beschränkungen zur Eindämmung der Pandemie wirken sich auf das Mobilitätsverhalten der Bevölkerung aus. Schnell wurde an möglichen Lösungen zur Eindämmung des Covid Virus gearbeitet. Viele Impfunternehmen fingen an Impfstoffe zur Eindämmung der Pandemie zu entwickeln. Endlich, Anfang 2021, wurden diese Impfstoffe freigegeben. Die kurze Zeit der Entwicklung des Impfstoffes machen auch vielen Menschen Angst. Deshalb hat sich der Verlauf der Anzahl an verabreichten Impfungen langsamer entwickelt als ursprünglich erwartet.
+Schnell wurde an möglichen Lösungen zur Eindämmung des Covid Virus gearbeitet. Viele Impfunternehmen fingen an Impfstoffe zur Eindämmung der Pandemie zu entwickeln. Endlich, Anfang 2021, wurden diese Impfstoffe freigegeben. Die kurze Zeit der Entwicklung des Impfstoffes machen auch vielen Menschen Angst. Deshalb hat sich der Verlauf der Anzahl an verabreichten Impfungen langsamer entwickelt als ursprünglich erwartet.
 
-Um die Regierung bei dieser Mammutsaufgabe zu unterstützen haben wir an einer Lösung für mehr Transparenz gearbeitet.
+Um die Regierung bei dieser Aufgabe zu unterstützen, wird innerhalb dieses Projekts an einer Lösung für mehr Transparenz gearbeitet.
 
 ***
 
-Das folgende Projekt besteht aus drei Themenblöcken:
+Das folgende Projekt besteht aus vier Themenblöcken:
 
 * __Planung__
 * __Datenintegration__
 * __Datenanalyse__
-* __Datenvisualisierung__
+* __Dashboard__
 
