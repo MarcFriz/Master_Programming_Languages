@@ -432,7 +432,7 @@ div.tocify {
 
 <div id="einleitung" class="section level1 sidebar" number="1">
 <h1 class="sidebar"><span class="header-section-number">1</span> Einleitung</h1>
-<p>Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben und für die weitere Verarbeitung vorbereitet sowie bereinigt. Im zweiten Teil werden die Daten analysiert. Für das Projekt werden zwei Hauptdatensätze aus unterschiedlichen Datenquellen herangezogen. Der eine Datensatz spiegelt das Mobilitätsaufkommen der Bevölkerung während Covid wider und der zweite Datensatz zeigt das Impfverhalten der Deutschen.</p>
+<p>Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben und für die weitere Verarbeitung bereinigt und vorbereitet.</p>
 </div>
 <div id="konzeptionelles-vorgehen" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Konzeptionelles Vorgehen</h1>
@@ -830,8 +830,11 @@ div.tocify {
 ## 4 Brazil           -1.23     -89    99
 ## 5 Burkina Faso     -3.25     -78    31</code></pre>
 <p>Ein anderes extrem ist bei der Kategorie Arbeitsstätte zu beobachten. Über den gesamten Betrachtungszeitraum scheint im Mittel die Anzahl der Besuche am Arbeitsplatz relativ gering bzw im negativen Bereich zu sein. Insbesondere in Burkina Faso scheint die Anzahl der Besuche zu Arbeitsstätten über den Betrachtungszeitraum hinweg einen negativen Trend zu haben.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mobility_report <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country_region <span class="sc">==</span> <span class="st">&quot;Yemen&quot;</span> <span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Libya&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Niger&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Germany&quot;</span>), </span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> retail_and_recreation_percent_change_from_baseline)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">25</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> country_region)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mobility_report <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">filter</span>(country_region <span class="sc">==</span> <span class="st">&quot;Yemen&quot;</span> <span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Libya&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Niger&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Germany&quot;</span>), </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> retail_and_recreation_percent_change_from_baseline)) <span class="sc">+</span> </span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">25</span>) <span class="sc">+</span> </span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">facet_wrap</span>(<span class="sc">~</span> country_region)</span></code></pre></div>
 <pre><code>## Warning: Removed 5748 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="datenintegration_files/figure-html/unnamed-chunk-34-1.png" width="1152" /></p>
 </div>
