@@ -18,16 +18,20 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Konzeptionelles Vorgehen {.sidebar}
+# Einleitung
+
+In diesem Notebook werden die Daten, welche in dem Notebook __Datenintegration__ vorbereitet wurden, mit Hilfe von Visualisierungen analysiert. Dies ist der erste Teil des gewünschten Outputs des Projekts (siehe Abbildung 1).
 
 
 <img src="files/Input_R_2.png" style="width:85%">
 
 __Abbildung 1__: Konzeptionelles Vorgehen, Eigene Darstellung 2021
 
-# Notwendige Pakete laden
+# Vorbereitung
 
-Für dieses Notebook werden die folgenden Pakete benötigt:
+## Notwendige Pakete laden
+
+In diesem Notebook werden die folgenden Pakete verwendet:
 
 ```{r import packages, message=FALSE}
 library(tidyverse)
@@ -38,7 +42,7 @@ library(lubridate)
 library(DT)
 ```
 
-# Daten importieren
+## Daten importieren
 
 Der im Abschnitt __Datenintegration__ erstellte Datensatz _mobility_vaccine_ wird für dieses Notebook __Datenanalyse__ herangezogen.
 
@@ -46,14 +50,18 @@ Der im Abschnitt __Datenintegration__ erstellte Datensatz _mobility_vaccine_ wir
 mobility_vaccine <- read.csv("../Website/Daten_Output/Mobility_vaccine.csv")
 ```
 
+
 ## Beschreibung des finalen Datensatzes
 
 ```{r describe_data}
 glimpse(mobility_vaccine)
 ```
 
+Der ursprüngliche Datensatz besteht aus 17 Variablen. 
+Einige der Variablen werden für das Dashboard (Output Teil 2) verwendet, sind aber für die folgende Analyse nicht relevant. Deshalb werden diese Variablen entfernt.
+
 ```{r delete_columns}
-excluded_vars <- c("X", "country_region_code", "country_region", "iso_code")
+excluded_vars <- c("X", "country_region_code", "country_region", "iso_code", "ID", "Impfserie")
 
 mobility_vaccine <- select(mobility_vaccine, -excluded_vars)
 ```
@@ -66,55 +74,42 @@ no_cols<- ncol(mobility_vaccine)
 no_rows<- nrow(mobility_vaccine)
 ```
 
-Der finale Datensatz __mobility_vaccine__ besteht aus `r no_cols` Spalten und `r no_rows` Zeilen. In der folgenden Tabelle werden die Variablen beschrieben sowie ihre Merkmale benannt.
+Der finale Datensatz __mobility_vaccine__ besteht aus `r no_cols` Spalten und `r no_rows` Zeilen. In der folgenden Tabelle werden die Variablen und ihre Merkmale beschrieben.
 
 
-| Variable            | Beschreibung    |
-| ------------------- |:---------------:|
-|date  |Datum        |
-|bundesland       |Bundesland|
-|ID         |Bundesland_ID     |
-|Impfstoff         |Impfstoff verwendet|
-|Impfserie           |Serie Impfstoff verwendet|
-|Anzahl      |Anzahl Impfungen pro Tag|
-|Einwohner_2020     |Einwohnerzahl pro Bundesland|
-|retail_and_recreation|Einzelhandel und Erholung|
-|grocery_and_pharmacy|Lebensmittel und Apotheken|
-|parks | Park (z.B.: Öffentlicher Park, Schloss, Waldgebiete|
-|transit_stations |Transitstationen|
-|workplaces |Arbeitsstätten|
-|residential |Haus und Wohnungen|
+| Variable            | Beschreibung    | Datentyp    |
+| ------------------- |:---------------:|:---------------:|
+|date                 |Datum            |Character|
+|bundesland           |Bundesland       |Character|
+|ID                   |Bundesland_ID    |Integer|
+|Impfstoff            |Impfstoff verwendet|Character|
+|Impfserie            |Serie Impfstoff verwendet|Integer|
+|Anzahl               |Anzahl Impfungen pro Tag|Integer|
+|Einwohner_2020       |Einwohnerzahl pro Bundesland|Integer|
+|retail_and_recreation|Einzelhandel und Erholung|Integer|
+|grocery_and_pharmacy|Lebensmittel und Apotheken|Integer|
+|parks | Park (z.B.: Öffentlicher Park, Schloss, Waldgebiete|Integer|
+|transit_stations |Transitstationen|Integer|
+|workplaces |Arbeitsstätten|Integer|
+|residential |Haus und Wohnungen|Integer|
 
 
-Im nächsten Schritt wird geprüft ob der Datensatz fehlende Elemente besitzt.
-
-```{r, results=FALSE}
-is.na(mobility_vaccine)
-```
-
-Die Spalte ___date__ wird dupliziert damit im weiteren Vorgehen drei neue Spalten __Year__, __Month__ und __Date__ erstellt werden können. Diese Anpassung erfolgt zur Vereinfachung der Aggregierung.
+Die Funktion __ymd__ wandelt in Zeichen- und numerischen Vektoren gespeicherte Daten in Date- oder POSIXct-Objekte um. Aus dem Character __date__ wird ein Dateobjekt gemacht.
 
 ```{r}
 mobility_vaccine$date <- ymd(mobility_vaccine$date)
 ```
 
+Des weiteren wird die Spalte __date__ dupliziert, damit drei neue Spalten __Year__, __Month__ und __Date__ erstellt werden können. Diese Anpassung erfolgt zur Vereinfachung der Aggregierung der Daten. Im nächsten Schritt eine zusätzliche Spalte mit der Bezeichnung __year_month__ erstellt. Somit können Visualisierungen für den gesamten Zeitraum auf monatsebene erstellt werden.
 
 ```{r}
 mobility_vaccine <- mobility_vaccine %>% 
-                mutate(date_2 = date)
-```
-
-An der Stelle __-__ wird die Spalte __date_2__ gesplittet.
-
-```{r}
-mobility_vaccine <- mobility_vaccine %>% 
+                mutate(date_2 = date)%>% 
    separate(date_2, c("Year", "Month", "Day"), sep="-")%>% 
             unite(year_month, c(Year, Month), sep = "/", remove = FALSE)
 ```
 
-Zur weiteren Analyse wird im nächsten Schritt eine zusätzliche Spalte mit der Bezeichnung __year_month__ erstellt. Somit können Visualisierungen für den gesamten Zeitraum auf monatsebene erstellt werden.
-
-Da der Impfstoff __Janssen__ nach einer einmaligen Impfung den vollen Impfstoff bietet, werden die weiteren Impfstoffe (mind. 2 Impfungen Stand heute) durch 2 geteilt. Somit kann der Impffortschritt besser verglichen werden.
+Da der Impfstoff __Janssen__ nach einer einmaligen Impfung den vollen Impfstoff bietet, werden die weiteren Impfstoffe (mind. 2 Impfungen Stand heute) durch 2 geteilt. Somit kann der __Impffortschritt__ besser verglichen werden.
 
 ```{r}
 mobility_vaccine <-mobility_vaccine  %>%
@@ -124,28 +119,36 @@ mobility_vaccine <-mobility_vaccine  %>%
                                       Impfstoff == "Janssen" ~ Anzahl*1))
 ```
 
+Um das Verhältnis der Impfungen in Relation zu den Einwohnerzahlen zur bringen wird als nächstes die Impfquote berechnet. 
+Hierzu wird der __Impffortschritt__ also die Anzahl der Impfungen in das Verhältnis zu der Einwohnerzahl gesetzt und _*100_ multipliziert.
+
 ```{r}
 mobility_vaccine <-mobility_vaccine  %>%
   mutate(impf_quote = (impf_fortschritt/Einwohner_2020)*100)
 ```
 
+Das R-Paket __DT__ bietet eine R-Schnittstelle zur JavaScript-Bibliothek DataTables. R-Datenobjekte (Matrizen oder Datenrahmen) können als Tabellen auf HTML-Seiten angezeigt werden, und DataTables bietet Filterung, Paginierung, Sortierung und viele andere Funktionen in den Tabellen.
 
-```{r, echo = TRUE,fig.width = 10,fig.height = 8, warning=FALSE}
+Der für die Analyse herangezogene Datensatz sieht nun wie folgt aus:
+
+```{r}
 mobility_vaccine_head <- mobility_vaccine%>% slice(1:50)
 
-datatable(mobility_vaccine_head) %>% 
+datatable(mobility_vaccine_head, filter = 'top', options = list(
+  pageLength = 5, autoWidth = TRUE
+)) %>% 
   formatDate('date', 'toDateString') %>% 
-  formatCurrency(c('retail_and_recreation','grocery_and_pharmacy', 'parks', 'transit_stations', 'workplaces', 'residential'), '%') %>% 
+  formatCurrency(c('retail_and_recreation','grocery_and_pharmacy', 'parks', 'transit_stations', 'workplaces','residential'), '%') %>% 
   formatPercentage('impf_quote',2)
-  
   
 ```
 
-## Analyse des finalen Datensatzes
 
-### Betrachtungszeitraum
+# Analyse des finalen Datensatzes
 
-Der Zeitraum der Betrachtung der Daten ist ab dem 27.12.2020 bis zum 15.10.2021.
+## Betrachtungszeitraum
+
+Der Betrachtungszeitraum liegt zwischen dem 27.12.2020 bis zum 15.10.2021.
 
 ```{r}
 mobility_vaccine %>% 
@@ -154,52 +157,71 @@ mobility_vaccine %>%
 ```
 
 
-### Deutschland Impfung gesamt
-
+## Deutschland Impfung gesamt
 
 ```{r}
 summe_impfungen_gesamt <-mobility_vaccine %>%
               summarise(
               sum_impfungen = sum(Anzahl))
-summe_impfungen_gesamt
 ```
 
 In dem Zeitraum vom 27.12.2020 bis 15.10.2021 wurden in Deutschland  `r summe_impfungen_gesamt` Impfungen verabreicht.
 
 
-### Deutschland Impfung pro Jahr
+## Deutschland Impfung pro Jahr
 
-In 2020 wurden in Summe 207060 Impfungen verabreicht während in 2021 bis zum 15.10.2021 in Summe 109.314.592 Impfungen verabreicht wurden (inkl. Zweitimpfung).
+In 2020 wurden in Summe 207.060 Impfungen verabreicht, während in 2021 bis zum 15.10.2021 in Summe 109.314.592 Impfungen verabreicht wurden (inkl. Zweitimpfung).
+
+
 
 ```{r, echo = TRUE,fig.width = 5,fig.height = 4, warning=FALSE}
-graph_1 <- mobility_vaccine %>%
+graph_0 <- mobility_vaccine %>%
   group_by(Year) %>% 
   summarise(summe_pro_jahr = sum(Anzahl)) %>% 
   ggplot(aes(x = Year, y = summe_pro_jahr))+
-  geom_col(size=1.2, colour="darkslategray", fill = "darkslategray4")+
+  geom_col(colour="darkslategray", fill = "darkslategray4")+
   theme_classic()+
   scale_y_continuous(labels = function(x) format(x, big.mark = ".",
                                                 scientific = FALSE)) +
   labs(
-    title = "Covid Impfungen pro Jahr",
-    subtitle = "Impfungen gesamt",
     y = element_blank(),
     x = element_blank()
   )
 
-ggplotly(graph_1)
+ggplotly(graph_0) %>%
+  layout(title = list(text = paste0("Covid Impfungen",
+                                    '<br>',
+                                    '<sup>',
+                                     "Impfungen gesamt nach Jahr",'</sup>')))
 ```
 
-### Welcher Impfstoff wurde am häufigsten verabreicht?
+## Welcher Impfstoff wurde am häufigsten verabreicht?
 
 Der Impfstoff __Biontech/Comirnaty__ wurde in Summe am häufigsten verabreicht (84.047.591). Von dem Impfstoff __AstraZeneca__ wurden 12.670.077 Dosen geimpft, __Moderna__ folgt mit 9.553.672 Impfungen und __Janssen__ mit 3.250.312 Dosen.
 
-```{r}
-mobility_vaccine %>%
+
+
+```{r, echo = TRUE,fig.width = 5,fig.height = 4, warning=FALSE}
+graph_1 <- mobility_vaccine %>%
   group_by(Impfstoff) %>% 
   summarise(summe_impfungen = sum(Anzahl)) %>% 
-  arrange(desc(summe_impfungen))
+  ggplot(aes(x = Impfstoff, y=summe_impfungen))+
+  geom_col(colour="darkslategray", fill = "darkslategray4")+
+  theme_classic()+
+  scale_y_continuous(labels = function(x) format(x, big.mark = ".",
+                                                scientific = FALSE)) +
+  labs(
+    y = element_blank(),
+    x = element_blank()
+  )
+
+ggplotly(graph_1) %>%
+  layout(title = list(text = paste0("Covid Impfungen",
+                                    '<br>',
+                                    '<sup>',
+                                     "Anzahl Impfungen nach Impfstoff",'</sup>')))
 ```
+
 
 
 ```{r, echo = TRUE,fig.width = 5,fig.height = 4, warning=FALSE}
@@ -212,15 +234,18 @@ graph_2 <-mobility_vaccine %>%
                                                 scientific = FALSE))+
   theme_minimal()+
   labs(
-    title = "Covid Impfungen pro Jahr",
-    subtitle = "Impfungen nach Impfstoff",
     y = element_blank(),
     x = element_blank()
   )
-ggplotly(graph_2)
+
+ggplotly(graph_2) %>%
+  layout(title = list(text = paste0("Covid Impfungen",
+                                    '<br>',
+                                    '<sup>',
+                                     "Anzahl Impfungen nach Impfstoff pro Jahr",'</sup>')))
 ```
 
-### Impfungen zeitlicher Verlauf (pro Monat & Jahr)
+## Impfungen zeitlicher Verlauf (pro Monat & Jahr)
 
 Mit Hilfe der folgenden Funktion wird die Anzahl der Impfungen pro Monat aufgezeigt. 
 
@@ -236,16 +261,22 @@ graph_3 <-mobility_vaccine %>%
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
-    title = "Covid Impfungen pro Jahr",
-    subtitle = "Impfungen nach Impfstoff",
     y = element_blank(),
     x = element_blank()
   )
 
-ggplotly(graph_3)
+
+ggplotly(graph_3) %>%
+  layout(title = list(text = paste0("Covid Impfungen",
+                                    '<br>',
+                                    '<sup>',
+                                     "Anzahl Impfungen pro Monat",'</sup>')))
+
 ```
 
-### Deutschland Impfung pro Bundesland
+## Deutschland Impfung pro Bundesland
+
+
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 graph_4 <-mobility_vaccine %>%
@@ -260,35 +291,30 @@ graph_4 <-mobility_vaccine %>%
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
-    title = "Covid Impfungen pro Jahr",
-    subtitle = "Impfungen nach Impfstoff",
     y = element_blank(),
     x = element_blank()
   )
 
-
-ggplotly(graph_4)
+ggplotly(graph_4) %>%
+  layout(title = list(text = paste0("Covid Impfungen",
+                                    '<br>',
+                                    '<sup>',
+                                     "Anzahl Impfungen pro Bundesland",'</sup>')))
 ```
+
+
+## Einwohner pro Bundesland
+
+
 
 ```{r}
-mobility_vaccine %>%
-  group_by(Bundesland) %>%
-  summarise(
-    sum_impfungen = sum(Anzahl), 
-    min_anzahl = min(Anzahl),
-    mean_anzahl = mean(Anzahl)
-  ) %>% 
-  arrange(desc(sum_impfungen))
+einwohner <- mobility_vaccine %>%
+  distinct(Bundesland, Einwohner_2020) 
+
+datatable(einwohner, filter = 'top')
 ```
 
 
-### Einwohner pro Bundesland
-
-```{r}
-mobility_vaccine %>%
-  distinct(Bundesland, Einwohner_2020) %>% 
-  arrange(desc(Einwohner_2020))
-```
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
  graph_5<-mobility_vaccine %>%
@@ -301,40 +327,49 @@ mobility_vaccine %>%
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
-    title = "Covid Impfungen pro Jahr",
-    subtitle = "Impfungen nach Impfstoff",
     y = element_blank(),
     x = element_blank()
   )
 
-
-ggplotly(graph_5)
+ggplotly(graph_5) %>%
+  layout(title = list(text = paste0("Einwohner pro Bundesland",
+                                    '<br>',
+                                    '<sup>',
+                                     "absteigend sortiert",'</sup>')))
 ```
 
 
 ## Impfquote
 
 
+
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 graph_6 <- mobility_vaccine %>%
   group_by(Bundesland) %>% 
   summarise(quote = sum(impf_quote)) %>%  
-  ggplot(aes(x = reorder(Bundesland, -quote), y = quote))+
-  geom_col(size=1.2, colour="darkslategray", fill = "darkslategray4")+
+  ggplot()+
+  geom_point(aes(x = reorder(Bundesland, -quote), y = quote), size=2, colour="darkslategray")+
+  geom_col(aes(x = reorder(Bundesland, -quote), y = quote), colour="darkslategray4", fill="darkslategray4")+
   scale_y_continuous(labels = comma_format(big.mark = ".",
                                           decimal.mark = ","))+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
-    title = "Covid Impfungen pro Jahr",
-    subtitle = "Impfungen nach Impfstoff",
     y = "Impfquote [%]",
     x = element_blank()
-  )+
-  ylim(0,100)
+  )+ylim(0,100)
 
-ggplotly(graph_6)
+ggplotly(graph_6) %>%
+  layout(title = list(text = paste0("Impfquote pro Bundesland",
+                                    '<br>',
+                                    '<sup>',
+                                     "absteigend sortiert",'</sup>')))
+
 ```
+
+
+
+## Impfverlauf
 
 
 
@@ -347,95 +382,315 @@ graph_7 <-mobility_vaccine %>%
   scale_y_continuous(labels = comma_format(big.mark = ".",
                                           decimal.mark = ","))+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Anzahl",
+    x = element_blank()
+  )
 
-ggplotly(graph_7)
+
+ggplotly(graph_7) %>%
+  layout(title = list(text = paste0("Anzahl Covid Impfungen",
+                                    '<br>',
+                                    '<sup>',
+                                     "Pro Monat & Bundesland",'</sup>')))
 ```
-
 
 
 
 ## Retail and recreation gesamt
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = retail_and_recreation)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_8 <- ggplot(mobility_vaccine, aes(x = date, y = retail_and_recreation)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_8) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "An Orten wie Einzelhandel und Erholung",'</sup>')))
+
 ```
 
-```{r}
 
 
-ggplot(mobility_vaccine, aes(x = year_month, y = retail_and_recreation, fill = Bundesland, color = Bundesland)) +
-  geom_point()
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_9 <- ggplot(mobility_vaccine, aes(x = date, y = retail_and_recreation, fill = Bundesland, color = Bundesland)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_9) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "An Orten wie Einzelhandel und Erholung",'</sup>')))
 ```
 
 
-## grocery and pharmacy gesamt
+## grocery and pharmacy
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = grocery_and_pharmacy)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_10 <- ggplot(mobility_vaccine, aes(x = date, y = grocery_and_pharmacy)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_10) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "An Orten wie Apotheken und Läden des täglichen Bedarfs",'</sup>')))
+
 ```
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = grocery_and_pharmacy, fill = Bundesland, color = Bundesland)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_11 <- ggplot(mobility_vaccine, aes(x = date, y = grocery_and_pharmacy, fill = Bundesland, color = Bundesland)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_11) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "An Orten wie Apotheken und Läden des täglichen Bedarfs",'</sup>')))
 ```
+
 
 ## parks
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = parks)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_12 <- ggplot(mobility_vaccine, aes(x = date, y = parks)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_12) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "An Orten wie öffentlichen Parks, Schlössern, Waldgebieten etc.",'</sup>')))
+
 ```
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = parks, fill = Bundesland, color = Bundesland)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_13 <- ggplot(mobility_vaccine, aes(x = date, y = parks, fill = Bundesland, color = Bundesland)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_13) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "An Orten wie Apotheken und Läden des täglichen Bedarfs",'</sup>')))
 ```
+
+
 
 ## transit_stations
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = transit_stations)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_14 <- ggplot(mobility_vaccine, aes(x = date, y = transit_stations)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_14) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "An Orten wie Transitstationen",'</sup>')))
+
 ```
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = transit_stations, fill = Bundesland, color = Bundesland)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_15 <- ggplot(mobility_vaccine, aes(x = date, y = transit_stations, fill = Bundesland, color = Bundesland)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_15) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "An Orten wie Transitstationen",'</sup>')))
 ```
+
 
 ## workplaces
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = workplaces)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_16 <- ggplot(mobility_vaccine, aes(x = date, y = workplaces)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_16) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "Am Arbeitsplatz",'</sup>')))
+
 ```
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = workplaces, fill = Bundesland, color = Bundesland)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_17 <- ggplot(mobility_vaccine, aes(x = date, y = workplaces, fill = Bundesland, color = Bundesland)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_17) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "Am Arbeitsplatz",'</sup>')))
 ```
+
 
 ## residential
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = residential)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_18 <- ggplot(mobility_vaccine, aes(x = date, y = residential)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_18) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "An Orten wie Wohngebieten",'</sup>')))
+
 ```
 
-```{r}
-ggplot(mobility_vaccine, aes(x = year_month, y = residential, fill = Bundesland, color = Bundesland)) +
-  geom_point()
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
+graph_19 <- ggplot(mobility_vaccine, aes(x = date, y = residential, fill = Bundesland, color = Bundesland)) +
+  geom_point()+
+  scale_x_date(labels = date_format("%b %y"),
+               date_breaks = ("1 month"))+
+  theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  labs(
+    y = "Abweichung zum Referenzwert [%]",
+    x = element_blank()
+  )
+
+ggplotly(graph_19) %>%
+  layout(title = list(text = paste0("Mobilitätsaufkommen",
+                                    '<br>',
+                                    '<sup>',
+                                     "In Wohngebieten",'</sup>')))
 ```
 
 
+## Mobilitätsaufkommen vs. Impfungen
 
-### Mobilitätsaufkommen vs Impfungen
 
-
-```{r}
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 mobility_vaccine %>%
   group_by(date) %>% 
   summarise(max = mean(retail_and_recreation),
@@ -462,7 +717,8 @@ mobility_vaccine %>%
 ```
 
 
-```{r}
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 mobility_vaccine %>%
   group_by(date) %>% 
   summarise(max = mean(grocery_and_pharmacy),
@@ -488,7 +744,9 @@ mobility_vaccine %>%
 
 ```
 
-```{r}
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 mobility_vaccine %>%
   group_by(date) %>% 
   summarise(max = mean(parks),
@@ -514,7 +772,9 @@ mobility_vaccine %>%
 
 ```
 
-```{r}
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 mobility_vaccine %>%
   group_by(date) %>% 
   summarise(max = mean(transit_stations),
@@ -540,7 +800,9 @@ mobility_vaccine %>%
 
 ```
 
-```{r}
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 mobility_vaccine %>%
   group_by(date) %>% 
   summarise(max = mean(workplaces),
@@ -566,7 +828,9 @@ mobility_vaccine %>%
 
 ```
 
-```{r}
+
+
+```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 mobility_vaccine %>%
   group_by(date) %>% 
   summarise(max = mean(residential),
@@ -591,7 +855,3 @@ mobility_vaccine %>%
   )
 
 ```
-
-
-
-

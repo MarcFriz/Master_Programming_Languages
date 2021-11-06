@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Einleitung {.sidebar}
 
-Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben und für die weitere Verarbeitung vorbereitet sowie bereinigt. Im zweiten Teil werden die Daten analysiert. Für das Projekt werden zwei Hauptdatensätze aus unterschiedlichen Datenquellen herangezogen. Der eine Datensatz spiegelt das Mobilitätsaufkommen der Bevölkerung während Covid wider und der zweite Datensatz zeigt das Impfverhalten der Deutschen.
+Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben und für die weitere Verarbeitung bereinigt und vorbereitet.
 
 # Konzeptionelles Vorgehen
 
@@ -368,8 +368,11 @@ mobility_report %>%
 Ein anderes extrem ist bei der Kategorie Arbeitsstätte zu beobachten. Über den gesamten Betrachtungszeitraum scheint im Mittel die Anzahl der Besuche am Arbeitsplatz relativ gering bzw im negativen Bereich zu sein. Insbesondere in Burkina Faso scheint die Anzahl der Besuche zu Arbeitsstätten über den Betrachtungszeitraum hinweg einen negativen Trend zu haben.
 
 ```{r}
-ggplot(mobility_report %>% filter(country_region == "Yemen" | country_region == "Libya"| country_region == "Niger"| country_region == "Germany"), 
-       aes(x = retail_and_recreation_percent_change_from_baseline)) + geom_histogram(binwidth = 25) + facet_wrap(~ country_region)
+ggplot(mobility_report %>% 
+         filter(country_region == "Yemen" | country_region == "Libya"| country_region == "Niger"| country_region == "Germany"), 
+       aes(x = retail_and_recreation_percent_change_from_baseline)) + 
+       geom_histogram(binwidth = 25) + 
+        facet_wrap(~ country_region)
 
 
 ```
