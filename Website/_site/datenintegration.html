@@ -652,15 +652,9 @@ div.tocify {
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  html_table(fill = TRUE)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#scraping_second &lt;- scraping_second %&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#      as_tibble()</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#scraping_second &lt;- </span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   scraping_second %&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   rename(</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#      ID = &quot;#&quot;,</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#      Bundesland = &quot;Land&quot;</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     )</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#write_csv(scraping_second,&quot;../Website/Daten_Input/Bundesland_Einwohner.csv&quot;)</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Input/Bundesland_Einwohner.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(anzahl)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#write_csv(scraping_second,&quot;../Website/Daten_Input/Bundesland_Einwohner.csv&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Input/Bundesland_Einwohner.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(anzahl)</span></code></pre></div>
 <pre><code>## Rows: 18
 ## Columns: 11
 ## $ Bundesland...Jahr &lt;chr&gt; &quot;Bundesland / Jahr&quot;, &quot;Baden-WÃ¼rttembergÂ Baden-WÃ¼r~
@@ -676,25 +670,25 @@ div.tocify {
 ## $ Einwohner.7       &lt;chr&gt; &quot;1960&quot;, &quot;7.726.859&quot;, &quot;9.494.939&quot;, &quot;2.202.241&quot;, &quot;&quot;, &quot;~</code></pre>
 <p>So wie die Daten nach dem Scraping vorliegen, kann damit noch nicht gearbeitet werden. Im folgenden Abschnitt wird die Bereinigung der Daten beschrieben.</p>
 <p>Als ersten Schritt werden die gewünschten Spalten in <strong>Einwohner_2020</strong> und <strong>Bundesland</strong> umbenannt und zur weiteren Bearbeitung ausgewählt.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> anzahl <span class="sc">%&gt;%</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rename</span>(<span class="at">Einwohner_2020 =</span> <span class="st">&quot;Einwohner&quot;</span>,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Bundesland =</span> <span class="st">&quot;Bundesland...Jahr&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>          <span class="fu">select</span>(Einwohner_2020, Bundesland)</span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(anzahl)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> anzahl <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">rename</span>(<span class="at">Einwohner_2020 =</span> <span class="st">&quot;Einwohner&quot;</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Bundesland =</span> <span class="st">&quot;Bundesland...Jahr&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>          <span class="fu">select</span>(Einwohner_2020, Bundesland)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(anzahl)</span></code></pre></div>
 <pre><code>## Rows: 18
 ## Columns: 2
 ## $ Einwohner_2020 &lt;chr&gt; &quot;2020&quot;, &quot;11.103.043&quot;, &quot;13.140.183&quot;, &quot;3.664.088&quot;, &quot;2.531~
 ## $ Bundesland     &lt;chr&gt; &quot;Bundesland / Jahr&quot;, &quot;Baden-WÃ¼rttembergÂ Baden-WÃ¼rtte~</code></pre>
 <p>Die erste Zeile enthält Informationen über die eigentlichen Spaltenüberschriften. Diese Zeile wird entfernt.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> anzahl[<span class="sc">-</span><span class="dv">1</span>,]</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> anzahl[<span class="sc">-</span><span class="dv">1</span>,]</span></code></pre></div>
 <p>Mit Hilfe von der Funktion <strong>gsub</strong> werden alle ungewünschten Ausdrücke wie zum Beispiel “Ã¼” identifiziert und ersetzt. Um die Spalteneinträge zu teilen wird ein <strong>/</strong> eingefügt. Mit Hilfe dieses Satzzeichens wird im nächsten Schritt die Spalte entsprechend bereinigt.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>anzahl<span class="sc">$</span>Bundesland <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Ã¼&#39;</span>, <span class="st">&#39;ü&#39;</span>, anzahl<span class="sc">$</span>Bundesland)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>anzahl<span class="sc">$</span>Bundesland <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Â&#39;</span>, <span class="st">&#39;/&#39;</span>, anzahl<span class="sc">$</span>Bundesland)</span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> anzahl <span class="sc">%&gt;%</span> </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">separate</span>(Bundesland, <span class="at">into=</span><span class="fu">c</span>(<span class="st">&#39;Bundesland&#39;</span>, <span class="st">&#39;Bundesland2&#39;</span>), <span class="at">sep =</span> <span class="st">&#39;/&#39;</span>, <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">select</span>(Einwohner_2020, Bundesland) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate_all</span>(<span class="fu">funs</span>(<span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>,<span class="st">&quot;&quot;</span>,.)))</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>anzahl</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>anzahl<span class="sc">$</span>Bundesland <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Ã¼&#39;</span>, <span class="st">&#39;ü&#39;</span>, anzahl<span class="sc">$</span>Bundesland)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>anzahl<span class="sc">$</span>Bundesland <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Â&#39;</span>, <span class="st">&#39;/&#39;</span>, anzahl<span class="sc">$</span>Bundesland)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> anzahl <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">separate</span>(Bundesland, <span class="at">into=</span><span class="fu">c</span>(<span class="st">&#39;Bundesland&#39;</span>, <span class="st">&#39;Bundesland2&#39;</span>), <span class="at">sep =</span> <span class="st">&#39;/&#39;</span>, <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">select</span>(Einwohner_2020, Bundesland) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate_all</span>(<span class="fu">funs</span>(<span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>,<span class="st">&quot;&quot;</span>,.)))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>anzahl</span></code></pre></div>
 <pre><code>##    Einwohner_2020             Bundesland
 ## 2        11103043      Baden-Württemberg
 ## 3        13140183                 Bayern
@@ -714,13 +708,13 @@ div.tocify {
 ## 17        2120237              Thüringen
 ## 18       83155031            Deutschland</code></pre>
 <p>Als letzten Schritt wird der Typ der Spalte <strong>Einwohner_2020</strong> in <strong>integer</strong> geändert.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> <span class="fu">transform</span>(anzahl, <span class="at">Einwohner_2020 =</span> <span class="fu">as.integer</span>(Einwohner_2020))</span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(anzahl)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> <span class="fu">transform</span>(anzahl, <span class="at">Einwohner_2020 =</span> <span class="fu">as.integer</span>(Einwohner_2020))</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(anzahl)</span></code></pre></div>
 <pre><code>## Rows: 17
 ## Columns: 2
 ## $ Einwohner_2020 &lt;int&gt; 11103043, 13140183, 3664088, 2531071, 680130, 1852478, ~
 ## $ Bundesland     &lt;chr&gt; &quot;Baden-Württemberg&quot;, &quot;Bayern&quot;, &quot;Berlin&quot;, &quot;Brandenburg&quot;,~</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(anzahl,<span class="st">&quot;../Website/Daten_Output/Einwohnerzahl.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(anzahl,<span class="st">&quot;../Website/Daten_Output/Einwohnerzahl.csv&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -728,19 +722,19 @@ div.tocify {
 <h1><span class="header-section-number">5</span> Daten importieren</h1>
 <div id="mobilitätsdaten" class="section level2" number="5.1">
 <h2><span class="header-section-number">5.1</span> Mobilitätsdaten</h2>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Input/Global_Mobility_Report.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Input/Global_Mobility_Report.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="impfdaten" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> Impfdaten</h2>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Input/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Input/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="bundesland_id" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> Bundesland_ID</h2>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Input/Mapping.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Input/Mapping.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
 </div>
 <div id="einwohnerzahl" class="section level2" number="5.4">
 <h2><span class="header-section-number">5.4</span> Einwohnerzahl</h2>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Output/Einwohnerzahl.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;../Website/Daten_Output/Einwohnerzahl.csv&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="datenexploration" class="section level1" number="6">
@@ -749,8 +743,8 @@ div.tocify {
 <h2><span class="header-section-number">6.1</span> Mobility_report</h2>
 <div id="überblick-über-die-daten" class="section level3" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> Überblick über die Daten</h3>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mobility_report)</span></code></pre></div>
-<pre><code>## Rows: 7,241,902
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mobility_report)</span></code></pre></div>
+<pre><code>## Rows: 7,341,293
 ## Columns: 15
 ## $ country_region_code                                &lt;chr&gt; &quot;AE&quot;, &quot;AE&quot;, &quot;AE&quot;, &quot;~
 ## $ country_region                                     &lt;chr&gt; &quot;United Arab Emirat~
@@ -767,86 +761,86 @@ div.tocify {
 ## $ transit_stations_percent_change_from_baseline      &lt;int&gt; 0, 1, 1, 0, -1, 1, ~
 ## $ workplaces_percent_change_from_baseline            &lt;int&gt; 2, 2, 2, 2, 2, 1, -~
 ## $ residential_percent_change_from_baseline           &lt;int&gt; 1, 1, 1, 1, 1, 1, 1~</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>no_cols<span class="ot">&lt;-</span> <span class="fu">ncol</span>(mobility_report)</span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>no_rows<span class="ot">&lt;-</span><span class="fu">nrow</span>(mobility_report)</span></code></pre></div>
-<p>Die Mobilitätsdaten bestehen aus 15 Spalten und 7241902 Zeilen.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(mobility_report)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>no_cols<span class="ot">&lt;-</span> <span class="fu">ncol</span>(mobility_report)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>no_rows<span class="ot">&lt;-</span><span class="fu">nrow</span>(mobility_report)</span></code></pre></div>
+<p>Die Mobilitätsdaten bestehen aus 15 Spalten und 7341293 Zeilen.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(mobility_report)</span></code></pre></div>
 <p>Die Spalten <strong>census_fips_code</strong>, <strong>sub_region_2</strong> und <strong>metro_area</strong> haben keine Elemente.</p>
 </div>
 <div id="analyse-der-daten" class="section level3" number="6.1.2">
 <h3><span class="header-section-number">6.1.2</span> Analyse der Daten</h3>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date) <span class="sc">%&gt;%</span> </span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">max =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">min =</span> <span class="fu">min</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">max =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">min =</span> <span class="fu">min</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) </span></code></pre></div>
 <pre><code>##          max        min
-## 1 2021-10-11 2020-02-15</code></pre>
+## 1 2021-10-19 2020-02-15</code></pre>
 <p>Der Zeitraum der Betrachtung liegt zwischen dem <strong>15.02.2020</strong> und dem <strong>19.10.2021</strong>. Am 15.02.2021 lagen die ersten Mobilitätsdaten zur Auswertung vor. Am 19.10.2021 wurde für dieses Projekt der Datensatz abgerufen.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>no_country <span class="ot">&lt;-</span> mobility_report <span class="sc">%&gt;%</span> </span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">count</span>(country_region_code, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>no_country <span class="ot">&lt;-</span> mobility_report <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">count</span>(country_region_code, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>Es werden die Mobilitätsdaten von 135 Ländern in dem Datensatz betrachtet.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>top_country <span class="ot">&lt;-</span> mobility_report <span class="sc">%&gt;%</span> </span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">count</span>(country_region, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>top_country <span class="ot">&lt;-</span> mobility_report <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">count</span>(country_region, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
 <p>Die Länder für die es am meisten Mobilitätsdaten gibt, also die meisten Tage aufgenommen wurden, sind USA, Brasilien, Indien, Türkei und Argentinien.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">med=</span><span class="fu">mean</span>(retail_and_recreation_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">min=</span><span class="fu">min</span>(retail_and_recreation_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(retail_and_recreation_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(med)) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">med=</span><span class="fu">mean</span>(retail_and_recreation_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">min=</span><span class="fu">min</span>(retail_and_recreation_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(retail_and_recreation_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(med)) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 4
 ##   country_region     med   min   max
 ##   &lt;chr&gt;            &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
-## 1 Yemen             34.0   -34   116
-## 2 Libya             29.6   -70   142
-## 3 Niger             24.5   -90   116
-## 4 Afghanistan       18.9   -63    81
-## 5 Papua New Guinea  16.7   -74    64</code></pre>
+## 1 Yemen             34.8   -34   116
+## 2 Libya             30.6   -70   153
+## 3 Niger             25.3   -90   116
+## 4 Afghanistan       19.0   -63    81
+## 5 Papua New Guinea  16.9   -74    64</code></pre>
 <p>Wird das Attribut “retail_and_recreation_percent_change_from_baseline” genauer betrachtet fällt auf, dass die Abweichung entgegen des Referenzwertes in den positiven Bereich sowie in den negativen Bereich in den Ländern Yemen, Libya, Niger, Afghanistan und Papua New Guinea sehr hoch ist. Das bedeutet, dass an bestimmten Tagen im Bereich Einzelhandel das Mobilitätsaufkommen sehr hoch entgegen des Referenzwertes oder sehr niedrig war.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">med=</span><span class="fu">mean</span>(grocery_and_pharmacy_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">min=</span><span class="fu">min</span>(grocery_and_pharmacy_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(grocery_and_pharmacy_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(med)) <span class="sc">%&gt;%</span> </span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">med=</span><span class="fu">mean</span>(grocery_and_pharmacy_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">min=</span><span class="fu">min</span>(grocery_and_pharmacy_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(grocery_and_pharmacy_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(med)) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 4
 ##   country_region   med   min   max
 ##   &lt;chr&gt;          &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
-## 1 Libya           58.3   -50   228
-## 2 Mongolia        54.7   -83   183
-## 3 Burkina Faso    54.2   -33   169
-## 4 Egypt           54.2   -74   332
-## 5 Yemen           47.7   -18   128</code></pre>
+## 1 Libya           59.7   -50   228
+## 2 Mongolia        56.0   -83   189
+## 3 Egypt           55.3   -74   332
+## 4 Burkina Faso    55.1   -33   169
+## 5 Yemen           48.6   -18   128</code></pre>
 <p>Im Vergleich zu der Kategorie Einzelhandel und Freizeit ist in der Kategorie Lebensmittel und Apotheke die Verteilung für die Länder Libya, Mongolia, Ägypten, Burkina Faso und Yemen in den positiven Bereich höher. Bedeutet, dass das Mobilitätsaufkommen im Vergleich zum Referenzwert in den positiven Bereich stark abweicht und die Bewohner in dieser Kategorie trotz Corona vermehrt unterwegs waren.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">med=</span><span class="fu">mean</span>(workplaces_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">min=</span><span class="fu">min</span>(workplaces_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(workplaces_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(med)) <span class="sc">%&gt;%</span> </span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">med=</span><span class="fu">mean</span>(workplaces_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">min=</span><span class="fu">min</span>(workplaces_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(workplaces_percent_change_from_baseline, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(med)) <span class="sc">%&gt;%</span> </span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 4
-##   country_region      med   min   max
-##   &lt;chr&gt;             &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
-## 1 Papua New Guinea 11.7     -74    49
-## 2 Yemen             2.98    -52    43
-## 3 Kenya            -0.296   -73    96
-## 4 Brazil           -1.40    -89    96
-## 5 Burkina Faso     -3.31    -78    31</code></pre>
+##   country_region       med   min   max
+##   &lt;chr&gt;              &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+## 1 Papua New Guinea 11.9      -74    49
+## 2 Yemen             3.34     -52    43
+## 3 Kenya             0.0994   -73    96
+## 4 Brazil           -1.23     -89    99
+## 5 Burkina Faso     -3.25     -78    31</code></pre>
 <p>Ein anderes extrem ist bei der Kategorie Arbeitsstätte zu beobachten. Über den gesamten Betrachtungszeitraum scheint im Mittel die Anzahl der Besuche am Arbeitsplatz relativ gering bzw im negativen Bereich zu sein. Insbesondere in Burkina Faso scheint die Anzahl der Besuche zu Arbeitsstätten über den Betrachtungszeitraum hinweg einen negativen Trend zu haben.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mobility_report <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country_region <span class="sc">==</span> <span class="st">&quot;Yemen&quot;</span> <span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Libya&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Niger&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Germany&quot;</span>), </span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> retail_and_recreation_percent_change_from_baseline)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">25</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> country_region)</span></code></pre></div>
-<pre><code>## Warning: Removed 5666 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="datenintegration_files/figure-html/unnamed-chunk-35-1.png" width="1152" /></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mobility_report <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country_region <span class="sc">==</span> <span class="st">&quot;Yemen&quot;</span> <span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Libya&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Niger&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Germany&quot;</span>), </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> retail_and_recreation_percent_change_from_baseline)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">25</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> country_region)</span></code></pre></div>
+<pre><code>## Warning: Removed 5748 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="datenintegration_files/figure-html/unnamed-chunk-34-1.png" width="1152" /></p>
 </div>
 </div>
 <div id="impfdaten-1" class="section level2" number="6.2">
 <h2><span class="header-section-number">6.2</span> Impfdaten</h2>
 <div id="überblick-über-die-daten-1" class="section level3" number="6.2.1">
 <h3><span class="header-section-number">6.2.1</span> Überblick über die Daten</h3>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(vaccine_report)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(vaccine_report)</span></code></pre></div>
 <pre><code>## Rows: 28,798
 ## Columns: 5
 ## $ Impfdatum            &lt;chr&gt; &quot;2020-12-27&quot;, &quot;2020-12-27&quot;, &quot;2020-12-27&quot;, &quot;2020-1~
@@ -854,22 +848,22 @@ div.tocify {
 ## $ Impfstoff            &lt;chr&gt; &quot;Comirnaty&quot;, &quot;Comirnaty&quot;, &quot;Comirnaty&quot;, &quot;Comirnaty~
 ## $ Impfserie            &lt;int&gt; 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1~
 ## $ Anzahl               &lt;int&gt; 808, 443, 373, 511, 3, 8723, 9, 2712, 2, 1252, 26~</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>no_rows_vaccine<span class="ot">&lt;-</span><span class="fu">nrow</span>(vaccine_report)</span></code></pre></div>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>no_cols_vaccine<span class="ot">&lt;-</span> <span class="fu">ncol</span>(vaccine_report)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>no_rows_vaccine<span class="ot">&lt;-</span><span class="fu">nrow</span>(vaccine_report)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>no_cols_vaccine<span class="ot">&lt;-</span> <span class="fu">ncol</span>(vaccine_report)</span></code></pre></div>
 <p>Die Impfdaten bestehen aus 5 Spalten und 28798 Zeilen. Der Datensatz enthält Informationen über das Impfdatum, das Bundesland in welchem die Impfung verabreicht wurde, den geimpften Impfstoff und die Serie aus welcher der Impfstoff vorliegt sowie die Anzahl der verabreichten Impfdosen.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(vaccine_report)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(vaccine_report)</span></code></pre></div>
 <p>Der Datensatz ist vollständig, keine Elemente fehlen in den Spalten.</p>
 </div>
 <div id="analyse-der-daten-1" class="section level3" number="6.2.2">
 <h3><span class="header-section-number">6.2.2</span> Analyse der Daten</h3>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="sc">%&gt;%</span> </span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Impfdatum) <span class="sc">%&gt;%</span> </span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">max =</span> <span class="fu">max</span>(Impfdatum, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">min =</span> <span class="fu">min</span>(Impfdatum, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="sc">%&gt;%</span> </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Impfdatum) <span class="sc">%&gt;%</span> </span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">max =</span> <span class="fu">max</span>(Impfdatum, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">min =</span> <span class="fu">min</span>(Impfdatum, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) </span></code></pre></div>
 <pre><code>##          max        min
 ## 1 2021-10-15 2020-12-27</code></pre>
 <p>Bei den Impfdaten wird der Zeitraum vom 27.12.2020 bis zum 15.10.2021 betrachtet. Der Start des Zeitraums ist somit ca. 1 Jahr später was der Zeit zur Enticklung der Impfstoffe entspricht.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="sc">%&gt;%</span> </span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(BundeslandId_Impfort) </span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="sc">%&gt;%</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(BundeslandId_Impfort) </span></code></pre></div>
 <pre><code>##    BundeslandId_Impfort    n
 ## 1                     1 1772
 ## 2                     2 1635
@@ -890,10 +884,10 @@ div.tocify {
 ## 17                   17  910</code></pre>
 <p>Für 17 Bundesländer wurden die Impfdaten aufgenommen. Das 17te Bundesland ist in diesem Falls Deutschland. Hier konnte keine genaue Zuordnung gemacht werden. Zur weiteren Betrachtung wird diese ID nicht weiter berücksichtigt.</p>
 <p>Im Datensatz sind die vier Impfstoffe aufgeführt:</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="sc">%&gt;%</span> </span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Impfstoff) <span class="sc">%&gt;%</span> </span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sum =</span> <span class="fu">sum</span>(Anzahl)) <span class="sc">%&gt;%</span> </span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sum))</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="sc">%&gt;%</span> </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Impfstoff) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sum =</span> <span class="fu">sum</span>(Anzahl)) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sum))</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 2
 ##   Impfstoff        sum
 ##   &lt;chr&gt;          &lt;int&gt;
@@ -903,10 +897,10 @@ div.tocify {
 ## 4 Janssen      3258429</code></pre>
 <p>Der häufigste Impfstoff ist <strong>Comirnaty/Biontech</strong> gefolgt von <strong>AstraZeneca</strong> und <strong>Moderna</strong>. Der Impfstoff mit den am wenigsten verabreichten Dosen ist <strong>Janssen</strong>. Bei dem Impfstoff <strong>Janssen</strong> wird der Schutz bereits nach einer verabreichten Dosis erreicht. Daraus lässt sich der deutliche Unterschied zu den anderen Impfstoffen erklären.</p>
 <p>Analysen bezogen auf die Bundesländer können erst nach den weiteren Schritten erfolgen. Da in dem Impfdatensatz lediglich die Bundesland ID gegeben ist:</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="sc">%&gt;%</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(BundeslandId_Impfort) <span class="sc">%&gt;%</span> </span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sum =</span> <span class="fu">sum</span>(Anzahl)) <span class="sc">%&gt;%</span> </span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sum))</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="sc">%&gt;%</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(BundeslandId_Impfort) <span class="sc">%&gt;%</span> </span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sum =</span> <span class="fu">sum</span>(Anzahl)) <span class="sc">%&gt;%</span> </span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sum))</span></code></pre></div>
 <pre><code>## # A tibble: 17 x 2
 ##    BundeslandId_Impfort      sum
 ##                   &lt;int&gt;    &lt;int&gt;
@@ -939,108 +933,104 @@ div.tocify {
 <div id="mobility_report-1" class="section level2" number="7.1">
 <h2><span class="header-section-number">7.1</span> Mobility_report</h2>
 <p>Da das Projektziel ist, Deutschland bei dem Impffortschritt zu unterstützen, wird als erstes nach dem <strong>country_region_code</strong> gefiltert.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> mobility_report <span class="sc">%&gt;%</span> </span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">filter</span>(country_region_code <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;DE&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> mobility_report <span class="sc">%&gt;%</span> </span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">filter</span>(country_region_code <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;DE&quot;</span>))</span></code></pre></div>
 <p>In Abschnitt 3 wurde identifieziert, dass die Variablen: “sub_region_2”, “metro_area”, “census_fips_code” keine Elemente enthalten. Die Variable “place_id” ist für die weitere Betrachtung nicht relevant. Aus diesem Grund werden diese Variablen aus dem Datensatz eliminiert:</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>excluded_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sub_region_2&quot;</span>, <span class="st">&quot;metro_area&quot;</span>, <span class="st">&quot;census_fips_code&quot;</span>, <span class="st">&quot;place_id&quot;</span>)</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> <span class="fu">select</span>(mobility_germany, <span class="sc">-</span>excluded_vars)</span></code></pre></div>
-<pre><code>## Note: Using an external vector in selections is ambiguous.
-## i Use `all_of(excluded_vars)` instead of `excluded_vars` to silence this message.
-## i See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
-## This message is displayed once per session.</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>excluded_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sub_region_2&quot;</span>, <span class="st">&quot;metro_area&quot;</span>, <span class="st">&quot;census_fips_code&quot;</span>, <span class="st">&quot;place_id&quot;</span>)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> <span class="fu">select</span>(mobility_germany, <span class="sc">-</span>excluded_vars)</span></code></pre></div>
 <p>Im nächsten Schritt wird überprüft ob alle Bundesländer in dem Datensatz enthalten sind und die gleiche Anzahl an Einträgen haben.</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="sc">%&gt;%</span> </span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sub_region_1) <span class="sc">%&gt;%</span></span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(sub_region_1)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="sc">%&gt;%</span> </span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sub_region_1) <span class="sc">%&gt;%</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(sub_region_1)</span></code></pre></div>
 <pre><code>## # A tibble: 17 x 2
 ## # Groups:   sub_region_1 [17]
 ##    sub_region_1                 n
 ##    &lt;chr&gt;                    &lt;int&gt;
-##  1 &quot;&quot;                         605
-##  2 &quot;Baden-WÃ¼rttemberg&quot;       605
-##  3 &quot;Bavaria&quot;                  605
-##  4 &quot;Berlin&quot;                   605
-##  5 &quot;Brandenburg&quot;              605
-##  6 &quot;Bremen&quot;                   605
-##  7 &quot;Hamburg&quot;                  605
-##  8 &quot;Hessen&quot;                   605
-##  9 &quot;Lower Saxony&quot;             605
-## 10 &quot;Mecklenburg-Vorpommern&quot;   605
-## 11 &quot;North Rhine-Westphalia&quot;   605
-## 12 &quot;Rhineland-Palatinate&quot;     605
-## 13 &quot;Saarland&quot;                 605
-## 14 &quot;Saxony&quot;                   605
-## 15 &quot;Saxony-Anhalt&quot;            605
-## 16 &quot;Schleswig-Holstein&quot;       605
-## 17 &quot;Thuringia&quot;                605</code></pre>
+##  1 &quot;&quot;                         613
+##  2 &quot;Baden-WÃ¼rttemberg&quot;       613
+##  3 &quot;Bavaria&quot;                  613
+##  4 &quot;Berlin&quot;                   613
+##  5 &quot;Brandenburg&quot;              613
+##  6 &quot;Bremen&quot;                   613
+##  7 &quot;Hamburg&quot;                  613
+##  8 &quot;Hessen&quot;                   613
+##  9 &quot;Lower Saxony&quot;             613
+## 10 &quot;Mecklenburg-Vorpommern&quot;   613
+## 11 &quot;North Rhine-Westphalia&quot;   613
+## 12 &quot;Rhineland-Palatinate&quot;     613
+## 13 &quot;Saarland&quot;                 613
+## 14 &quot;Saxony&quot;                   613
+## 15 &quot;Saxony-Anhalt&quot;            613
+## 16 &quot;Schleswig-Holstein&quot;       613
+## 17 &quot;Thuringia&quot;                613</code></pre>
 <p>Alle 16 Bundesländer sind im Datensatz enthalten. Im nächsten Schritt wird das <strong>Ã¼</strong> mit dem <strong>ü</strong> ersetzt.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>mobility_germany<span class="sc">$</span>sub_region_1 <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Ã¼&#39;</span>, <span class="st">&#39;ü&#39;</span>, mobility_germany<span class="sc">$</span>sub_region_1)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>mobility_germany<span class="sc">$</span>sub_region_1 <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Ã¼&#39;</span>, <span class="st">&#39;ü&#39;</span>, mobility_germany<span class="sc">$</span>sub_region_1)</span></code></pre></div>
 <p>In dem Datensatz gibt es eine Zeile die keinem Bundesland zugeordnet ist. Hier sind die Werte für Deutschland hinterlegt. Da in dem Projekt auf Bundeslandebene gearbeitet wird kann diese Zeile entfallen.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> mobility_germany <span class="sc">%&gt;%</span> </span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(sub_region_1 <span class="sc">!=</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> mobility_germany <span class="sc">%&gt;%</span> </span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(sub_region_1 <span class="sc">!=</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
 <p>Im letzten Schritt werden die Variablennamen und die Bundeslandbezeichungen (Englisch in Deutsch) geändert:</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> mobility_germany <span class="sc">%&gt;%</span> </span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rename</span>(<span class="at">iso_code =</span> <span class="st">&quot;iso_3166_2_code&quot;</span>,</span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">retail_and_recreation =</span> <span class="st">&quot;retail_and_recreation_percent_change_from_baseline&quot;</span>,</span>
-<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">grocery_and_pharmacy =</span> <span class="st">&quot;grocery_and_pharmacy_percent_change_from_baseline&quot;</span>,</span>
-<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">parks =</span> <span class="st">&quot;parks_percent_change_from_baseline&quot;</span>,</span>
-<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">transit_stations =</span> <span class="st">&quot;transit_stations_percent_change_from_baseline&quot;</span>,</span>
-<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">workplaces =</span> <span class="st">&quot;workplaces_percent_change_from_baseline&quot;</span>,</span>
-<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">residential =</span> <span class="st">&quot;residential_percent_change_from_baseline&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> mobility_germany <span class="sc">%&gt;%</span> </span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">mutate</span>(<span class="at">sub_region =</span> <span class="fu">case_when</span>(sub_region_1 <span class="sc">==</span> <span class="st">&quot;Bavaria&quot;</span> <span class="sc">~</span> <span class="st">&quot;Bayern&quot;</span>,</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Lower Saxony&quot;</span> <span class="sc">~</span> <span class="st">&quot;Niedersachsen&quot;</span>,</span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;North Rhine-Westphalia&quot;</span> <span class="sc">~</span> <span class="st">&quot;Nordrhein-Westfalen&quot;</span>,</span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Rhineland-Palatinate&quot;</span> <span class="sc">~</span> <span class="st">&quot;Rheinland-Pfalz&quot;</span>,</span>
-<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Saxony&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sachsen&quot;</span>,</span>
-<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Saxony-Anhalt&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sachsen-Anhalt&quot;</span>,</span>
-<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Thuringia&quot;</span> <span class="sc">~</span> <span class="st">&quot;Thüringen&quot;</span>,</span>
-<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Baden-Württemberg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Baden-Württemberg&quot;</span>,</span>
-<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Berlin&quot;</span> <span class="sc">~</span> <span class="st">&quot;Berlin&quot;</span>,</span>
-<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Brandenburg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Brandenburg&quot;</span>,</span>
-<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Bremen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Bremen&quot;</span>,</span>
-<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Hamburg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Hamburg&quot;</span>,</span>
-<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Hessen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Hessen&quot;</span>,</span>
-<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Mecklenburg-Vorpommern&quot;</span> <span class="sc">~</span> <span class="st">&quot;Mecklenburg-Vorpommern&quot;</span>,</span>
-<span id="cb70-16"><a href="#cb70-16" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Saarland&quot;</span> <span class="sc">~</span> <span class="st">&quot;Saarland&quot;</span>,</span>
-<span id="cb70-17"><a href="#cb70-17" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Schleswig-Holstein&quot;</span> <span class="sc">~</span> <span class="st">&quot;Schleswig-Holstein&quot;</span>,</span>
-<span id="cb70-18"><a href="#cb70-18" aria-hidden="true" tabindex="-1"></a>                                            )) </span></code></pre></div>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> <span class="fu">select</span>(mobility_germany, <span class="sc">-</span> sub_region_1)</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> mobility_germany <span class="sc">%&gt;%</span> </span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rename</span>(<span class="at">iso_code =</span> <span class="st">&quot;iso_3166_2_code&quot;</span>,</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">retail_and_recreation =</span> <span class="st">&quot;retail_and_recreation_percent_change_from_baseline&quot;</span>,</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">grocery_and_pharmacy =</span> <span class="st">&quot;grocery_and_pharmacy_percent_change_from_baseline&quot;</span>,</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">parks =</span> <span class="st">&quot;parks_percent_change_from_baseline&quot;</span>,</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">transit_stations =</span> <span class="st">&quot;transit_stations_percent_change_from_baseline&quot;</span>,</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">workplaces =</span> <span class="st">&quot;workplaces_percent_change_from_baseline&quot;</span>,</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">residential =</span> <span class="st">&quot;residential_percent_change_from_baseline&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> mobility_germany <span class="sc">%&gt;%</span> </span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">mutate</span>(<span class="at">sub_region =</span> <span class="fu">case_when</span>(sub_region_1 <span class="sc">==</span> <span class="st">&quot;Bavaria&quot;</span> <span class="sc">~</span> <span class="st">&quot;Bayern&quot;</span>,</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Lower Saxony&quot;</span> <span class="sc">~</span> <span class="st">&quot;Niedersachsen&quot;</span>,</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;North Rhine-Westphalia&quot;</span> <span class="sc">~</span> <span class="st">&quot;Nordrhein-Westfalen&quot;</span>,</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Rhineland-Palatinate&quot;</span> <span class="sc">~</span> <span class="st">&quot;Rheinland-Pfalz&quot;</span>,</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Saxony&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sachsen&quot;</span>,</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Saxony-Anhalt&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sachsen-Anhalt&quot;</span>,</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Thuringia&quot;</span> <span class="sc">~</span> <span class="st">&quot;Thüringen&quot;</span>,</span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Baden-Württemberg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Baden-Württemberg&quot;</span>,</span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Berlin&quot;</span> <span class="sc">~</span> <span class="st">&quot;Berlin&quot;</span>,</span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Brandenburg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Brandenburg&quot;</span>,</span>
+<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Bremen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Bremen&quot;</span>,</span>
+<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Hamburg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Hamburg&quot;</span>,</span>
+<span id="cb68-14"><a href="#cb68-14" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Hessen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Hessen&quot;</span>,</span>
+<span id="cb68-15"><a href="#cb68-15" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Mecklenburg-Vorpommern&quot;</span> <span class="sc">~</span> <span class="st">&quot;Mecklenburg-Vorpommern&quot;</span>,</span>
+<span id="cb68-16"><a href="#cb68-16" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Saarland&quot;</span> <span class="sc">~</span> <span class="st">&quot;Saarland&quot;</span>,</span>
+<span id="cb68-17"><a href="#cb68-17" aria-hidden="true" tabindex="-1"></a>                                            sub_region_1 <span class="sc">==</span> <span class="st">&quot;Schleswig-Holstein&quot;</span> <span class="sc">~</span> <span class="st">&quot;Schleswig-Holstein&quot;</span>,</span>
+<span id="cb68-18"><a href="#cb68-18" aria-hidden="true" tabindex="-1"></a>                                            )) </span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>mobility_germany <span class="ot">&lt;-</span> <span class="fu">select</span>(mobility_germany, <span class="sc">-</span> sub_region_1)</span></code></pre></div>
 </div>
 <div id="vaccine_report" class="section level2" number="7.2">
 <h2><span class="header-section-number">7.2</span> Vaccine_report</h2>
 <p>Da beide Datensätze zusammengeführt werden, erfolgt im nächsten Schitt die Anpassung der Spaltennamen.</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="ot">&lt;-</span> vaccine_report <span class="sc">%&gt;%</span> </span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename</span>(<span class="at">date =</span> <span class="st">&quot;Impfdatum&quot;</span>,</span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ID =</span> <span class="st">&quot;BundeslandId_Impfort&quot;</span></span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>                     )</span></code></pre></div>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(vaccine_report)</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="ot">&lt;-</span> vaccine_report <span class="sc">%&gt;%</span> </span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename</span>(<span class="at">date =</span> <span class="st">&quot;Impfdatum&quot;</span>,</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ID =</span> <span class="st">&quot;BundeslandId_Impfort&quot;</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>                     )</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(vaccine_report)</span></code></pre></div>
 <pre><code>## [1] &quot;date&quot;      &quot;ID&quot;        &quot;Impfstoff&quot; &quot;Impfserie&quot; &quot;Anzahl&quot;</code></pre>
 <p>Wie im dritten Abschnitt bereits beschrieben fehlt zur genauen Zuordnung der Bundesland ID der Bundeslandname. Hierfür wurde eine Mappingtabelle aus Wikipedia gescraped. Diese wird zur Zusammenführung ebenfalls vorbereitet.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>id<span class="sc">$</span>Bundesland <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Ã¼&#39;</span>, <span class="st">&#39;ü&#39;</span>, id<span class="sc">$</span>Bundesland)</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>id<span class="sc">$</span>Bundesland <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Ã¼&#39;</span>, <span class="st">&#39;ü&#39;</span>, id<span class="sc">$</span>Bundesland)</span></code></pre></div>
 <p>Die Bundeslandnamen weichen von den anderen Datensätzen ab. Deshalb werden die Bezeichnungen entsprechend angepasst:</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> id <span class="sc">%&gt;%</span> </span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">Bundesland =</span> <span class="fu">case_when</span>(Bundesland <span class="sc">==</span> <span class="st">&quot;Freistaat Bayern&quot;</span> <span class="sc">~</span> <span class="st">&quot;Bayern&quot;</span>,</span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Niedersachsen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Niedersachsen&quot;</span>,</span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Nordrhein-Westfalen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Nordrhein-Westfalen&quot;</span>,</span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Rheinland-Pfalz&quot;</span> <span class="sc">~</span> <span class="st">&quot;Rheinland-Pfalz&quot;</span>,</span>
-<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Freistaat Sachsen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sachsen&quot;</span>,</span>
-<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Sachsen-Anhalt&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sachsen-Anhalt&quot;</span>,</span>
-<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Freistaat Thüringen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Thüringen&quot;</span>,</span>
-<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Baden-Württemberg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Baden-Württemberg&quot;</span>,</span>
-<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Berlin&quot;</span> <span class="sc">~</span> <span class="st">&quot;Berlin&quot;</span>,</span>
-<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Brandenburg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Brandenburg&quot;</span>,</span>
-<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Freie Hansestadt Bremen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Bremen&quot;</span>,</span>
-<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Freie und Hansestadt Hamburg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Hamburg&quot;</span>,</span>
-<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Hessen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Hessen&quot;</span>,</span>
-<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Mecklenburg-Vorpommern&quot;</span> <span class="sc">~</span> <span class="st">&quot;Mecklenburg-Vorpommern&quot;</span>,</span>
-<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Saarland&quot;</span> <span class="sc">~</span> <span class="st">&quot;Saarland&quot;</span>,</span>
-<span id="cb76-17"><a href="#cb76-17" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Schleswig-Holstein&quot;</span> <span class="sc">~</span> <span class="st">&quot;Schleswig-Holstein&quot;</span>,</span>
-<span id="cb76-18"><a href="#cb76-18" aria-hidden="true" tabindex="-1"></a>                                          ))</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> id <span class="sc">%&gt;%</span> </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">Bundesland =</span> <span class="fu">case_when</span>(Bundesland <span class="sc">==</span> <span class="st">&quot;Freistaat Bayern&quot;</span> <span class="sc">~</span> <span class="st">&quot;Bayern&quot;</span>,</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Niedersachsen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Niedersachsen&quot;</span>,</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Nordrhein-Westfalen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Nordrhein-Westfalen&quot;</span>,</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Rheinland-Pfalz&quot;</span> <span class="sc">~</span> <span class="st">&quot;Rheinland-Pfalz&quot;</span>,</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Freistaat Sachsen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sachsen&quot;</span>,</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Sachsen-Anhalt&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sachsen-Anhalt&quot;</span>,</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Freistaat Thüringen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Thüringen&quot;</span>,</span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Baden-Württemberg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Baden-Württemberg&quot;</span>,</span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Berlin&quot;</span> <span class="sc">~</span> <span class="st">&quot;Berlin&quot;</span>,</span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Brandenburg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Brandenburg&quot;</span>,</span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Freie Hansestadt Bremen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Bremen&quot;</span>,</span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Freie und Hansestadt Hamburg&quot;</span> <span class="sc">~</span> <span class="st">&quot;Hamburg&quot;</span>,</span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Hessen&quot;</span> <span class="sc">~</span> <span class="st">&quot;Hessen&quot;</span>,</span>
+<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Mecklenburg-Vorpommern&quot;</span> <span class="sc">~</span> <span class="st">&quot;Mecklenburg-Vorpommern&quot;</span>,</span>
+<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Saarland&quot;</span> <span class="sc">~</span> <span class="st">&quot;Saarland&quot;</span>,</span>
+<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a>                                          Bundesland <span class="sc">==</span> <span class="st">&quot;Schleswig-Holstein&quot;</span> <span class="sc">~</span> <span class="st">&quot;Schleswig-Holstein&quot;</span>,</span>
+<span id="cb74-18"><a href="#cb74-18" aria-hidden="true" tabindex="-1"></a>                                          ))</span></code></pre></div>
 <p>Über einen <strong>left join</strong> wird der Datensatz <strong>vaccine_report</strong> und <strong>id</strong> zusammengeführt und als <strong>vaccine_report</strong> abgelegt:</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="ot">&lt;-</span> <span class="fu">left_join</span>(vaccine_report, id, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;ID&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(vaccine_report)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="ot">&lt;-</span> <span class="fu">left_join</span>(vaccine_report, id, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;ID&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(vaccine_report)</span></code></pre></div>
 <pre><code>## Rows: 28,798
 ## Columns: 6
 ## $ date       &lt;chr&gt; &quot;2020-12-27&quot;, &quot;2020-12-27&quot;, &quot;2020-12-27&quot;, &quot;2020-12-27&quot;, &quot;20~
@@ -1050,10 +1040,10 @@ div.tocify {
 ## $ Anzahl     &lt;int&gt; 808, 443, 373, 511, 3, 8723, 9, 2712, 2, 1252, 2610, 3, 360~
 ## $ Bundesland &lt;chr&gt; &quot;Schleswig-Holstein&quot;, &quot;Hamburg&quot;, &quot;Niedersachsen&quot;, &quot;Bremen&quot;,~</code></pre>
 <p>Für die weitere Analyse wird die Anzahl der Einwohner pro Bundesland benötigt. Hierfür wurden die notwendigen Informationen über das Webscraping zur Verfügung gestellt. Im folgenden Abschnitt wird der Datensatz <strong>population</strong> zu dem Datensatz <strong>vaccine_report</strong> hinzugefügt:</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>population<span class="sc">$</span>Bundesland <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Ã¼&#39;</span>, <span class="st">&#39;ü&#39;</span>, population<span class="sc">$</span>Bundesland)</span></code></pre></div>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="ot">&lt;-</span> <span class="fu">left_join</span>(vaccine_report, population, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;Bundesland&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>population<span class="sc">$</span>Bundesland <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Ã¼&#39;</span>, <span class="st">&#39;ü&#39;</span>, population<span class="sc">$</span>Bundesland)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>vaccine_report <span class="ot">&lt;-</span> <span class="fu">left_join</span>(vaccine_report, population, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;Bundesland&quot;</span>))</span></code></pre></div>
 <p>Der gewünschte Datensatz ist jetzt verfügbar und kann im nächsten Abschnitt mit den Mobilitätsdaten kombiniert werden.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(vaccine_report)</span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(vaccine_report)</span></code></pre></div>
 <pre><code>## Rows: 28,798
 ## Columns: 7
 ## $ date           &lt;chr&gt; &quot;2020-12-27&quot;, &quot;2020-12-27&quot;, &quot;2020-12-27&quot;, &quot;2020-12-27&quot;,~
@@ -1067,9 +1057,9 @@ div.tocify {
 <div id="zusammenführung-der-datensätze" class="section level2" number="7.3">
 <h2><span class="header-section-number">7.3</span> Zusammenführung der Datensätze</h2>
 <p>Die Zusammenführung der beiden Datensätze erfolgt über die Variablen <strong>date</strong> und <strong>Bundesland</strong> bzw. <strong>sub_region</strong>:</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>mobility_vaccine <span class="ot">&lt;-</span> <span class="fu">merge</span>(vaccine_report, mobility_germany, <span class="at">by.x=</span><span class="fu">c</span>(<span class="st">&quot;date&quot;</span>, <span class="st">&quot;Bundesland&quot;</span>), <span class="at">by.y=</span><span class="fu">c</span>(<span class="st">&quot;date&quot;</span>, <span class="st">&quot;sub_region&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>mobility_vaccine <span class="ot">&lt;-</span> <span class="fu">merge</span>(vaccine_report, mobility_germany, <span class="at">by.x=</span><span class="fu">c</span>(<span class="st">&quot;date&quot;</span>, <span class="st">&quot;Bundesland&quot;</span>), <span class="at">by.y=</span><span class="fu">c</span>(<span class="st">&quot;date&quot;</span>, <span class="st">&quot;sub_region&quot;</span>))</span></code></pre></div>
 <p>Der finale Datensatz wird als .csv gespeichert und abgelegt:</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(mobility_vaccine, <span class="st">&quot;../Website/Daten_Output/Mobility_vaccine.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(mobility_vaccine, <span class="st">&quot;../Website/Daten_Output/Mobility_vaccine.csv&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 

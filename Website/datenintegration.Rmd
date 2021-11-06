@@ -191,14 +191,6 @@ url_second = "https://de.wikipedia.org/wiki/Liste_der_deutschen_Bundesl%C3%A4nde
 #      as_tibble()
 ```
 
-```{r, message=FALSE}
-#scraping_second <- 
-#   scraping_second %>%
-#   rename(
-#      ID = "#",
-#      Bundesland = "Land"
-#     )
-```
 
 ```{r, message=FALSE}
 #write_csv(scraping_second,"../Website/Daten_Input/Bundesland_Einwohner.csv")
