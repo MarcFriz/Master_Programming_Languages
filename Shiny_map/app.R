@@ -96,29 +96,31 @@ ui <- dashboardPage(dashboardHeader(title='Impfauswertung'),
                       )))
 
 server <- function(input, output, session) {
-  #Colore for Mobility
+  #Color for Mobility
   pal2 <- colorFactor(
     palette = c('blue', 'yellow', 'red'),
     domain = data$parks
   )
   
   # create the table
-  output$table <- renderDataTable({data %>% filter(month == input$months) %>% select(date, 
-                                                                                     Bundesland, 
-                                                                                     Impfstoff, 
-                                                                                     Einwohner_2020, 
-                                                                                     Anzahl,
-                                                                                     iso_code, 
-                                                                                     retail_and_recreation,
-                                                                                     grocery_and_pharmacy,
-                                                                                     parks,
-                                                                                     transit_stations,
-                                                                                     residential,
-                                                                                     workplaces,
-                                                                                     longitude,
-                                                                                     latitude,
-                                                                                     )})
-  
+  output$table <- renderDataTable({data %>% 
+      filter((month == input$months) ) %>% 
+      select(date, 
+             Bundesland, 
+             Impfstoff, 
+             Einwohner_2020, 
+             Anzahl,
+             iso_code, 
+             retail_and_recreation,
+             grocery_and_pharmacy,
+             parks,
+             transit_stations,
+             residential,
+             workplaces,
+             longitude,
+             latitude
+      )})
+
   # create the map
   output$map <- renderLeaflet({
     leaflet(data) %>% 
