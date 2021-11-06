@@ -66,20 +66,15 @@ ui <- dashboardPage(dashboardHeader(title='Impfauswertung'),
                       max = 12,
                       value = 1
                     )),
-                    dashboardBody(#sidebarLayout(
-                      #sidebarPanel(),
-                      
-                      
-                      
+                    dashboardBody(
                       fluidPage(
                         mainPanel(
-                          #this will create a space for us to display our map
                           leafletOutput(
-                            outputId = "mymap",
+                            outputId = "map",
                             height = 600,
                             width = 1500
                           ),
-                          #this allows me to put the checkmarks ontop of the map to allow people to view earthquake depth or overlay a heatmap
+                          # checks on the map for Mobility
                           absolutePanel(
                             top = 70,
                             left = 20,
@@ -101,23 +96,33 @@ ui <- dashboardPage(dashboardHeader(title='Impfauswertung'),
                       )))
 
 server <- function(input, output, session) {
-  #define the color pallate for the magnitidue of the earthquake
-  pal <- colorNumeric(
-    palette = c('gold', 'orange', 'dark orange', 'orange red', 'red', 'dark red'),
-    domain = data$parks)
-  
-  #define the color of for the depth of the earquakes
+  #Colore for Mobility
   pal2 <- colorFactor(
     palette = c('blue', 'yellow', 'red'),
     domain = data$parks
   )
   
-  output$table <- renderDataTable({data %>% filter(month == input$months)})
+  # create the table
+  output$table <- renderDataTable({data %>% filter(month == input$months) %>% select(date, 
+                                                                                     Bundesland, 
+                                                                                     Impfstoff, 
+                                                                                     Einwohner_2020, 
+                                                                                     Anzahl,
+                                                                                     iso_code, 
+                                                                                     retail_and_recreation,
+                                                                                     grocery_and_pharmacy,
+                                                                                     parks,
+                                                                                     transit_stations,
+                                                                                     residential,
+                                                                                     workplaces,
+                                                                                     longitude,
+                                                                                     latitude,
+                                                                                     )})
   
-  #create the map
-  output$mymap <- renderLeaflet({
+  # create the map
+  output$map <- renderLeaflet({
     leaflet(data) %>% 
-      setView(lng = 10, lat = 51, zoom = 5)  %>% #setting the view over ~ center of North America
+      setView(lng = 10, lat = 51, zoom = 5)  %>% 
       addTiles() %>% 
       addCircles(data = data %>% filter(month == input$months), 
                  lat = ~ latitude, 
@@ -126,15 +131,14 @@ server <- function(input, output, session) {
                  radius = ~Anzahl, 
                  popup = ~as.character(Bundesland), 
                  label = ~as.character(paste0("Anzahl: ", sep = " ", Anzahl)), 
-                 #color = ~pal(parks), 
                  fillOpacity = 0.5
                  )
   })
 
   
-  #next we use the observe function to make the checkboxes dynamic. If you leave this part out you will see that the checkboxes, when clicked on the first time, display our filters...But if you then uncheck them they stay on. So we need to tell the server to update the map when the checkboxes are unchecked.
+  # define the checkboxes for the Mobility on the map
   observe({
-    proxy <- leafletProxy("mymap", data = data %>% filter(month == input$months))
+    proxy <- leafletProxy("map", data = data %>% filter(month == input$months))
     proxy %>% clearMarkers()
     if (input$parks) {
       proxy %>% addCircleMarkers(stroke = FALSE, color = ~pal2(parks), fillOpacity = 0.1, label = ~as.character(paste0("Parks: ", sep = " ", parks)))}
@@ -144,7 +148,7 @@ server <- function(input, output, session) {
   })
   
   observe({
-    proxy <- leafletProxy("mymap", data = data %>% filter(month == input$months))
+    proxy <- leafletProxy("map", data = data %>% filter(month == input$months))
     proxy %>% clearMarkers()
     if (input$retail) {
       proxy %>% addCircleMarkers(stroke = FALSE, color = ~pal2(retail_and_recreation), fillOpacity = 0.1, label = ~as.character(paste0("Retail: ", sep = " ", retail_and_recreation)))}
@@ -154,7 +158,7 @@ server <- function(input, output, session) {
   })
   
   observe({
-    proxy <- leafletProxy("mymap", data = data %>% filter(month == input$months))
+    proxy <- leafletProxy("map", data = data %>% filter(month == input$months))
     proxy %>% clearMarkers()
     if (input$grocery) {
       proxy %>% addCircleMarkers(stroke = FALSE, color = ~pal2(grocery_and_pharmacy), fillOpacity = 0.1, label = ~as.character(paste0("Einkaufszentren: ", sep = " ", grocery_and_pharmacy)))}
@@ -164,7 +168,7 @@ server <- function(input, output, session) {
   })
   
   observe({
-    proxy <- leafletProxy("mymap", data = data %>% filter(month == input$months))
+    proxy <- leafletProxy("map", data = data %>% filter(month == input$months))
     proxy %>% clearMarkers()
     if (input$transit) {
       proxy %>% addCircleMarkers(stroke = FALSE, color = ~pal2(transit_stations), fillOpacity = 0.1, label = ~as.character(paste0("Verkehr: ", sep = " ", transit_stations)))}
@@ -174,7 +178,7 @@ server <- function(input, output, session) {
   })
   
   observe({
-    proxy <- leafletProxy("mymap", data = data %>% filter(month == input$months))
+    proxy <- leafletProxy("map", data = data %>% filter(month == input$months))
     proxy %>% clearMarkers()
     if (input$residential) {
       proxy %>% addCircleMarkers(stroke = FALSE, color = ~pal2(residential), fillOpacity = 0.1, label = ~as.character(paste0("Wohnbezirke: ", sep = " ", residential)))}
@@ -184,7 +188,7 @@ server <- function(input, output, session) {
   })
   
   observe({
-    proxy <- leafletProxy("mymap", data = data %>% filter(month == input$months))
+    proxy <- leafletProxy("map", data = data %>% filter(month == input$months))
     proxy %>% clearMarkers()
     if (input$work) {
       proxy %>% addCircleMarkers(stroke = FALSE, color = ~pal2(workplaces), fillOpacity = 0.1, label = ~as.character(paste0("Arbeitsplatz: ", sep = " ", workplaces)))}
