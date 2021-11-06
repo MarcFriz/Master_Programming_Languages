@@ -35,7 +35,7 @@ In diesem Notebook werden die folgenden Pakete verwendet:
 
 ```{r import packages, message=FALSE}
 library(tidyverse)
-library(ggplot2) #Visualisierung
+library(ggplot2)
 library(plotly)
 library(scales)
 library(lubridate)
@@ -44,7 +44,7 @@ library(DT)
 
 ## Daten importieren
 
-Der im Abschnitt __Datenintegration__ erstellte Datensatz _mobility_vaccine_ wird für dieses Notebook __Datenanalyse__ herangezogen.
+Der in Abschnitt __Datenintegration__ erstellte Datensatz _mobility_vaccine_ wird für dieses Notebook __Datenanalyse__ herangezogen.
 
 ```{r import_data}
 mobility_vaccine <- read.csv("../Website/Daten_Output/Mobility_vaccine.csv")
@@ -58,7 +58,7 @@ glimpse(mobility_vaccine)
 ```
 
 Der ursprüngliche Datensatz besteht aus 17 Variablen. 
-Einige der Variablen werden für das Dashboard (Output Teil 2) verwendet, sind aber für die folgende Analyse nicht relevant. Deshalb werden diese Variablen entfernt.
+Einige der Variablen werden für das Dashboard (Output Teil 2) verwendet, sind aber für die folgende Analyse nicht relevant. Deshalb werden diese Variablen im nächsten Schritt entfernt.
 
 ```{r delete_columns}
 excluded_vars <- c("X", "country_region_code", "country_region", "iso_code", "ID", "Impfserie")
@@ -94,13 +94,13 @@ Der finale Datensatz __mobility_vaccine__ besteht aus `r no_cols` Spalten und `r
 |residential |Haus und Wohnungen|Integer|
 
 
-Die Funktion __ymd__ wandelt in Zeichen- und numerischen Vektoren gespeicherte Daten in Date- oder POSIXct-Objekte um. Aus dem Character __date__ wird ein Dateobjekt gemacht.
+Die Funktion __ymd__ wandelt in Zeichen- und numerischen Vektoren gespeicherte Daten in Date- oder POSIXct-Objekte um. Im nächsten Schritt wird aus dem Character __date__  ein Dateobjekt.
 
 ```{r}
 mobility_vaccine$date <- ymd(mobility_vaccine$date)
 ```
 
-Des weiteren wird die Spalte __date__ dupliziert, damit drei neue Spalten __Year__, __Month__ und __Date__ erstellt werden können. Diese Anpassung erfolgt zur Vereinfachung der Aggregierung der Daten. Im nächsten Schritt eine zusätzliche Spalte mit der Bezeichnung __year_month__ erstellt. Somit können Visualisierungen für den gesamten Zeitraum auf monatsebene erstellt werden.
+Im nächsten Schritt wird eine zusätzliche Spalte mit der Bezeichnung __year_month__ erstellt. Somit können Visualisierungen für den gesamten Zeitraum auf monatsebene erstellt werden.
 
 ```{r}
 mobility_vaccine <- mobility_vaccine %>% 
@@ -119,8 +119,8 @@ mobility_vaccine <-mobility_vaccine  %>%
                                       Impfstoff == "Janssen" ~ Anzahl*1))
 ```
 
-Um das Verhältnis der Impfungen in Relation zu den Einwohnerzahlen zur bringen wird als nächstes die Impfquote berechnet. 
-Hierzu wird der __Impffortschritt__ also die Anzahl der Impfungen in das Verhältnis zu der Einwohnerzahl gesetzt und _*100_ multipliziert.
+Um das Verhältnis der Impfungen in Relation zu den Einwohnerzahlen zur bringe,n wird als nächstes die Impfquote berechnet. 
+Hierzu wird der __Impffortschritt__ also die Anzahl der Impfungen, in das Verhältnis zu der Einwohnerzahl gesetzt.
 
 ```{r}
 mobility_vaccine <-mobility_vaccine  %>%
@@ -129,7 +129,7 @@ mobility_vaccine <-mobility_vaccine  %>%
 
 Das R-Paket __DT__ bietet eine R-Schnittstelle zur JavaScript-Bibliothek DataTables. R-Datenobjekte (Matrizen oder Datenrahmen) können als Tabellen auf HTML-Seiten angezeigt werden, und DataTables bietet Filterung, Paginierung, Sortierung und viele andere Funktionen in den Tabellen.
 
-Der für die Analyse herangezogene Datensatz sieht nun wie folgt aus:
+Der für die Analyse herangezogene Datensatz wird im folgenden als DataTable gezeigt:
 
 ```{r}
 mobility_vaccine_head <- mobility_vaccine%>% slice(1:50)
@@ -148,7 +148,7 @@ datatable(mobility_vaccine_head, filter = 'top', options = list(
 
 ## Betrachtungszeitraum
 
-Der Betrachtungszeitraum liegt zwischen dem 27.12.2020 bis zum 15.10.2021.
+Der Betrachtungszeitraum für die Analyse liegt zwischen dem 27.12.2020 bis zum 15.10.2021.
 
 ```{r}
 mobility_vaccine %>% 
@@ -171,8 +171,6 @@ In dem Zeitraum vom 27.12.2020 bis 15.10.2021 wurden in Deutschland  `r summe_im
 ## Deutschland Impfung pro Jahr
 
 In 2020 wurden in Summe 207.060 Impfungen verabreicht, während in 2021 bis zum 15.10.2021 in Summe 109.314.592 Impfungen verabreicht wurden (inkl. Zweitimpfung).
-
-
 
 ```{r, echo = TRUE,fig.width = 5,fig.height = 4, warning=FALSE}
 graph_0 <- mobility_vaccine %>%
@@ -197,7 +195,7 @@ ggplotly(graph_0) %>%
 
 ## Welcher Impfstoff wurde am häufigsten verabreicht?
 
-Der Impfstoff __Biontech/Comirnaty__ wurde in Summe am häufigsten verabreicht (84.047.591). Von dem Impfstoff __AstraZeneca__ wurden 12.670.077 Dosen geimpft, __Moderna__ folgt mit 9.553.672 Impfungen und __Janssen__ mit 3.250.312 Dosen.
+Der Impfstoff __Biontech/Comirnaty__ wurde in Summe am häufigsten verabreicht (84.047.591). Von dem Impfstoff __AstraZeneca__ wurden 12.670.077 Dosen geimpft, __Moderna__ folgt mit 9.553.672 Impfungen und __Janssen__ mit 3.250.312 Dosen. Die Grafik zeig deutlich, dass es große Unterschiede in der Impfstoffverteilung gibt. Bemerkenswert ist der deutliche Abstand zwischen dem Impfstoff Comirnaty und den anderen drei Impfstoffen. AstraZeneca und Moderna haben ähnlich große Anteile an der Impfstoffverteilung. Janssen hat im Gesamten einen sehr geringen Anteil, welcher deutlich weniger als 10% bei den Impfungen ausmacht. Da mit AstraZeneca ein Vektorimfpstoff auf Platz 2 steht ist es unwahrscheinlich, dass das zugrunde liegende Impfverfahren einen relevanten Einfluss hat (mRNA- oder Vektorimpfstoff). Einflüssgrößen für diese ungleiche Verteilung könnten unter anderem die Verfügbarkeit, Wirksamkeit, Marketing oder Nebenwirkungen sein. Da den Bürger/innen für die Impfungen keine Kosten entstehen, sind die Kosten als Einflussgröße zu vernachlässigen.
 
 
 
@@ -222,12 +220,15 @@ ggplotly(graph_1) %>%
                                      "Anzahl Impfungen nach Impfstoff",'</sup>')))
 ```
 
+Die folgende Grafik zeigt die Verteilung der Impfstoffe pro Jahr. Auffällig ist, dass in 2020 kein Janssen verimpft wurde. Dies lässt darauf schließen, dass Moderna, Comirnaty und AstraZeneca die ersten freigegebenen Impfstoffe waren. In 2021 fällt, wie in der vorhergehenden Grafik, der große Anteil des Impfstoffs Cominaty auf.
 
 
 ```{r, echo = TRUE,fig.width = 5,fig.height = 4, warning=FALSE}
-graph_2 <-mobility_vaccine %>%
-  group_by(Year, Impfstoff) %>%
-  summarise(Impfungen = sum(Anzahl)) %>% 
+
+  
+graph_2 <- mobility_vaccine %>%
+group_by(Year, Impfstoff) %>%
+summarise(Impfungen = sum(Anzahl))%>% 
   ggplot(aes(x = Year, y = Impfungen, group = Impfstoff, colour = Impfstoff, fill = Impfstoff))+
   geom_col(size=1.2)+ 
   scale_y_continuous(labels = function(x) format(x, big.mark = ".",
@@ -247,7 +248,7 @@ ggplotly(graph_2) %>%
 
 ## Impfungen zeitlicher Verlauf (pro Monat & Jahr)
 
-Mit Hilfe der folgenden Funktion wird die Anzahl der Impfungen pro Monat aufgezeigt. 
+Mit Hilfe der folgenden Funktion wird die Anzahl der Impfungen pro Monat aufgezeigt. Auf der x-Achse ist dabei der Zeitraum in Monaten dargestellt. Auf der y-Achse sind die Impfzahlen mit einer Skala von 0 bis 25 Millionen dargestellt. Das Histogramm zeigt deutlich, dass die Impfungen von Dezember 2020 bis Juni 2021 relativ kontinuierlich ansteigen. Das Maximum liegt im Juni bei fast 25 Millionen Impfungen. Im Zeitraum Juli bis Oktober verlaufen die Impfzahlen mit einem ähnlich kontinuierlichen Verlauf in die negative Richtung wie im Zeitraum zwischen Dezember 20 und Juni 21. Im Oktober 21 liegt die die Anzahl der Impfungen pro Monat wieder unter 2,5 Millionen. Dies könnte durch den sinkenden Bedarf aufgrund des größer werdenden Anteils an vollständig geimpften Menschen erklärt werden, sowie aufgrund des ausgewählten Zeitraums. Der kontinuierliche Anstieg zu Beginn des Jahres könnte auf den hohen Bedarf bei den Menschen und kontinuierliche Steigerung des Impfangebots bis zur Mitte des Jahres zurückgeführt werden. Ab Mitte des Jahres könnte sich der Effekt umgekehrt haben, weshalb die Impfzahlen wieder sinken. Insgesamt erinnert der Verlauf an eine typische Marktsättigung bei der eine hohe Nachfrage erst durch kontinuierliche Erhöhung des Angebots bedient werden kann und anschließend eine Sättigung und Rückgang der Nachfrage eintritt.
 
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
@@ -276,7 +277,7 @@ ggplotly(graph_3) %>%
 
 ## Deutschland Impfung pro Bundesland
 
-
+Die folgende Funktion zeigt die Anzahl der Impfungen in Abhängigkeit zum jeweiligen Bundesland. Dabei ist auf der y-Achse die Anzahl der Impfungen angezeigt und auf der x-Achse die Bundesländer der Bundesrepublik Deutschland. Die höchste Anzahl an Impfungen wurde in Nordhrein-Westfalen durchgeführt. Die niedrigste Anzahl an Impfungen liegt in Bremen. Insgesamt scheint die Anzahl der Impfungen proportional zur Einwohnerzahl zu sein, denn die Bevölkerungsstärksten Bundesländer haben die höchste Wert bei den Impfzahlen. Daraus lässt sich schließen, dass es keine nennenswerten Unterschiede zwischen den Bundesländer in der Impfbereitschaft oder Verfügbarkeit der Impfsstoffe gibt. 
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 graph_4 <-mobility_vaccine %>%
@@ -303,45 +304,16 @@ ggplotly(graph_4) %>%
 ```
 
 
-## Einwohner pro Bundesland
-
-
-
 ```{r}
 einwohner <- mobility_vaccine %>%
   distinct(Bundesland, Einwohner_2020) 
 
-datatable(einwohner, filter = 'top')
+datatable(einwohner)
 ```
-
-
-
-```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
- graph_5<-mobility_vaccine %>%
-  group_by(Bundesland) %>%
-  summarise(Einwohner = min(Einwohner_2020)) %>% 
-  ggplot(aes(x = reorder(Bundesland, -Einwohner), y = Einwohner))+
-  geom_col(size=1.2, colour="darkslategray", fill = "darkslategray4")+ 
-  scale_y_continuous(labels = function(x) format(x, big.mark = ".",
-                                                scientific = FALSE))+
-  theme_minimal()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
-  labs(
-    y = element_blank(),
-    x = element_blank()
-  )
-
-ggplotly(graph_5) %>%
-  layout(title = list(text = paste0("Einwohner pro Bundesland",
-                                    '<br>',
-                                    '<sup>',
-                                     "absteigend sortiert",'</sup>')))
-```
-
 
 ## Impfquote
 
-
+Im Gegensatz zur vorher gezeigten reinen Anzahl der Impfungen pro Bundesland, zeigt die folgende Grafik die Anzahl der Impfungen pro Bundesland in Bezug zur Einwohnerzahl. Mit der Impfquote lässt sich die Impfleistung pro Bundesland bewerten und die Bundesländer unabhängig von ihrer Größe vergleichen. Die Impfquote ist in der Grafik auf der y-Achse dargestellt und die Bundesländer auf der x-Achse. Der Wertbereich liegt zwischen ca. 80% und 58%. Es fällt auf, dass in Bremen die höchste Impfquote herrscht obwohl die absolute Impfzahl am nierdigsten ist (siehe ## Deutschland Impfung pro Bundeslan ). Auf der anderen Seite hat Sachsen, mit relativ geringen Einwohnerzahl, die niedrigste Impfquote. Betrachtet man auch die Impfquote von der bevölkerunsstärksten Bundesländern NRW, BW und Bayern fällt auf, dass das Niveau der Impfquoten verteilt ist. Während NRW im oberen Bereich mit 72% liegt, liegen BW und Bayern gleichauf im unteren Bereich mit ca.65%. Aus diesen Beobachtungen lässt sich schließen, dass die Bevölkerungsanzahl keinen wesentlichen Einfluss auf die Impfleistung hat.
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 graph_6 <- mobility_vaccine %>%
@@ -371,7 +343,7 @@ ggplotly(graph_6) %>%
 
 ## Impfverlauf
 
-
+Der Impfverlauf zeigt welche Impfstoffe, in welchem Monat, in welcher Anzahl geimpft wurden. Moderna nur in Hochzeiten, genauso wie Janssen
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 graph_7 <-mobility_vaccine %>%
@@ -398,13 +370,13 @@ ggplotly(graph_7) %>%
 
 
 
-## Retail and recreation gesamt
+## Mobilitätsaufkommen im Bereich Einzelhand und Freizeit
 
-
+Die folgenden Daten zeigen das Mobiltätsaufkommen in den Zeitraum von Dezember 2020 bis Oktober 2021 im Bereich Einzelhandel und Freizeit. Das Mobilitätaufkommen wird als prozentuale Abweichung von einem Referenzwert auf der y-Achse angegeben. Der Referenzwert ist der Median aus dem Zeitraum Januar bis Februar 2020. Deshalb sind die saisonalen Änderungen (Wetter) und der Einfluss durch spätere Corona-Maßnahmen in der Analyse zu berücksichtigen.Auf der x-Achse ist der Zeitraum dargestellt. Die einzelnen Punkte sind die Ergebnisse aus den einzelnen Bundesländern.Deshalb gibt mehrere Punkte für ein Datum. Dabei fällt auf, dass die Werte der einzelnen Bundesländer stark voneinander abweichen. Insbesondere in den Monaten Juni 21 bis Oktober 21 gibt es Bundesländer mit starken ausreisern nach oben. Insgesamt ist erkennbar, dass das Mobilitätsaufkommen von Januar bis Juni aus dem negativen Bereich von ca. -50% auf den Referenzwert (0%) ansteigt. Hierbei ist die Streuung zwischen den Bundesländern gering. In diesem Zeitraum könnten die teilweise starken Corona-Einschränkungen bei Freizeitaktivitäten einen Einfluss gehabt haben. Die Saisonalität spielt insbesondere im Januar und Februar eine untergeordnete Rolle, da die Referenzdaten ebenfalls aus dieser Jahreszeit stammen. In den Monaten Juni bis Oktober schwankt das Mobilitätsaufkommen um den Referenzwert. Dabei ist die Streuung der zwischen den Bundesländern sehr hoch. Im Zeitraum August bis September gibt es starke Ausreiser nach oben. Die Corona-Einschränken sind in diesem Zeitraum stark zurückgenommen worden. Dies könnte eine Begründung für den gesamten Anstieg des Mobilitätsaufkommen ein Normalniveau sein können. Eine Begründung für die hohe Streuung in den Bundesländern könnte ein Zusammenhang zwischen der trotzdem anhaltenden pandemischen Lage und der Saisonalität der Referenzdaten sein. Die These hierzu wäre, dass das Mobilitätsaufkommen im Freizeitbereich in einem Sommer ohne Pandemie grundsätzlich höher ist als im Winter als die Referenzdaten gebildet wurden. In dieser These könnten die Ausreiser den "Normalwert" abbilden und in einigen Bundesländern das Mobilitätsverhalten durch die Pandemie weiterhin beschränkt sein. Zusammengefasst könnte die pandemische Lage den saisonalen Effekt durch die Erhebung der Referenzdaten im Winter ausgleichen. Dies kann jedoch in dieser Analyse nicht bestätigt werden. Hierzu reichen die vorliegenden historischen Daten zur Mobilität nicht aus. Im Ergebnis kann jedoch festgehalten werden, dass das Mobiltätsaufkommen im Sommer 2021 im Großteil der Bundesländer auf dem Niveau von Januar 2020 lag. Darüber hinaus ist festzuhalten, dass das Mobilitätsaufkommen im Winter 2021 deutlich eingeschränkt war und ca. 50% unter dem Referenzwert lag.      
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 graph_8 <- ggplot(mobility_vaccine, aes(x = date, y = retail_and_recreation)) +
-  geom_point()+
+  geom_point(size = 0.8)+
   scale_x_date(labels = date_format("%b %y"),
                date_breaks = ("1 month"))+
   theme_classic()+
@@ -422,12 +394,12 @@ ggplotly(graph_8) %>%
                                      "An Orten wie Einzelhandel und Erholung",'</sup>')))
 
 ```
-
+Aufgrund der großen Unterschiede im Mobilitätsaufkommen zwischen den Bundesländern wird in der folgenden Grafik analysiert welche Bundesländer für die Abweichungen verantwortlich sind. Dafür wird der vorherigen Funktion die Dimension Bundesland hinzugefügt. Durch diese Funktion lässt sich das Mobilitätsaufkommen pro Bundesland für den gleichen Zeitraum darstellen. Durch die isolierte Betrachtung kann festegestellt werden, dass die Ausreiser hauptsächlich auf die Bundesländer Mecklenburg-Vorpommer und Schleswig-Holstein zurückzuführen sind. Ohne weiter Datenanalyse können zur Begründung nur Hypothesen aufgestellt werden. Geographisch sind diese beiden Bundesländer jedoch typische Urlaubsziele. Durch die eingeschärnkten internationalen Reisemöglichkeiten könnten viele Einwohner in diese Regionen zum Urlaub ausgewichen sein und dadurch das Mobilitätaufkommen im Gegensatz zu den anderen Bundensländern trotz der Pandemie angehoben haben. Der Effekt durch Saisonalität der Referenzdaten aus dem Winter könnte diese Ausreiser verstärkt haben, da im Winter in den Ferienorten insgesamt deutlich niedriger sein wird.     
 
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
 graph_9 <- ggplot(mobility_vaccine, aes(x = date, y = retail_and_recreation, fill = Bundesland, color = Bundesland)) +
-  geom_point()+
+  geom_point(size = 0.8)+
   scale_x_date(labels = date_format("%b %y"),
                date_breaks = ("1 month"))+
   theme_classic()+
@@ -446,13 +418,14 @@ ggplotly(graph_9) %>%
 ```
 
 
-## grocery and pharmacy
+## Mobilitätsaufkommen im Bereich Lebensmittelhandel und Apotheken
 
+Nach dem gleichen Vorgehen, wie im vorherigen Abschnitt, erfolgte die Untersuchung der Mobilitätsdaten im Bereich Lebensmittelhandel und Apotheken. Es zeigt sich das Mobilitätsaufkommen der meisten Bundesländern im Bereich des Referenzwertes liegen und zum Sommer hin leicht darüber liegen. Es lässt sich vermuten, dass die Corona-Einschränkungen in diesem Bereich weniger Einfluss haben. Wie der vorherigen Darstellung stellen Mecklenburg-Vorpommern und Schleswig-Holstein Ausreiser nach oben dar. Dies lässt darauf schließen, dass die Saisonalität der Daten auch die Frequentierung von Lebensmittelfachgeschäften sowie Apotheken in Ferienorten beeinflusst. 
 
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_10 <- ggplot(mobility_vaccine, aes(x = date, y = grocery_and_pharmacy)) +
-  geom_point()+
+graph_10 <- ggplot(mobility_vaccine, aes(x = date, y = grocery_and_pharmacy, fill = Bundesland, color = Bundesland)) +
+  geom_point(size = 0.8)+
   scale_x_date(labels = date_format("%b %y"),
                date_breaks = ("1 month"))+
   theme_classic()+
@@ -468,14 +441,17 @@ ggplotly(graph_10) %>%
                                     '<br>',
                                     '<sup>',
                                      "An Orten wie Apotheken und Läden des täglichen Bedarfs",'</sup>')))
-
 ```
 
 
+## parks
+
+Nach dem gleichen Vorgehen, wie im Abschnitt Einzelhandel, erfolgte die Untersuchung der Mobilitätsdaten im Bereich Parks und Naherholungsgebiete. Die Daten zur Mobilität für diesen Bereich zeigen einen ähnlichen Verlauf wie die vorherigen Auswertungen. Insgesamt ist das Mobilitätsaufkommen ab Juni 2021 leicht über dem Referenzwert. Die Abweichung ist jedoch bis auf die Ausreiser gering. Auch die Werte der Ausreiser verhalten sich wie in den vorher beschriebenen Auswertungen zum Einzel- und Lebensmittelhandel. Die geringe Abweichung vom Referenzwert und leichte Abweichung nach oben im Sommer lassen auf eine rein saisonale Abweichung schließen. Corona-Maßnahmen dürften im Fall der Parks keinen großen Einfluss auf Parks haben. Dies zeigen auch die Daten. 
+
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_11 <- ggplot(mobility_vaccine, aes(x = date, y = grocery_and_pharmacy, fill = Bundesland, color = Bundesland)) +
-  geom_point()+
+graph_11 <- ggplot(mobility_vaccine, aes(x = date, y = parks, fill = Bundesland, color = Bundesland)) +
+  geom_point(size = 0.8)+
   scale_x_date(labels = date_format("%b %y"),
                date_breaks = ("1 month"))+
   theme_classic()+
@@ -490,17 +466,18 @@ ggplotly(graph_11) %>%
   layout(title = list(text = paste0("Mobilitätsaufkommen",
                                     '<br>',
                                     '<sup>',
-                                     "An Orten wie Apotheken und Läden des täglichen Bedarfs",'</sup>')))
+                                     "An Orten wie Parks und Naherholungsgebiete",'</sup>')))
 ```
 
 
-## parks
 
+## Öffentliche Verkehrsmittel
 
+Nach dem gleichen Vorgehen, wie im Abschnitt Einzelhandel, erfolgte die Untersuchung der Mobilitätsdaten im Bereich öffentlicher Verkehrmittel. Insgesamt zeigt die Grafik einen sehr ähnlichen Verlauf wie die Grafik zum Einzelhandel. Die Mobilät steigt von Jan 21 bis Jun 21 vom negativen Bereich bis zum Referenzwert. Die Ausreiser Verhalten sich ebenfalls genauso wie im Bereich des Einzelhandels. Diese Verbindung könnte darauf zurückgeführt werden, das viele Menschen öffentliche Verkersmittel nutzen für den Besuch des Einzelhandels und auch bei Lockdowns weniger Angestellte unterwegs sind. 
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_12 <- ggplot(mobility_vaccine, aes(x = date, y = parks)) +
-  geom_point()+
+graph_12 <- ggplot(mobility_vaccine, aes(x = date, y = transit_stations, fill = Bundesland, color = Bundesland)) +
+  geom_point(size = 0.8)+
   scale_x_date(labels = date_format("%b %y"),
                date_breaks = ("1 month"))+
   theme_classic()+
@@ -515,15 +492,17 @@ ggplotly(graph_12) %>%
   layout(title = list(text = paste0("Mobilitätsaufkommen",
                                     '<br>',
                                     '<sup>',
-                                     "An Orten wie öffentlichen Parks, Schlössern, Waldgebieten etc.",'</sup>')))
-
+                                     "An Orten wie öffentliche Verkehrsmittel",'</sup>')))
 ```
 
 
+## Arbeitsplatz
+
+Nach dem gleichen Vorgehen, wie im Abschnitt Einzelhandel, erfolgte die Untersuchung der Mobilitätsdaten im Bereich Arbeitsplatz. Insgesamt zeigt die Grafik eine sehr breite Streuung der Werte. Es zeigt sich jedoch, dass das Mobilitätsniveau unter dem Referenzwert liegt, da die meisten Datenpunkte unterhalb des Referenzwerts liegen. Deutlich zu erkennen sind die Ferienzeiten in den einzelnen Bundesländern, da das Mobilitätsaufkommen in dieser Zeit Einbrüche zeigt. 
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_13 <- ggplot(mobility_vaccine, aes(x = date, y = parks, fill = Bundesland, color = Bundesland)) +
-  geom_point()+
+graph_13 <- ggplot(mobility_vaccine, aes(x = date, y = workplaces, fill = Bundesland, color = Bundesland)) +
+  geom_point(size = 0.8)+
   scale_x_date(labels = date_format("%b %y"),
                date_breaks = ("1 month"))+
   theme_classic()+
@@ -532,106 +511,9 @@ graph_13 <- ggplot(mobility_vaccine, aes(x = date, y = parks, fill = Bundesland,
   labs(
     y = "Abweichung zum Referenzwert [%]",
     x = element_blank()
-  )
+  )+ylim(-100,100)
 
 ggplotly(graph_13) %>%
-  layout(title = list(text = paste0("Mobilitätsaufkommen",
-                                    '<br>',
-                                    '<sup>',
-                                     "An Orten wie Apotheken und Läden des täglichen Bedarfs",'</sup>')))
-```
-
-
-
-## transit_stations
-
-
-
-```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_14 <- ggplot(mobility_vaccine, aes(x = date, y = transit_stations)) +
-  geom_point()+
-  scale_x_date(labels = date_format("%b %y"),
-               date_breaks = ("1 month"))+
-  theme_classic()+
-  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
-  labs(
-    y = "Abweichung zum Referenzwert [%]",
-    x = element_blank()
-  )
-
-ggplotly(graph_14) %>%
-  layout(title = list(text = paste0("Mobilitätsaufkommen",
-                                    '<br>',
-                                    '<sup>',
-                                     "An Orten wie Transitstationen",'</sup>')))
-
-```
-
-
-
-```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_15 <- ggplot(mobility_vaccine, aes(x = date, y = transit_stations, fill = Bundesland, color = Bundesland)) +
-  geom_point()+
-  scale_x_date(labels = date_format("%b %y"),
-               date_breaks = ("1 month"))+
-  theme_classic()+
-  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
-  labs(
-    y = "Abweichung zum Referenzwert [%]",
-    x = element_blank()
-  )
-
-ggplotly(graph_15) %>%
-  layout(title = list(text = paste0("Mobilitätsaufkommen",
-                                    '<br>',
-                                    '<sup>',
-                                     "An Orten wie Transitstationen",'</sup>')))
-```
-
-
-## workplaces
-
-
-
-```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_16 <- ggplot(mobility_vaccine, aes(x = date, y = workplaces)) +
-  geom_point()+
-  scale_x_date(labels = date_format("%b %y"),
-               date_breaks = ("1 month"))+
-  theme_classic()+
-  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
-  labs(
-    y = "Abweichung zum Referenzwert [%]",
-    x = element_blank()
-  )
-
-ggplotly(graph_16) %>%
-  layout(title = list(text = paste0("Mobilitätsaufkommen",
-                                    '<br>',
-                                    '<sup>',
-                                     "Am Arbeitsplatz",'</sup>')))
-
-```
-
-
-
-```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_17 <- ggplot(mobility_vaccine, aes(x = date, y = workplaces, fill = Bundesland, color = Bundesland)) +
-  geom_point()+
-  scale_x_date(labels = date_format("%b %y"),
-               date_breaks = ("1 month"))+
-  theme_classic()+
-  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
-  labs(
-    y = "Abweichung zum Referenzwert [%]",
-    x = element_blank()
-  )
-
-ggplotly(graph_17) %>%
   layout(title = list(text = paste0("Mobilitätsaufkommen",
                                     '<br>',
                                     '<sup>',
@@ -641,11 +523,11 @@ ggplotly(graph_17) %>%
 
 ## residential
 
-
+Anders als in der vorherigen Grafik ist bei dem Mobilitätsverhalten in Wohngebieten ersichtlich, dass sich dieses nah am Referenzwert befindet. Lediglich in den Sommermonaten zeigt sich ein leicht in den negativen Bereich abweichendes Verhalten. Dies kann ein Indiz für die Urlaubszeit sein. In den kälteren Monaten ist ein leicht positiver Trend zu verzeichnen.
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_18 <- ggplot(mobility_vaccine, aes(x = date, y = residential)) +
-  geom_point()+
+graph_14 <- ggplot(mobility_vaccine, aes(x = date, y = residential, fill = Bundesland, color = Bundesland)) +
+  geom_point(size = 0.8)+
   scale_x_date(labels = date_format("%b %y"),
                date_breaks = ("1 month"))+
   theme_classic()+
@@ -654,32 +536,9 @@ graph_18 <- ggplot(mobility_vaccine, aes(x = date, y = residential)) +
   labs(
     y = "Abweichung zum Referenzwert [%]",
     x = element_blank()
-  )
+  )+ylim(-100,100)
 
-ggplotly(graph_18) %>%
-  layout(title = list(text = paste0("Mobilitätsaufkommen",
-                                    '<br>',
-                                    '<sup>',
-                                     "An Orten wie Wohngebieten",'</sup>')))
-
-```
-
-
-
-```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
-graph_19 <- ggplot(mobility_vaccine, aes(x = date, y = residential, fill = Bundesland, color = Bundesland)) +
-  geom_point()+
-  scale_x_date(labels = date_format("%b %y"),
-               date_breaks = ("1 month"))+
-  theme_classic()+
-  geom_hline(yintercept=0, linetype="dashed", color = "grey")+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
-  labs(
-    y = "Abweichung zum Referenzwert [%]",
-    x = element_blank()
-  )
-
-ggplotly(graph_19) %>%
+ggplotly(graph_14) %>%
   layout(title = list(text = paste0("Mobilitätsaufkommen",
                                     '<br>',
                                     '<sup>',
@@ -688,6 +547,15 @@ ggplotly(graph_19) %>%
 
 
 ## Mobilitätsaufkommen vs. Impfungen
+
+In den folgenden Grafiken ist das Mobilitätsverhalten für die unterschiedlichen Kategorien (Mittelwert) gegenüber dem Impfverlauf (kumulierte Anzahl der Impfungen) dargestellt. Auf der Y-Achse ist die Abweichung zum Referenzwert in Prozent abgetragen. Auf der x-Achse ist der zeitliche Verlauf (zweiwöchig) dargestellt. Mit Hilfe der Sekundärachse (Y-Achse rechts) wird die Anzahl der Impfungen kumuliert in Millionen aufgezeigt.
+
+Über alle Kategorien hinweg ist ersichtlich, dass die Anzahl an Impfungen zwischen März und August stark ansteigt und die Steigung der Kurve ab September schwächer wird.
+
+Das Mobilitätsverhalten pro Kategorie wurde im vorherigen Abschnitt detailliert beschrieben und analysiert. Zusammenfassend ist ersichtlich, dass das Mobilitätsaufkommen zwischen Januar und Juni unterhalb des Referenzwert lagen und in den Sommermonaten stabilisiert hat. 
+
+In den folgenden Grafiken ist zu erkennen, dass sich die Kurve des Impfverlaufs ähnlich verhält wie der Trend des Mobilitätsverhaltens. Besonders in den Kategorien: retail_and_recreation, grocery_and_pharmacy, parks und transit_stations. Hier ist ein positiver Trend über den Mittelwert zu erkennen. Bei den Kategorien workplaces wurde in der vorherigen Betrachtung eine große Streuung festgestellt und deshalb ist hier der Mittelwert nicht aussagegräftig. Grundsätzlich lässt sich hier kein Zusammenhang der beiden Variablen erkennen. Bei der Kategorie residential lässt sich ein Zusammenhang erkennen, da die Kurve mit Anstieg des Impfverlaufes einen leichten negativen Trend aufweist. Wie bereits erwähnt, kann der positive Trend der Kategorien ebenfalls auf die Urlaubszeit bzw. auf die Sommerzeit zurückgeführt werden. Um detaillierte Aussagen treffen zu können müssten im weiteren Verlauf zum Beispiel die Wetterdaten oder auch die Covid Daten ergänzt werden.
+
 
 
 ```{r, echo = TRUE,fig.width = 8,fig.height = 6, warning=FALSE}
@@ -738,7 +606,7 @@ mobility_vaccine %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
     title = "Mobilitätsaufkommen vs Impfverlauf",
-    subtitle = "An Orten wie Einzelhandel und Erholung",
+    subtitle = "An Orten wie Läden des täglichen Bedarfs",
     y = "Abweichung zum Rezerenzwert [%]"
   )
 
@@ -766,7 +634,7 @@ mobility_vaccine %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
     title = "Mobilitätsaufkommen vs Impfverlauf",
-    subtitle = "An Orten wie Einzelhandel und Erholung",
+    subtitle = "An Orten wie Parks, Schlössern etc.",
     y = "Abweichung zum Rezerenzwert [%]"
   )
 
@@ -794,7 +662,7 @@ mobility_vaccine %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
     title = "Mobilitätsaufkommen vs Impfverlauf",
-    subtitle = "An Orten wie Einzelhandel und Erholung",
+    subtitle = "An Orten wie Transitstationen",
     y = "Abweichung zum Rezerenzwert [%]"
   )
 
@@ -822,7 +690,7 @@ mobility_vaccine %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
     title = "Mobilitätsaufkommen vs Impfverlauf",
-    subtitle = "An Orten wie Einzelhandel und Erholung",
+    subtitle = "Arbeitsstätten",
     y = "Abweichung zum Rezerenzwert [%]"
   )
 
@@ -850,7 +718,7 @@ mobility_vaccine %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   labs(
     title = "Mobilitätsaufkommen vs Impfverlauf",
-    subtitle = "An Orten wie Einzelhandel und Erholung",
+    subtitle = "Wohnort",
     y = "Abweichung zum Rezerenzwert [%]"
   )
 
