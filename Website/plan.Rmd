@@ -1,37 +1,58 @@
 ---
 title: "Projektplan"
+author: "Marc Friz"
+runtime: 
+output:
+ html_document:
+  fig_height: 8
+  fig_width: 12
+  highlight: tango
+  number_sections: yes
+  theme: paper
+  toc: yes
+  toc_float: true
+  toc_depth: 3
 ---
 
 <img src="files/plan_complete.png" style="width:50%">
 
 Bei dem Projektplan orienteiern wir uns zum größten Teil an dem verfahren welches in der Vorlesung "Programming Languages for Data Science" eingeführt wurde.
 
-## Use Case
+# Use Case
 <img src="files/plan_use_case.png" style="width:50%">
 
 Wir wurden von der Deutschen Regierung beauftragt bei ihrer Kampagne für eine bessere Impfquote einen Beitrag zu leisten. Dieser bezieht sich auf die identifikation von möglichen Standorten für Werbekampagnen. Unsere Aufgabe ist es die Orte mit dem größten Aufkommen von ungeimpften innerhalb deutschlands zu identifizieren. Anhand dieser Identifikation können dann gezielt und auf den jeweiligen Ort zugeschnittene Kampagnen gestartet werden.
 
-Ziel soll es sein eine Map von Deuschland zu haben und die Veränderung von geimpften und ungeimpften Personenaufkommen über die Zeit zu betrachten. Daraus lässt sich dann ableiten welche die Orte sind, andenen das höchste aufkommen von ungeimpften Personen stattfindet. Da diese Orte ein großes Potential für die Verbreitung des COVID-Virus sind ist es wichtig die Impfquote an diesen zu erhöhen.
+Ziel soll es sein eine Map von Deuschland zu generieren und die Veränderung von geimpften Personenaufkommen über die Zeit zu betrachten. Daraus lässt sich dann ableiten welche die Orte sind, andenen das höchste aufkommen von ungeimpften Personen stattfindet. Da diese Orte ein großes Potential für die Verbreitung des COVID-Virus sind ist es wichtig die Impfquote an diesen zu erhöhen.
 
 
 
-## Problemdefinition
+# Problemdefinition
 <img src="files/plan_frame.png" style="width:50%">
 
-### Zielpopulation
+## Zielpopulation
 Unsere Zielpopulation sind alle Menschen in Deutschland. Wir versuchen zu verstehen an welchen Orten viele Menschen zusammen kommen und ob diese Menschen geimpft oder ungeimpft sind. Hierbei stützen wir uns auf die offiziellen Impfdaten vom RKI sowie den Mobilitireport von Google.
 
-### Zielfrage
+## Zielfrage
 Anhand der oben genannten Fragestellung versuchen wir herauszufinden welches der beste Standort für eine Werbekampagne der Regierung für eine Impfung ist. Die hierbei gewonnenen Daten können für die Entscheidung des Ortes genutzt werden, sowie für die gezielte Ausrichtung der Kampagne. In einem Jugendheim wird zum Beispiel eine andere Strategie benötigt als in einem Supermarkt. Anhand dieser Daten kann dann Entschieden werden wo die Werbekampaghnen gestartet werden.
 
 
-## Wichtige Variabeln
+# Wichtige Variabeln
 <img src="files/plan_kpis.png" style="width:50%">
 
-Die wichtigste Variable für uns ist das Verhältnis von ungeimpften Menschen zum aufkommen an einem Standort.
+Die Wichtigsten Variablen für uns ist die Anzahl der geimpften Menschen sowie das Personenaufkommen in den einzelnen Regionen. Diese sind in folgende Unergruppen unterteilt:
 
+- parks
 
-## Metriken
-<img src="files/plan_metriken.png" style="width:50%">
+- retail and recreation
 
-soon...
+- grocery and pharmacy
+
+- transit stations
+
+- residential
+
+- workplaces
+
+Die Daten für die geimpften Personen liegen separiert nach dem Impfstoff vor. Für unsere Betrachtung spielt es jedoch keine Rolle welchen Impfstoff die betreffende Person erhalten hat.
+

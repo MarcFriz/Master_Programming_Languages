@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Marc Friz" />
+
+
+<title>Shiny-App</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Programming Languages for DS (WS21/22)</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="plan.html">Plan</a>
+</li>
+<li>
+  <a href="datenintegration.html">Datenintegration</a>
+</li>
+<li>
+  <a href="datenanalyse.html">Datenanalyse</a>
+</li>
+<li>
+  <a href="shiny.html">Shiny-App</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Shiny-App</h1>
+<h4 class="author">Marc Friz</h4>
+
+</div>
+
+
+<div id="beschreibung" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Beschreibung</h1>
+<p>Bei der Auslieferung des Projektes handelt es sich um eine Shiny-App. Diese unterteilt sich in drei Bereiche:</p>
+<ul>
+<li><p>Slider</p></li>
+<li><p>Karte</p></li>
+<li><p>Datentabelle</p></li>
+</ul>
+<p>Bei dem Slider handelt es sich um eine Einstellmöglichkeit welcher Monat betrachtet werden soll. Die Karte sowie die Tabelle passen sich dem eingegebenen Monat an.</p>
+<p><img src="files/slider.png" style="width:10%"></p>
+<p>Die Karte zeigt die <code>Anzahl</code> an geimpfter Personen. Ebenfall lassen sich am linken Rand der Karte die verschiedenen Moblilitätswerte einblenden. Diese geben dann auf der Karte zusätzlich an wie sich die Mobilität verändert hat.</p>
+<p><img src="files/mobilitaetswerte.png" style="width:10%"></p>
+<p>Die Datentabelle beinhaltet alle Relevanten Daten welche auf der Karte zu sehen sind. Das soll ermöglichen sich die einzelnen Werte im Detail anzusehen.</p>
+<p><img src="files/table.png" style="width:100%"></p>
+</div>
+<div id="bibliotheken" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Bibliotheken</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet.extras)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet.extras2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geojsonsf)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code></pre></div>
+</div>
+<div id="datenvorbereitung" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Datenvorbereitung</h1>
+<p>Der erste Schritt in der Datenaufbereitung (für Shiny) besteht darin, die Daten einzulesen und eine Spalte für den Monat zu generieren. Diese Spalte wird später als Filterspalte für den eingestellten Monat des Sliders fungieren.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;../Website/Daten_Output/Mobility_vaccine.csv&#39;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">month</span>(<span class="fu">as.POSIXct</span>(data<span class="sc">$</span>date,<span class="at">format=</span><span class="st">&quot;%Y-%m-%d&quot;</span>))</span></code></pre></div>
+<p>Im zweiten Schritt werden die GPS koordinaten ergänzt. Hierfür wirde der <code>iso_code</code> der Bundesländer verwendet um deren Hauptstädte als referenzpunkte zu verwenden.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>longitude <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-BW&#39;</span>, <span class="fl">9.183333</span>, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-BE&#39;</span>, <span class="fl">13.404954</span>, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-BB&#39;</span>, <span class="fl">13.063561</span>, </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-HE&#39;</span>, <span class="fl">8.239761</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                                              <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-MV&#39;</span>, <span class="fl">11.41316</span>, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                                                     <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-SL&#39;</span>, <span class="fl">7.000000</span>, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                                                            <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-SH&#39;</span>, <span class="fl">10.139444</span>, </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                                                                   <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-BY&#39;</span>, <span class="fl">11.581981</span>, </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                                                                          <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-HH&#39;</span>, <span class="fl">9.993682</span>, </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                                                                                 <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-HB&#39;</span>, <span class="fl">8.8016937</span>, </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                                                                                        <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-NI&#39;</span>, <span class="fl">9.7320104</span>, </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                                                                                               <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-NW&#39;</span>, <span class="fl">6.7734556</span>, </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                                                                                                      <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-RP&#39;</span>, <span class="fl">8.2472526</span>, </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                                                                                                             <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-SN&#39;</span>, <span class="fl">13.7372621</span>, </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                                                                                                                    <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-ST&#39;</span>, <span class="fl">11.6276237</span>, </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                                                                                                                           <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-TH&#39;</span>, <span class="fl">11.0298799</span>, <span class="dv">0</span>))))))))))))))))</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>latitude <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-BW&#39;</span>, <span class="fl">48.783333</span>, </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-BE&#39;</span>, <span class="fl">52.520008</span>, </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-BB&#39;</span>, <span class="fl">52.391842</span>, </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                                      <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-HE&#39;</span>, <span class="fl">50.078217</span>, </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                                             <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-MV&#39;</span>, <span class="fl">53.62937</span>, </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>                                                    <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-SL&#39;</span>,    <span class="fl">49.233334</span>, </span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                                                           <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-SH&#39;</span>, <span class="fl">54.323334</span>, </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                                                                  <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-BY&#39;</span>, <span class="fl">48.135125</span>, </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>                                                                         <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-HH&#39;</span>, <span class="fl">53.551085</span>, </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                                                                                <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-HB&#39;</span>, <span class="fl">53.0792962</span>, </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                                                                                       <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-NI&#39;</span>, <span class="fl">52.3758916</span>, </span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                                                                                              <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-NW&#39;</span>, <span class="fl">51.2277411</span>, </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                                                                                                     <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-RP&#39;</span>, <span class="fl">49.9928617</span>, </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>                                                                                                            <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-SN&#39;</span>, <span class="fl">51.0504088</span>, </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>                                                                                                                   <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-ST&#39;</span>, <span class="fl">52.1205333</span>, </span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>                                                                                                                          <span class="fu">ifelse</span>(data<span class="sc">$</span>iso_code <span class="sc">==</span> <span class="st">&#39;DE-TH&#39;</span>, <span class="fl">50.9847679</span>, <span class="dv">0</span>))))))))))))))))</span></code></pre></div>
+</div>
+<div id="shiny-app" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Shiny-App</h1>
+<p>Wenn die Daten vorbereitet sind, kommt der eigentliche Hauptteil der Shiny-App. Diese besteht aus zwei unterschiedlichen Komponenten. Zum einen das <code>UI</code> und zum anderen der <code>Server</code>. Im <code>UI</code> wird alles definiert was der User als Interface zu sehen bekommt. Das bedeutet, hier wird das Layout festgelegt und welcher Inhalt an welchen stellen angezeigt wird. Der <code>Server</code> wird später definiert und hat nur die Aufgabe die einzelnen Teile, welche im <code>UI</code> definiert wurden mit Inhalt zu füllen. Diese Trennung ermöglicht es in einer Web-Applikation die Daten von dem Frontend zu trennen und beide Teile seperat zu betreiben. Bei unserem Usecase ist die jedoch nicht relevant. Deshalb befinden sich beide Teile an der gelichen Stelle.</p>
+<div id="ui" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> UI</h2>
+<p>Das <code>UI</code> unterteilt sich, wie in der Beschreibung angegeben, in drei Teile. Diese Unterteilung spiegelt sich auch im Code wieder. Am anfang wird der <code>dashboardheader</code> definiert. Dieser beginnt links oben und definiert den startpunkt. Er umfasst die gesammte Seite. In seinem inneren wird dann zum einen die <code>dashboardSidebar</code> sowie der <code>dashboardBody</code> ingebettet. Die Siedbar wiederum enthält nun den Slider welcher sich über eine Strecke von <code>1 - 12</code> verschieben lässt. Der Body beinhaltet die Karte als Zentrales Objekt gefolgt von der Tabelle. Hierfür werden die größe sowie ein Name für die Karte vbergeben damit der <code>Server</code> später weiß über welchen Namen der die Karte findet. Ebenfalls werden die <code>checkboxen</code> hier vordefiniert. Die Tabelle bekommt ebenso einen Namen damit auf sie zugegriffen werden kann.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">dashboardPage</span>(<span class="fu">dashboardHeader</span>(<span class="at">title=</span><span class="st">&#39;Impfauswertung&#39;</span>),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">dashboardSidebar</span>(<span class="fu">sliderInput</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;months&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;Month:&quot;</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">min =</span> <span class="dv">1</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">max =</span> <span class="dv">12</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">value =</span> <span class="dv">1</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                    )),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">dashboardBody</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">fluidPage</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">mainPanel</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">leafletOutput</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                            <span class="at">outputId =</span> <span class="st">&quot;map&quot;</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                            <span class="at">height =</span> <span class="dv">600</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                            <span class="at">width =</span> <span class="dv">1500</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                          ),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                          <span class="co"># checks on the map for Mobility</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">absolutePanel</span>(</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                            <span class="at">top =</span> <span class="dv">70</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                            <span class="at">left =</span> <span class="dv">20</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">checkboxInput</span>(<span class="st">&quot;parks&quot;</span>, <span class="st">&quot;Parks&quot;</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">checkboxInput</span>(<span class="st">&quot;retail&quot;</span>, <span class="st">&quot;Retail&quot;</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">checkboxInput</span>(<span class="st">&quot;work&quot;</span>, <span class="st">&quot;Arbeitsplatz&quot;</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">checkboxInput</span>(<span class="st">&quot;residential&quot;</span>, <span class="st">&quot;Wohnbezirke&quot;</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">checkboxInput</span>(<span class="st">&quot;grocery&quot;</span>, <span class="st">&quot;Einkaufszentren&quot;</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">checkboxInput</span>(<span class="st">&quot;transit&quot;</span>, <span class="st">&quot;Verkehr&quot;</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                            </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                          )</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                        ),</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">tabsetPanel</span>(</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>                          <span class="at">id =</span> <span class="st">&#39;df&#39;</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">br</span>(),</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">tabPanel</span>(<span class="fu">dataTableOutput</span>(<span class="st">&#39;table&#39;</span>))</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>                        )</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>                        </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>                      )))</span></code></pre></div>
+</div>
+<div id="server" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Server</h2>
+<p>Im <code>Server</code> wirde der Code definiert welcher alle Komponenten im <code>UI</code> mit Leben befüllt. Dies gilt für Daten sowie für Funktionen gleichermaßen. Die Reihenfolge spielt dabei keine Rolle da die jeweilighen Codeteile seperat angefragt werden sollten sie im <code>UI</code> benötigt werden. Das bedeutet zum Beispiel, dass die Karte immer befüllt wird aber die <code>checkboxen</code> nur anwendung finden wenn der Nutzer sie anklickt.</p>
+<p>Im ersten Teil wird eine Farbpalette angelegt. Diese dient später als Farbinput für die <code>checkboxen</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Color for Mobility</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pal2 <span class="ot">&lt;-</span> <span class="fu">colorFactor</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&#39;blue&#39;</span>, <span class="st">&#39;yellow&#39;</span>, <span class="st">&#39;red&#39;</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">domain =</span> data<span class="sc">$</span>parks</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Im zweitet Teil wirde der Inhalt der Tabelle definiert. Sie richtet sich ebenfalls nach den Eingaben des Nutzers anhand des Sliders. Aus diesem Grund werden die Daten nach Monat gefiltert und nur die Relevanten Spalten angezeigt. Id-Spalten oder filter-Spalten führen keine für den Nutzer wertvolle Daten und schaden der Übersicht.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the table</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>table <span class="ot">&lt;-</span> <span class="fu">renderDataTable</span>({data <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>((month <span class="sc">==</span> input<span class="sc">$</span>months) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(date, </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>           Bundesland, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           Impfstoff, </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>           Einwohner_2020, </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>           Anzahl,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>           iso_code, </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>           retail_and_recreation,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>           grocery_and_pharmacy,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>           parks,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>           transit_stations,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>           residential,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>           workplaces,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>           longitude,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>           latitude</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    )})</span></code></pre></div>
+<p>Im dritten Teil wird die Karte erstellt. Hierbeio handelt es sich um eine Karte aus der Bibliothek <code>Leaflet</code>. Nachdem ihr die Daten übergeben wurden befinden sich noch drei weitere Einstellungen auf der Karte. Die erste Einstellung setzt die Ansicht auf Deutschland. Dies wird über Längen- und Breitengrad, sowie über den Zoom gemacht. Die zweite Einstellung legt Tiles auf die Karte und die dritte Einstellung füg der karte Kreise hinzu anhand der Daten. Hierbei dient der Längen- und Breitengrad als Position und die Anzahl als Radius der Kreise. Das Bedeutet, je größer der Kreis, desto größer die Anzahl.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the map</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>map <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">leaflet</span>(data) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setView</span>(<span class="at">lng =</span> <span class="dv">10</span>, <span class="at">lat =</span> <span class="dv">51</span>, <span class="at">zoom =</span> <span class="dv">5</span>)  <span class="sc">%&gt;%</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addCircles</span>(<span class="at">data =</span> data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(month <span class="sc">==</span> input<span class="sc">$</span>months), </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">lat =</span> <span class="sc">~</span> latitude, </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">lng =</span> <span class="sc">~</span> longitude, </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">weight =</span> <span class="dv">1</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">radius =</span> <span class="sc">~</span>Anzahl, </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">popup =</span> <span class="sc">~</span><span class="fu">as.character</span>(Bundesland), </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">label =</span> <span class="sc">~</span><span class="fu">as.character</span>(<span class="fu">paste0</span>(<span class="st">&quot;Anzahl: &quot;</span>, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>, Anzahl)), </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">fillOpacity =</span> <span class="fl">0.5</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>               )</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<p>Im letzten Schritt wird noch die Funktion der <code>checkboxen</code> auf der Map hinterlegt. Hierbei dient das Objekt <code>observe</code> zur überwachtung ob der Nutzer auf die Checkbox geklickt hat. Ist dies der Fall, wird der Map ein extra Kreis hinzugefügt welcher die Mobilität beinhalten welche der Nutzer ausgewählt hat. Da es mehrere Mobilitätswerte gibt, wird der folgende Codeausschnitt mehrfach verwendet. Er unterscheidet sich dann nur darin, welche werte der Kreis anzeigt.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define the checkboxes for the Mobility on the map</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">observe</span>({</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  proxy <span class="ot">&lt;-</span> <span class="fu">leafletProxy</span>(<span class="st">&quot;map&quot;</span>, <span class="at">data =</span> data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(month <span class="sc">==</span> input<span class="sc">$</span>months))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  proxy <span class="sc">%&gt;%</span> <span class="fu">clearMarkers</span>()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (input<span class="sc">$</span>parks) {</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    proxy <span class="sc">%&gt;%</span> <span class="fu">addCircleMarkers</span>(<span class="at">stroke =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="sc">~</span><span class="fu">pal2</span>(parks), <span class="at">fillOpacity =</span> <span class="fl">0.1</span>, <span class="at">label =</span> <span class="sc">~</span><span class="fu">as.character</span>(<span class="fu">paste0</span>(<span class="st">&quot;Parks: &quot;</span>, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>, parks)))}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    proxy <span class="sc">%&gt;%</span> <span class="fu">clearMarkers</span>() <span class="sc">%&gt;%</span> <span class="fu">clearControls</span>()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+</div>
+<div id="start-der-shiny-app" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Start der Shiny-App</h2>
+<p>Die Shiny-App kann im Anschluss ausgeführt werden. Der komplette Code befindet sich im Shiny-Projekt.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the application</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span></code></pre></div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

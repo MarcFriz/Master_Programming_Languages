@@ -412,6 +412,9 @@ div.tocify {
 <li>
   <a href="datenanalyse.html">Datenanalyse</a>
 </li>
+<li>
+  <a href="shiny.html">Shiny-App</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -744,7 +747,7 @@ div.tocify {
 <div id="überblick-über-die-daten" class="section level3" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> Überblick über die Daten</h3>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mobility_report)</span></code></pre></div>
-<pre><code>## Rows: 7,341,293
+<pre><code>## Rows: 7,241,902
 ## Columns: 15
 ## $ country_region_code                                &lt;chr&gt; &quot;AE&quot;, &quot;AE&quot;, &quot;AE&quot;, &quot;~
 ## $ country_region                                     &lt;chr&gt; &quot;United Arab Emirat~
@@ -763,7 +766,7 @@ div.tocify {
 ## $ residential_percent_change_from_baseline           &lt;int&gt; 1, 1, 1, 1, 1, 1, 1~</code></pre>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>no_cols<span class="ot">&lt;-</span> <span class="fu">ncol</span>(mobility_report)</span></code></pre></div>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>no_rows<span class="ot">&lt;-</span><span class="fu">nrow</span>(mobility_report)</span></code></pre></div>
-<p>Die Mobilitätsdaten bestehen aus 15 Spalten und 7341293 Zeilen.</p>
+<p>Die Mobilitätsdaten bestehen aus 15 Spalten und 7241902 Zeilen.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(mobility_report)</span></code></pre></div>
 <p>Die Spalten <strong>census_fips_code</strong>, <strong>sub_region_2</strong> und <strong>metro_area</strong> haben keine Elemente.</p>
 </div>
@@ -773,7 +776,7 @@ div.tocify {
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date) <span class="sc">%&gt;%</span> </span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">max =</span> <span class="fu">max</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">min =</span> <span class="fu">min</span>(date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) </span></code></pre></div>
 <pre><code>##          max        min
-## 1 2021-10-19 2020-02-15</code></pre>
+## 1 2021-10-11 2020-02-15</code></pre>
 <p>Der Zeitraum der Betrachtung liegt zwischen dem <strong>15.02.2020</strong> und dem <strong>19.10.2021</strong>. Am 15.02.2021 lagen die ersten Mobilitätsdaten zur Auswertung vor. Am 19.10.2021 wurde für dieses Projekt der Datensatz abgerufen.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>no_country <span class="ot">&lt;-</span> mobility_report <span class="sc">%&gt;%</span> </span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">count</span>(country_region_code, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
@@ -792,11 +795,11 @@ div.tocify {
 <pre><code>## # A tibble: 5 x 4
 ##   country_region     med   min   max
 ##   &lt;chr&gt;            &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
-## 1 Yemen             34.8   -34   116
-## 2 Libya             30.6   -70   153
-## 3 Niger             25.3   -90   116
-## 4 Afghanistan       19.0   -63    81
-## 5 Papua New Guinea  16.9   -74    64</code></pre>
+## 1 Yemen             34.0   -34   116
+## 2 Libya             29.6   -70   142
+## 3 Niger             24.5   -90   116
+## 4 Afghanistan       18.9   -63    81
+## 5 Papua New Guinea  16.7   -74    64</code></pre>
 <p>Wird das Attribut “retail_and_recreation_percent_change_from_baseline” genauer betrachtet fällt auf, dass die Abweichung entgegen des Referenzwertes in den positiven Bereich sowie in den negativen Bereich in den Ländern Yemen, Libya, Niger, Afghanistan und Papua New Guinea sehr hoch ist. Das bedeutet, dass an bestimmten Tagen im Bereich Einzelhandel das Mobilitätsaufkommen sehr hoch entgegen des Referenzwertes oder sehr niedrig war.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
@@ -808,11 +811,11 @@ div.tocify {
 <pre><code>## # A tibble: 5 x 4
 ##   country_region   med   min   max
 ##   &lt;chr&gt;          &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
-## 1 Libya           59.7   -50   228
-## 2 Mongolia        56.0   -83   189
-## 3 Egypt           55.3   -74   332
-## 4 Burkina Faso    55.1   -33   169
-## 5 Yemen           48.6   -18   128</code></pre>
+## 1 Libya           58.3   -50   228
+## 2 Mongolia        54.7   -83   183
+## 3 Burkina Faso    54.2   -33   169
+## 4 Egypt           54.2   -74   332
+## 5 Yemen           47.7   -18   128</code></pre>
 <p>Im Vergleich zu der Kategorie Einzelhandel und Freizeit ist in der Kategorie Lebensmittel und Apotheke die Verteilung für die Länder Libya, Mongolia, Ägypten, Burkina Faso und Yemen in den positiven Bereich höher. Bedeutet, dass das Mobilitätsaufkommen im Vergleich zum Referenzwert in den positiven Bereich stark abweicht und die Bewohner in dieser Kategorie trotz Corona vermehrt unterwegs waren.</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>mobility_report <span class="sc">%&gt;%</span> </span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country_region) <span class="sc">%&gt;%</span> </span>
@@ -822,17 +825,17 @@ div.tocify {
 <span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(med)) <span class="sc">%&gt;%</span> </span>
 <span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 4
-##   country_region       med   min   max
-##   &lt;chr&gt;              &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
-## 1 Papua New Guinea 11.9      -74    49
-## 2 Yemen             3.34     -52    43
-## 3 Kenya             0.0994   -73    96
-## 4 Brazil           -1.23     -89    99
-## 5 Burkina Faso     -3.25     -78    31</code></pre>
+##   country_region      med   min   max
+##   &lt;chr&gt;             &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+## 1 Papua New Guinea 11.7     -74    49
+## 2 Yemen             2.98    -52    43
+## 3 Kenya            -0.296   -73    96
+## 4 Brazil           -1.40    -89    96
+## 5 Burkina Faso     -3.31    -78    31</code></pre>
 <p>Ein anderes extrem ist bei der Kategorie Arbeitsstätte zu beobachten. Über den gesamten Betrachtungszeitraum scheint im Mittel die Anzahl der Besuche am Arbeitsplatz relativ gering bzw im negativen Bereich zu sein. Insbesondere in Burkina Faso scheint die Anzahl der Besuche zu Arbeitsstätten über den Betrachtungszeitraum hinweg einen negativen Trend zu haben.</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mobility_report <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country_region <span class="sc">==</span> <span class="st">&quot;Yemen&quot;</span> <span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Libya&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Niger&quot;</span><span class="sc">|</span> country_region <span class="sc">==</span> <span class="st">&quot;Germany&quot;</span>), </span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> retail_and_recreation_percent_change_from_baseline)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">25</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> country_region)</span></code></pre></div>
-<pre><code>## Warning: Removed 5748 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 5666 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="datenintegration_files/figure-html/unnamed-chunk-34-1.png" width="1152" /></p>
 </div>
 </div>
@@ -947,23 +950,23 @@ div.tocify {
 ## # Groups:   sub_region_1 [17]
 ##    sub_region_1                 n
 ##    &lt;chr&gt;                    &lt;int&gt;
-##  1 &quot;&quot;                         613
-##  2 &quot;Baden-WÃ¼rttemberg&quot;       613
-##  3 &quot;Bavaria&quot;                  613
-##  4 &quot;Berlin&quot;                   613
-##  5 &quot;Brandenburg&quot;              613
-##  6 &quot;Bremen&quot;                   613
-##  7 &quot;Hamburg&quot;                  613
-##  8 &quot;Hessen&quot;                   613
-##  9 &quot;Lower Saxony&quot;             613
-## 10 &quot;Mecklenburg-Vorpommern&quot;   613
-## 11 &quot;North Rhine-Westphalia&quot;   613
-## 12 &quot;Rhineland-Palatinate&quot;     613
-## 13 &quot;Saarland&quot;                 613
-## 14 &quot;Saxony&quot;                   613
-## 15 &quot;Saxony-Anhalt&quot;            613
-## 16 &quot;Schleswig-Holstein&quot;       613
-## 17 &quot;Thuringia&quot;                613</code></pre>
+##  1 &quot;&quot;                         605
+##  2 &quot;Baden-WÃ¼rttemberg&quot;       605
+##  3 &quot;Bavaria&quot;                  605
+##  4 &quot;Berlin&quot;                   605
+##  5 &quot;Brandenburg&quot;              605
+##  6 &quot;Bremen&quot;                   605
+##  7 &quot;Hamburg&quot;                  605
+##  8 &quot;Hessen&quot;                   605
+##  9 &quot;Lower Saxony&quot;             605
+## 10 &quot;Mecklenburg-Vorpommern&quot;   605
+## 11 &quot;North Rhine-Westphalia&quot;   605
+## 12 &quot;Rhineland-Palatinate&quot;     605
+## 13 &quot;Saarland&quot;                 605
+## 14 &quot;Saxony&quot;                   605
+## 15 &quot;Saxony-Anhalt&quot;            605
+## 16 &quot;Schleswig-Holstein&quot;       605
+## 17 &quot;Thuringia&quot;                605</code></pre>
 <p>Alle 16 Bundesländer sind im Datensatz enthalten. Im nächsten Schritt wird das <strong>Ã¼</strong> mit dem <strong>ü</strong> ersetzt.</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>mobility_germany<span class="sc">$</span>sub_region_1 <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&#39;Ã¼&#39;</span>, <span class="st">&#39;ü&#39;</span>, mobility_germany<span class="sc">$</span>sub_region_1)</span></code></pre></div>
 <p>In dem Datensatz gibt es eine Zeile die keinem Bundesland zugeordnet ist. Hier sind die Werte für Deutschland hinterlegt. Da in dem Projekt auf Bundeslandebene gearbeitet wird kann diese Zeile entfallen.</p>

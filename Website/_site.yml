@@ -10,3 +10,5 @@ navbar:
       href: datenintegration.html
     - text: "Datenanalyse"
       href: datenanalyse.html
+    - text: "Shiny-App"
+      href: shiny.html

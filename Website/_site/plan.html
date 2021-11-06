@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Marc Friz" />
 
 
 <title>Projektplan</title>
@@ -16,7 +17,7 @@
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -29,9 +30,10 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -42,16 +44,6 @@
   ul.task-list{list-style: none;}
     </style>
 
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
 
 
 
@@ -218,6 +210,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -225,6 +280,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -253,6 +318,9 @@ $(document).ready(function () {
 <li>
   <a href="datenanalyse.html">Datenanalyse</a>
 </li>
+<li>
+  <a href="shiny.html">Shiny-App</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -266,43 +334,50 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Projektplan</h1>
+<h4 class="author">Marc Friz</h4>
 
 </div>
 
 
 <p><img src="files/plan_complete.png" style="width:50%"></p>
 <p>Bei dem Projektplan orienteiern wir uns zum größten Teil an dem verfahren welches in der Vorlesung “Programming Languages for Data Science” eingeführt wurde.</p>
-<div id="use-case" class="section level2">
-<h2>Use Case</h2>
+<div id="use-case" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Use Case</h1>
 <p><img src="files/plan_use_case.png" style="width:50%"></p>
 <p>Wir wurden von der Deutschen Regierung beauftragt bei ihrer Kampagne für eine bessere Impfquote einen Beitrag zu leisten. Dieser bezieht sich auf die identifikation von möglichen Standorten für Werbekampagnen. Unsere Aufgabe ist es die Orte mit dem größten Aufkommen von ungeimpften innerhalb deutschlands zu identifizieren. Anhand dieser Identifikation können dann gezielt und auf den jeweiligen Ort zugeschnittene Kampagnen gestartet werden.</p>
-<p>Ziel soll es sein eine Map von Deuschland zu haben und die Veränderung von geimpften und ungeimpften Personenaufkommen über die Zeit zu betrachten. Daraus lässt sich dann ableiten welche die Orte sind, andenen das höchste aufkommen von ungeimpften Personen stattfindet. Da diese Orte ein großes Potential für die Verbreitung des COVID-Virus sind ist es wichtig die Impfquote an diesen zu erhöhen.</p>
+<p>Ziel soll es sein eine Map von Deuschland zu generieren und die Veränderung von geimpften Personenaufkommen über die Zeit zu betrachten. Daraus lässt sich dann ableiten welche die Orte sind, andenen das höchste aufkommen von ungeimpften Personen stattfindet. Da diese Orte ein großes Potential für die Verbreitung des COVID-Virus sind ist es wichtig die Impfquote an diesen zu erhöhen.</p>
 </div>
-<div id="problemdefinition" class="section level2">
-<h2>Problemdefinition</h2>
+<div id="problemdefinition" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Problemdefinition</h1>
 <p><img src="files/plan_frame.png" style="width:50%"></p>
-<div id="zielpopulation" class="section level3">
-<h3>Zielpopulation</h3>
+<div id="zielpopulation" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Zielpopulation</h2>
 <p>Unsere Zielpopulation sind alle Menschen in Deutschland. Wir versuchen zu verstehen an welchen Orten viele Menschen zusammen kommen und ob diese Menschen geimpft oder ungeimpft sind. Hierbei stützen wir uns auf die offiziellen Impfdaten vom RKI sowie den Mobilitireport von Google.</p>
 </div>
-<div id="zielfrage" class="section level3">
-<h3>Zielfrage</h3>
+<div id="zielfrage" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Zielfrage</h2>
 <p>Anhand der oben genannten Fragestellung versuchen wir herauszufinden welches der beste Standort für eine Werbekampagne der Regierung für eine Impfung ist. Die hierbei gewonnenen Daten können für die Entscheidung des Ortes genutzt werden, sowie für die gezielte Ausrichtung der Kampagne. In einem Jugendheim wird zum Beispiel eine andere Strategie benötigt als in einem Supermarkt. Anhand dieser Daten kann dann Entschieden werden wo die Werbekampaghnen gestartet werden.</p>
 </div>
 </div>
-<div id="wichtige-variabeln" class="section level2">
-<h2>Wichtige Variabeln</h2>
+<div id="wichtige-variabeln" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Wichtige Variabeln</h1>
 <p><img src="files/plan_kpis.png" style="width:50%"></p>
-<p>Die wichtigste Variable für uns ist das Verhältnis von ungeimpften Menschen zum aufkommen an einem Standort.</p>
+<p>Die Wichtigsten Variablen für uns ist die Anzahl der geimpften Menschen sowie das Personenaufkommen in den einzelnen Regionen. Diese sind in folgende Unergruppen unterteilt:</p>
+<ul>
+<li><p>parks</p></li>
+<li><p>retail and recreation</p></li>
+<li><p>grocery and pharmacy</p></li>
+<li><p>transit stations</p></li>
+<li><p>residential</p></li>
+<li><p>workplaces</p></li>
+</ul>
+<p>Die Daten für die geimpften Personen liegen separiert nach dem Impfstoff vor. Für unsere Betrachtung spielt es jedoch keine Rolle welchen Impfstoff die betreffende Person erhalten hat.</p>
 </div>
-<div id="metriken" class="section level2">
-<h2>Metriken</h2>
-<p><img src="files/plan_metriken.png" style="width:50%"></p>
-<p>soon…</p>
+
+
+
 </div>
-
-
-
+</div>
 
 </div>
 
@@ -335,6 +410,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
