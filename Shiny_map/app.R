@@ -22,8 +22,38 @@ library(lubridate)
 #import data
 data <- read.csv('../Website/Daten_Output/Mobility_vaccine.csv')
 data$month <- month(as.POSIXct(data$date,format="%Y-%m-%d"))
-data$longitude <- ifelse(data$iso_code == 'DE-BW', 9.183333, ifelse(data$iso_code == 'DE-BE', 13.404954, ifelse(data$iso_code == 'DE-BB', 13.063561, ifelse(data$iso_code == 'DE-HE', 8.239761, ifelse(data$iso_code == 'DE-MV', 11.41316, ifelse(data$iso_code == 'DE-SL', 7.000000, ifelse(data$iso_code == 'DE-SH', 10.139444, 0)))))))
-data$latitude <- ifelse(data$iso_code == 'DE-BW', 48.783333, ifelse(data$iso_code == 'DE-BE', 52.520008, ifelse(data$iso_code == 'DE-BB', 52.391842, ifelse(data$iso_code == 'DE-HE', 50.078217, ifelse(data$iso_code == 'DE-MV', 53.62937, ifelse(data$iso_code == 'DE-SL', 	49.233334, ifelse(data$iso_code == 'DE-SH', 54.323334, 0)))))))
+data$longitude <- ifelse(data$iso_code == 'DE-BW', 9.183333, 
+                         ifelse(data$iso_code == 'DE-BE', 13.404954, 
+                                ifelse(data$iso_code == 'DE-BB', 13.063561, 
+                                       ifelse(data$iso_code == 'DE-HE', 8.239761, 
+                                              ifelse(data$iso_code == 'DE-MV', 11.41316, 
+                                                     ifelse(data$iso_code == 'DE-SL', 7.000000, 
+                                                            ifelse(data$iso_code == 'DE-SH', 10.139444, 
+                                                                   ifelse(data$iso_code == 'DE-BY', 11.581981, 
+                                                                          ifelse(data$iso_code == 'DE-HH', 9.993682, 
+                                                                                 ifelse(data$iso_code == 'DE-HB', 8.8016937, 
+                                                                                        ifelse(data$iso_code == 'DE-NI', 9.7320104, 
+                                                                                               ifelse(data$iso_code == 'DE-NW', 6.7734556, 
+                                                                                                      ifelse(data$iso_code == 'DE-RP', 8.2472526, 
+                                                                                                             ifelse(data$iso_code == 'DE-SN', 13.7372621, 
+                                                                                                                    ifelse(data$iso_code == 'DE-ST', 11.6276237, 
+                                                                                                                           ifelse(data$iso_code == 'DE-TH', 11.0298799, 0))))))))))))))))
+data$latitude <- ifelse(data$iso_code == 'DE-BW', 48.783333, 
+                        ifelse(data$iso_code == 'DE-BE', 52.520008, 
+                               ifelse(data$iso_code == 'DE-BB', 52.391842, 
+                                      ifelse(data$iso_code == 'DE-HE', 50.078217, 
+                                             ifelse(data$iso_code == 'DE-MV', 53.62937, 
+                                                    ifelse(data$iso_code == 'DE-SL', 	49.233334, 
+                                                           ifelse(data$iso_code == 'DE-SH', 54.323334, 
+                                                                  ifelse(data$iso_code == 'DE-BY', 48.135125, 
+                                                                         ifelse(data$iso_code == 'DE-HH', 53.551085, 
+                                                                                ifelse(data$iso_code == 'DE-HB', 53.0792962, 
+                                                                                       ifelse(data$iso_code == 'DE-NI', 52.3758916, 
+                                                                                              ifelse(data$iso_code == 'DE-NW', 51.2277411, 
+                                                                                                     ifelse(data$iso_code == 'DE-RP', 49.9928617, 
+                                                                                                            ifelse(data$iso_code == 'DE-SN', 51.0504088, 
+                                                                                                                   ifelse(data$iso_code == 'DE-ST', 52.1205333, 
+                                                                                                                          ifelse(data$iso_code == 'DE-TH', 50.9847679, 0))))))))))))))))
 
 
 
