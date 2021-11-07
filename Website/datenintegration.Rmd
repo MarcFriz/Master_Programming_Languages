@@ -23,9 +23,9 @@ Im folgenden Notebook werden die in diesem Projekt verwendeten Daten beschrieben
 
 # Konzeptionelles Vorgehen
 
-Das Ziel dieses Projekts ist es die Daten zu analysieren sowie ein Dashboard zum Monitoring für das Impfen zu erstellen. Das Vorgehen ist wie in der Abbildung 1 beschrieben. Die Daten liegen in unterschiedlichen Quellen zur Verfügung. Google stellt die Mobilitätsdaten als .csv bereit. Die Impfdaten werden von dem Projekt "Digitales Impfquoten-Monitoring" (DIM) in GitHub zur Verfügung gestellt und stehen somit auch als .csv zur Verfügung.
+Das Ziel dieses Projektes ist,die Daten zu analysieren sowie ein Dashboard zum Monitoring für das Impfen zu erstellen. Das Vorgehen ist wie in der Abbildung 1 beschrieben. Die Daten liegen in unterschiedlichen Quellen zur Verfügung. Google stellt die Mobilitätsdaten als .csv bereit. Die Impfdaten werden von dem Projekt "Digitales Impfquoten-Monitoring" (DIM) in GitHub zur Verfügung gestellt und stehen somit auch als .csv zur Verfügung.
 
-Um mit den Daten arbeiten zu können, müssen diese im weiteren Vorgehen zusammengeführt werden. Hierzu benötigt es weitere Daten. Diese Daten werden von unterschiedlichen Wikipedia Seiten gescraped. Sobald alle Daten vorliegen werden diese in das Notebook geladen und zur weiteren Verarbeitung bereinigt und vorbereitet.
+Um mit den Daten arbeiten zu können, müssen diese im weiteren Vorgehen zusammengeführt werden. Hierzu benötigt es weitere Daten. Diese Daten werden von unterschiedlichen Wikipedia Seiten gescraped. Sobald alle Daten vorliegen, werden diese in das Notebook geladen und zur weiteren Verarbeitung bereinigt und vorbereitet.
 
 <img src="files/Input_R.png" style="width:85%">
 
@@ -95,7 +95,7 @@ unter dem folgenden [Link](https://github.com/robert-koch-institut/COVID-19-Impf
 
 ## Bundesland_ID (Anreicherung der Daten)
 
-Da in dem Datensatz der Mobilitätsdaten das Bundesland gegeben ist und in dem Datensatz der Impfdaten lediglich die Bundesland ID gegeben ist, wird zur Zusammenführung dieser beider Datensätze eine Anreicherung der Daten benötigt. Diese Anreicherung ist die Zuordnung der ID zum Bundesland. Die Daten stehen unter dem folgenden Link zur Verfügung: [Link](https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel).
+Da in dem Datensatz der Mobilitätsdaten das Bundesland gegeben ist und in dem Datensatz der Impfdaten lediglich die Bundesland ID, wird für die Zusammenführung dieser Datensätze eine Anreicherung der Daten benötigt. Diese Anreicherung ist die Zuordnung der ID zum Bundesland. Die Daten stehen unter dem folgenden Link zur Verfügung: [Link](https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel).
 
 ### Beschreibung der Variablen
 
@@ -119,13 +119,14 @@ Zuerst wird mit der Funktion paths_allowed überprüft ob Informationen der Seit
 paths_allowed("de.wikipedia.org")
 ```
 
-Der nächste Schritt ist die Zuweisung der URL und die Identifikation des XPaths. Hierzu wird die Tabelle auf der Seite untersucht. 
+Der nächste Schritt, ist die Zuweisung der URL und die Identifikation des XPaths. Hierzu wird die Tabelle auf der Seite untersucht.
 
 ```{r , message=FALSE}
 url = "https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel"
 ```
 
 Im weiteren Vorgehen wird die Extraktionsfunktion definiert, der gescrapte Inhalt als tibble abgelegt und entsprechend der Variablennamen angepasst.
+
 ```{r , message=FALSE}
 scraping <- url %>%
   read_html() %>%
@@ -160,8 +161,7 @@ write_csv(scraping,"../Website/Daten_Input/Mapping.csv")
 
 | Variable      | Beschreibung  |  
 | ------------- |:-------------:|
-| ID            |ID 1-16        |
-| Bundesland    |Name Bundesland|
+| Bundesland    |Einwohnerzahl|
 
 ### Webscraping
 

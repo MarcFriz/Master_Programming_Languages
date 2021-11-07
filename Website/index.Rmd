@@ -1,7 +1,7 @@
 ---
 title: "Projekt zur Verbesserung der Impfquote"
 author: "Marc Friz (40654) & Nadja Herrmann (40523)"
-date: "09 11 2021"
+date: "10 11 2021"
 output:
  html_document:
   fig_height: 8
@@ -41,7 +41,7 @@ Bundesamt, 2021). Weitere bundesweite Beschränkungen wie der „Light-Lockdown�
 
 Schnell wurde an möglichen Lösungen zur Eindämmung des Covid Virus gearbeitet. Viele Impfunternehmen fingen an Impfstoffe zur Eindämmung der Pandemie zu entwickeln. Endlich, Anfang 2021, wurden diese Impfstoffe freigegeben. Die kurze Zeit der Entwicklung des Impfstoffes machen auch vielen Menschen Angst. Deshalb hat sich der Verlauf der Anzahl an verabreichten Impfungen langsamer entwickelt als ursprünglich erwartet.
 
-Um die Regierung bei dieser Aufgabe zu unterstützen, wird innerhalb dieses Projekts an einer Lösung für mehr Transparenz gearbeitet.
+Um die Regierung bei dieser Aufgabe zu unterstützen, wird innerhalb dieses Projektes an einer Lösung für mehr Transparenz gearbeitet.
 
 ***
 

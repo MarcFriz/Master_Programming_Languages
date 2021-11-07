@@ -439,8 +439,8 @@ div.tocify {
 </div>
 <div id="konzeptionelles-vorgehen" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Konzeptionelles Vorgehen</h1>
-<p>Das Ziel dieses Projekts ist es die Daten zu analysieren sowie ein Dashboard zum Monitoring für das Impfen zu erstellen. Das Vorgehen ist wie in der Abbildung 1 beschrieben. Die Daten liegen in unterschiedlichen Quellen zur Verfügung. Google stellt die Mobilitätsdaten als .csv bereit. Die Impfdaten werden von dem Projekt “Digitales Impfquoten-Monitoring” (DIM) in GitHub zur Verfügung gestellt und stehen somit auch als .csv zur Verfügung.</p>
-<p>Um mit den Daten arbeiten zu können, müssen diese im weiteren Vorgehen zusammengeführt werden. Hierzu benötigt es weitere Daten. Diese Daten werden von unterschiedlichen Wikipedia Seiten gescraped. Sobald alle Daten vorliegen werden diese in das Notebook geladen und zur weiteren Verarbeitung bereinigt und vorbereitet.</p>
+<p>Das Ziel dieses Projektes ist,die Daten zu analysieren sowie ein Dashboard zum Monitoring für das Impfen zu erstellen. Das Vorgehen ist wie in der Abbildung 1 beschrieben. Die Daten liegen in unterschiedlichen Quellen zur Verfügung. Google stellt die Mobilitätsdaten als .csv bereit. Die Impfdaten werden von dem Projekt “Digitales Impfquoten-Monitoring” (DIM) in GitHub zur Verfügung gestellt und stehen somit auch als .csv zur Verfügung.</p>
+<p>Um mit den Daten arbeiten zu können, müssen diese im weiteren Vorgehen zusammengeführt werden. Hierzu benötigt es weitere Daten. Diese Daten werden von unterschiedlichen Wikipedia Seiten gescraped. Sobald alle Daten vorliegen, werden diese in das Notebook geladen und zur weiteren Verarbeitung bereinigt und vorbereitet.</p>
 <p><img src="files/Input_R.png" style="width:85%"></p>
 <p><strong>Abbildung 1</strong>: Konzeptionelles Vorgehen, Eigene Darstellung 2021</p>
 </div>
@@ -570,7 +570,7 @@ div.tocify {
 </div>
 <div id="bundesland_id-anreicherung-der-daten" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Bundesland_ID (Anreicherung der Daten)</h2>
-<p>Da in dem Datensatz der Mobilitätsdaten das Bundesland gegeben ist und in dem Datensatz der Impfdaten lediglich die Bundesland ID gegeben ist, wird zur Zusammenführung dieser beider Datensätze eine Anreicherung der Daten benötigt. Diese Anreicherung ist die Zuordnung der ID zum Bundesland. Die Daten stehen unter dem folgenden Link zur Verfügung: <a href="https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel">Link</a>.</p>
+<p>Da in dem Datensatz der Mobilitätsdaten das Bundesland gegeben ist und in dem Datensatz der Impfdaten lediglich die Bundesland ID, wird für die Zusammenführung dieser Datensätze eine Anreicherung der Daten benötigt. Diese Anreicherung ist die Zuordnung der ID zum Bundesland. Die Daten stehen unter dem folgenden Link zur Verfügung: <a href="https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel">Link</a>.</p>
 <div id="beschreibung-der-variablen-2" class="section level3" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> Beschreibung der Variablen</h3>
 <table>
@@ -600,7 +600,7 @@ div.tocify {
 <p>Zuerst wird mit der Funktion paths_allowed überprüft ob Informationen der Seite gescraped werden dürfen.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paths_allowed</span>(<span class="st">&quot;de.wikipedia.org&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>Der nächste Schritt ist die Zuweisung der URL und die Identifikation des XPaths. Hierzu wird die Tabelle auf der Seite untersucht.</p>
+<p>Der nächste Schritt, ist die Zuweisung der URL und die Identifikation des XPaths. Hierzu wird die Tabelle auf der Seite untersucht.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">=</span> <span class="st">&quot;https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel&quot;</span></span></code></pre></div>
 <p>Im weiteren Vorgehen wird die Extraktionsfunktion definiert, der gescrapte Inhalt als tibble abgelegt und entsprechend der Variablennamen angepasst.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scraping <span class="ot">&lt;-</span> url <span class="sc">%&gt;%</span></span>
@@ -632,12 +632,8 @@ div.tocify {
 </thead>
 <tbody>
 <tr class="odd">
-<td>ID</td>
-<td align="center">ID 1-16</td>
-</tr>
-<tr class="even">
 <td>Bundesland</td>
-<td align="center">Name Bundesland</td>
+<td align="center">Einwohnerzahl</td>
 </tr>
 </tbody>
 </table>
