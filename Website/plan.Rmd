@@ -14,12 +14,12 @@ output:
   toc_depth: 3
 ---
 
-<img src="files/plan_complete.png" style="width:50%">
+<img src="files/plan_complete.png" style="width:75%">
 
 Bei dem Projektplan orientieren wir uns zum größten Teil an der Methodik, welche in der Vorlesung "Programming Languages for Data Science" eingeführt wurde. Das Vorgehen mittels der Methode wird im folgenden Abschnitt schrittweise erklärt.
 
 # Use Case
-<img src="files/plan_use_case.png" style="width:50%">
+<img src="files/plan_use_case.png" style="width:75%">
 
 Wir wurden von der Deutschen Regierung beauftragt bei der Kampagne für eine bessere Impfquote einen Beitrag zu leisten. Dieser bezieht sich auf die Identifikation von möglichen Standorten für Werbekampagnen. Unsere Aufgabe ist es, die Orte mit der höchsten Anzahl an ungeimpften Mitbürgern innerhalb Deutschlands zu identifizieren. Anhand dieser Identifikation können dann gezielt auf den jeweiligen Ort zugeschnittene Kampagnen gestartet werden.
 
@@ -28,7 +28,7 @@ Ziel soll sein eine Mappe von Deuschland zu generieren und die Veränderung von 
 
 
 # Problemdefinition
-<img src="files/plan_frame.png" style="width:50%">
+<img src="files/plan_frame.png" style="width:75%">
 
 ## Zielpopulation
 Die Zielpopulation sind alle Menschen in Deutschland. Wir versuchen zu verstehen an welchen Orten viele Menschen zusammen kommen und ob diese Menschen geimpft oder ungeimpft sind. Hierbei stützen wir uns auf die offiziellen Impfdaten vom DIM sowie den Mobilitätsreport bereitgestellt von Google.
@@ -38,7 +38,7 @@ Anhand der oben genannten Fragestellung versuchen wir herauszufinden welches der
 
 
 # Wichtige Variabeln
-<img src="files/plan_kpis.png" style="width:50%">
+<img src="files/plan_kpis.png" style="width:75%">
 
 Die wichtigsten Variablen für dieses Projekt ist die Anzahl der geimpften Menschen sowie das Personenaufkommen in den einzelnen Regionen. Diese sind in folgende Unterkategorien unterteilt:
 
